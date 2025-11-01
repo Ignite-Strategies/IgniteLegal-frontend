@@ -1,57 +1,36 @@
 import { Link } from 'react-router-dom';
-import { FileText, DollarSign, BarChart3, Users, UserCircle } from 'lucide-react';
+import { Users, UserPlus } from 'lucide-react';
 
 const stats = [
-  { label: 'NDAs This Month', value: 12 },
-  { label: 'Clients', value: 8 },
+  { label: 'Total Contacts', value: 24 },
   { label: 'Prospects', value: 5 },
+  { label: 'Active Clients', value: 8 },
 ];
 
-const mainNavOptions = [
+const crmNavOptions = [
   {
-    title: 'NDA Management',
-    description: 'Manage NDA intake and review',
-    icon: <FileText className="h-8 w-8" />,
-    path: '/nda-dashboard',
+    title: 'Contact List',
+    description: 'View and manage all contacts',
+    icon: <Users className="h-8 w-8" />,
+    path: '/crm/list',
     color: 'bg-blue-100 text-blue-600'
   },
   {
-    title: 'NDA Analytics',
-    description: 'Analytics and insights on NDA performance',
-    icon: <BarChart3 className="h-8 w-8" />,
-    path: '/nda-analytics',
-    color: 'bg-purple-100 text-purple-600'
-  },
-  {
-    title: 'CRM & Business Development',
-    description: 'Contact management and pipeline',
-    icon: <Users className="h-8 w-8" />,
-    path: '/crm-hub',
-    color: 'bg-indigo-100 text-indigo-600'
-  },
-  {
-    title: 'Persona Management',
-    description: 'Define and manage buyer/client personas',
-    icon: <UserCircle className="h-8 w-8" />,
-    path: '/personas',
-    color: 'bg-pink-100 text-pink-600'
-  },
-  {
-    title: 'Billing & Financial',
-    description: 'Client billing, invoicing, and forecasting',
-    icon: <DollarSign className="h-8 w-8" />,
-    path: '/financial-hub',
+    title: 'Add Contact',
+    description: 'Create new contact',
+    icon: <UserPlus className="h-8 w-8" />,
+    path: '/crm/create',
     color: 'bg-green-100 text-green-600'
   },
 ];
 
-export default function CompanyCentral() {
+export default function CrmHub() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Hi Joel - welcome!</h1>
-          <p className="text-gray-600 text-lg">What do you want to do today?</p>
+          <h1 className="text-3xl font-bold mb-2">CRM & Business Development</h1>
+          <p className="text-gray-600">Manage contacts and pipeline for BusinessPoint Law</p>
         </div>
 
         {/* Stats Cards */}
@@ -66,7 +45,7 @@ export default function CompanyCentral() {
 
         {/* Navigation Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {mainNavOptions.map((option) => (
+          {crmNavOptions.map((option) => (
             <Link key={option.path} to={option.path}>
               <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition cursor-pointer">
                 <div className={`w-16 h-16 rounded-lg flex items-center justify-center ${option.color} mb-4`}>

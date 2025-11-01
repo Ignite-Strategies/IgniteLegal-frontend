@@ -9,9 +9,9 @@ const Header = () => {
             <img 
               src="/BPL_2025.png" 
               alt="BusinessPointLaw" 
-              className="h-10 w-auto"
+              className="h-12 w-auto"
             />
-            <span className="text-xl font-semibold text-gray-900">
+            <span className="text-xl font-semibold text-gray-900 hidden sm:block">
               BusinessPointLaw
             </span>
           </Link>

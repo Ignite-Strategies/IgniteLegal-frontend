@@ -53,6 +53,23 @@ This specific build seeks to combine:
 - `/ingest` → New NDA intake form
 - `/review/:id` → Review/edit specific NDA
 
+### 1b. NDA Analytics (`/nda-analytics`)
+
+**Purpose**: Analytics and insights on NDA performance for BusinessPoint Law
+
+**Features:**
+- NDA volume trends (monthly, quarterly, yearly)
+- Approval rate metrics
+- Time-to-approval analytics
+- Counterparty analysis
+- Scope/purpose breakdowns
+- Expiration tracking and alerts
+- Performance dashboards
+- Exportable reports
+
+**Routes:**
+- `/nda-analytics` → Analytics dashboard with charts and insights
+
 ---
 
 ### 2. CRM & Business Development (`/crm-hub`)
@@ -107,7 +124,7 @@ This specific build seeks to combine:
 
 ### 4. Financial Operations (`/financial-hub`)
 
-**Purpose**: Track BusinessPoint Law spending and manage budgets/forecasts
+**Purpose**: Track BusinessPoint Law spending, manage client billing, and forecasting
 
 **Features:**
 - **Financial Spending** (`/financial/spends`)
@@ -116,20 +133,32 @@ This specific build seeks to combine:
   - Spending trends and reports
   - Add/edit transactions
 
-- **Financial Projections** (`/financial/projections`)
-  - Manage budgets and forecasts (totals)
-  - Create budget projections
-  - Track budget vs. actual
-  - Financial planning tools for legal operations
+- **Billing** (`/financial/billing`)
+  - Client invoice management
+  - Create and send invoices
+  - Track billable hours and services
+  - Payment tracking (paid, pending, overdue)
+  - Client billing history
+  - Invoice templates and customization
+
+- **Forecasting** (`/financial/forecasting`)
+  - Revenue forecasting tool
+  - Cash flow projections
+  - Monthly/quarterly forecasting
+  - Scenario planning
+  - Track actuals vs. forecast
 
 **Routes:**
 - `/financial-hub` → Financial hub with overview stats
 - `/financial/spends` → Spending transactions view
 - `/financial/spends/create` → Add new transaction
-- `/financial/projections` → Budget projections view
-- `/financial/projections/create` → Create new projection
+- `/financial/billing` → Billing dashboard (invoices, payments)
+- `/financial/billing/create` → Create new invoice
+- `/financial/billing/:id` → Invoice detail view
+- `/financial/forecasting` → Forecasting tool
+- `/financial/forecasting/create` → Create new forecast
 
-**Pattern Source**: `gofastcompanyoutlook/src/pages/FinancialSpends.jsx` and `FinancialProjections.jsx`
+**Note**: This is a legal practice, not a startup - focus on billing and forecasting rather than budget projections.
 
 ---
 
@@ -173,8 +202,11 @@ src/
 │       ├── FinancialHub.jsx           # Financial overview hub
 │       ├── FinancialSpends.jsx        # Spending transactions
 │       ├── FinancialSpendCreate.jsx   # Add transaction form
-│       ├── FinancialProjections.jsx   # Budget projections
-│       └── FinancialProjectionCreate.jsx # Create projection form
+│       ├── Billing.jsx                # Billing dashboard (invoices)
+│       ├── BillingCreate.jsx          # Create invoice form
+│       ├── BillingDetail.jsx          # Invoice detail view
+│       ├── Forecasting.jsx            # Forecasting tool
+│       └── ForecastingCreate.jsx    # Create forecast form
 │
 ├── App.jsx                            # Router setup
 └── main.jsx                           # Entry point
@@ -210,8 +242,10 @@ public/
 - `/financial-hub` → Financial overview hub
 - `/financial/spends` → Spending transactions view
 - `/financial/spends/create` → Add new transaction
-- `/financial/projections` → Budget projections view
-- `/financial/projections/create` → Create new projection
+- `/financial/billing` → Billing dashboard (invoices, payments)
+- `/financial/billing/create` → Create new invoice
+- `/financial/forecasting` → Forecasting tool
+- `/financial/forecasting/create` → Create new forecast
 
 ---
 
