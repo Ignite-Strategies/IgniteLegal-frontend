@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FileText, DollarSign, BarChart3, Users, UserCircle } from 'lucide-react';
+import { FileText, DollarSign, Users } from 'lucide-react';
 
 const stats = [
   { label: 'NDAs This Month', value: 12 },
@@ -16,29 +16,15 @@ const mainNavOptions = [
     color: 'bg-blue-100 text-blue-600'
   },
   {
-    title: 'NDA Analytics',
-    description: 'Analytics and insights on NDA performance',
-    icon: <BarChart3 className="h-8 w-8" />,
-    path: '/nda-analytics',
-    color: 'bg-purple-100 text-purple-600'
-  },
-  {
-    title: 'CRM & Business Development',
-    description: 'Contact management and pipeline',
+    title: 'Business Development',
+    description: 'CRM, contacts, and pipeline management',
     icon: <Users className="h-8 w-8" />,
     path: '/crm-hub',
     color: 'bg-indigo-100 text-indigo-600'
   },
   {
-    title: 'Persona Management',
-    description: 'Define and manage buyer/client personas',
-    icon: <UserCircle className="h-8 w-8" />,
-    path: '/personas',
-    color: 'bg-pink-100 text-pink-600'
-  },
-  {
-    title: 'Billing & Financial',
-    description: 'Client billing, invoicing, and forecasting',
+    title: 'Financial Tools',
+    description: 'Billing, invoicing, and forecasting',
     icon: <DollarSign className="h-8 w-8" />,
     path: '/financial-hub',
     color: 'bg-green-100 text-green-600'
