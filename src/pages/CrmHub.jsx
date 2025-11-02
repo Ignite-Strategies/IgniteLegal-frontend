@@ -17,6 +17,13 @@ const crmNavOptions = [
     color: 'bg-blue-100 text-blue-600'
   },
   {
+    title: 'Email Campaigns',
+    description: 'Manage outreach and email campaigns',
+    icon: <Mail className="h-8 w-8" />,
+    path: '/business-development/email-campaigns',
+    color: 'bg-cyan-100 text-cyan-600'
+  },
+  {
     title: 'Add Contact',
     description: 'Create new contact entry',
     icon: <UserPlus className="h-8 w-8" />,
@@ -86,7 +93,7 @@ export default function CrmHub() {
         </div>
 
         {/* Navigation Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {crmNavOptions.map((option) => (
             <Link key={option.path} to={option.path}>
               <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition cursor-pointer">
