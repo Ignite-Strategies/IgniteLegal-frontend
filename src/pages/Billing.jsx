@@ -134,12 +134,12 @@ const Billing = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <button
-                      onClick={() => navigate(`/financial/billing/${invoice.id}`)}
+                    <Link
+                      to={`/financial/billing/${invoice.id}`}
                       className="text-blue-600 hover:text-blue-800"
                     >
                       View
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))}
