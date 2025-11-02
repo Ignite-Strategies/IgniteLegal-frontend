@@ -51,7 +51,7 @@ function StackCard({ name, metrics, insight, icon, color, route }) {
   
   // Get hover color based on base color
   const hoverColors = {
-    'bg-red-500': 'hover:border-red-400 hover:bg-red-50',
+    'bg-blue-500': 'hover:border-blue-400 hover:bg-blue-50',
     'bg-orange-500': 'hover:border-orange-400 hover:bg-orange-50',
     'bg-purple-500': 'hover:border-purple-400 hover:bg-purple-50',
   };
