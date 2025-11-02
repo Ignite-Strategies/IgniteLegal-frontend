@@ -18,6 +18,7 @@ import FinancialSpends from './pages/FinancialSpends';
 import CrmHub from './pages/CrmHub';
 import CrmList from './pages/CrmList';
 import Personas from './pages/Personas';
+import PersonaCreate from './pages/PersonaCreate';
 import Settings from './pages/Settings';
 import Ads from './pages/Ads';
 import Content from './pages/Content';
@@ -49,6 +50,7 @@ function App() {
           <Route path="/crm-hub" element={<CrmHub />} />
           <Route path="/crm/list" element={<CrmList />} />
           <Route path="/personas" element={<Personas />} />
+          <Route path="/personas/create" element={<PersonaCreate />} />
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
           <Route path="/business-development/seo" element={<Seo />} />
