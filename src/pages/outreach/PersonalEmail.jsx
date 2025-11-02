@@ -5,7 +5,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useMicrosoftGraph } from '../../hooks/useMicrosoftGraph';
 import PageHeader from '../../components/PageHeader';
 
-export default function Messages() {
+export default function PersonalEmail() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const contactId = searchParams.get('contact');

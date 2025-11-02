@@ -117,6 +117,7 @@ function App() {
           <Route path="/companies" element={<Companies />} />
           <Route path="/pipeline" element={<Pipeline />} />
           <Route path="/messages" element={<PersonalEmail />} />
+          <Route path="/personal-email" element={<PersonalEmail />} />
           <Route path="/business-development/events" element={<CrmList />} />
           
           {/* Personas Routes */}
