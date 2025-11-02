@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Plus, Wallet } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Wallet, Link2, RefreshCw } from 'lucide-react';
 
 // Mock spending data
 const transactions = [
@@ -30,8 +30,6 @@ const transactions = [
 ];
 
 const FinancialSpends = () => {
-  const navigate = useNavigate();
-
   const totalSpent = transactions.reduce((sum, t) => sum + t.amount, 0);
   const thisMonthSpent = transactions
     .filter(t => t.date.startsWith('2025-01'))
@@ -46,18 +44,51 @@ const FinancialSpends = () => {
         ← Back to Financial Hub
       </Link>
 
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Spending</h1>
-          <p className="text-gray-600">Track expenses and transactions</p>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold mb-2">Spending</h1>
+        <p className="text-gray-600">Track expenses and transactions</p>
+      </div>
+
+      {/* Automation Tools */}
+      <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">Automation & Integration</h2>
+            <p className="text-sm text-gray-500">Connect your financial systems for automatic transaction tracking</p>
+          </div>
         </div>
-        <button
-          onClick={() => navigate('/financial/spends/create')}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium flex items-center gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          Add Transaction
-        </button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition">
+            <div className="flex items-center gap-3 mb-2">
+              <Link2 className="h-5 w-5 text-blue-600" />
+              <h3 className="font-semibold text-gray-900">Bank Integration</h3>
+            </div>
+            <p className="text-sm text-gray-600">Automatically sync transactions from your business bank accounts</p>
+            <button className="mt-3 text-sm text-blue-600 hover:text-blue-700 font-medium">
+              Connect →
+            </button>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition">
+            <div className="flex items-center gap-3 mb-2">
+              <Link2 className="h-5 w-5 text-blue-600" />
+              <h3 className="font-semibold text-gray-900">Credit Card Sync</h3>
+            </div>
+            <p className="text-sm text-gray-600">Import credit card transactions automatically</p>
+            <button className="mt-3 text-sm text-blue-600 hover:text-blue-700 font-medium">
+              Connect →
+            </button>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition">
+            <div className="flex items-center gap-3 mb-2">
+              <RefreshCw className="h-5 w-5 text-blue-600" />
+              <h3 className="font-semibold text-gray-900">Manual Import</h3>
+            </div>
+            <p className="text-sm text-gray-600">Upload CSV/Excel files to bulk import transactions</p>
+            <button className="mt-3 text-sm text-blue-600 hover:text-blue-700 font-medium">
+              Import →
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Summary Cards */}
