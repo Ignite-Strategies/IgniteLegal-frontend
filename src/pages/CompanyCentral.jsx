@@ -17,9 +17,9 @@ const mainNavOptions = [
   },
   {
     title: 'Business Development',
-    description: 'CRM, contacts, and pipeline management',
+    description: 'Growth, marketing, and client acquisition',
     icon: <Users className="h-8 w-8" />,
-    path: '/crm-hub',
+    path: '/bd-central',
     color: 'bg-indigo-100 text-indigo-600'
   },
   {

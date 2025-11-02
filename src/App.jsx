@@ -21,6 +21,7 @@ import Personas from './pages/Personas';
 import Settings from './pages/Settings';
 import Ads from './pages/Ads';
 import Content from './pages/Content';
+import BdCentral from './pages/BdCentral';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/financial/billing/:id" element={<BillingDetail />} />
           <Route path="/financial/forecasting" element={<Forecasting />} />
           <Route path="/financial/spends" element={<FinancialSpends />} />
+          <Route path="/bd-central" element={<BdCentral />} />
           <Route path="/crm-hub" element={<CrmHub />} />
           <Route path="/crm/list" element={<CrmList />} />
           <Route path="/personas" element={<Personas />} />

@@ -251,7 +251,7 @@ export default function Content() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
-        to="/crm-hub"
+        to="/bd-central"
         className="text-sm text-gray-600 hover:text-gray-900 mb-6 inline-block"
       >
         ← Back to Business Development
