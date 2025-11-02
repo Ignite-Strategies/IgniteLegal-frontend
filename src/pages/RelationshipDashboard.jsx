@@ -15,7 +15,7 @@ export default function RelationshipDashboard() {
       kpi: `${mockBdLoopMetrics.outreach.emailsSent} sent / ${mockBdLoopMetrics.outreach.replies} replies`,
       cta: 'Send Outreach',
       color: 'from-blue-500 to-blue-600',
-      route: '/connect',
+      route: '/relationship',
     },
     {
       id: 'prep',
