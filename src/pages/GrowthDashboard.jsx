@@ -201,7 +201,7 @@ export default function GrowthDashboard() {
         <h3 className="text-lg font-semibold text-gray-900 mb-3">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <button
-            onClick={() => navigate('/contacts/crm/create')}
+            onClick={() => navigate('/contacts/upload')}
             className="p-4 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 hover:border-red-300 transition-colors text-left"
           >
             <div className="text-red-600 font-semibold mb-1">Add Contact</div>

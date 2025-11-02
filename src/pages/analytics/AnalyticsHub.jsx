@@ -112,7 +112,7 @@ export default function AnalyticsHub() {
             <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button
-                onClick={() => navigate('/crm/create')}
+                onClick={() => navigate('/contacts/upload')}
                 className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors text-left"
               >
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -177,7 +177,7 @@ export default function AnalyticsHub() {
             <h2 className="text-xl font-semibold mb-4">Go To</h2>
             <div className="space-y-3">
               <button
-                onClick={() => navigate('/crm/list')}
+                onClick={() => navigate('/contacts')}
                 className="w-full flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-left"
               >
                 <Users className="h-5 w-5 text-blue-600" />

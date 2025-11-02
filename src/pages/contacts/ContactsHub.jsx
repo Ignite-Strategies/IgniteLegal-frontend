@@ -69,7 +69,7 @@ export default function ContactsHub() {
           <p className="text-gray-600">Manage your connections and touchpoints</p>
         </div>
         <button
-          onClick={() => navigate('/crm/create')}
+          onClick={() => navigate('/contacts/upload')}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"
         >
           <Plus className="h-4 w-4" />
@@ -179,7 +179,7 @@ export default function ContactsHub() {
             {searchTerm ? 'Try adjusting your search' : 'Get started by adding your first contact'}
           </p>
           <button
-            onClick={() => navigate('/crm/create')}
+            onClick={() => navigate('/contacts/upload')}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium"
           >
             Add Contact

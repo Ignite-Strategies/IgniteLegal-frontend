@@ -47,12 +47,6 @@ const Header = () => {
               Contacts
             </Link>
             <Link
-              to="/crm-hub"
-              className="text-sm font-medium text-gray-700 hover:text-gray-900"
-            >
-              CRM
-            </Link>
-            <Link
               to="/settings"
               className="text-sm font-medium text-gray-700 hover:text-gray-900"
             >

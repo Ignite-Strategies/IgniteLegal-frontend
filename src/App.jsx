@@ -42,14 +42,17 @@ import Ads from './pages/outreach/Ads';
 import Content from './pages/outreach/Content';
 import Seo from './pages/outreach/Seo';
 
-// Contacts/CRM imports
+// Contacts imports
 import ContactsHub from './pages/contacts/ContactsHub';
-import CrmHub from './pages/contacts/CrmHub';
-import CrmList from './pages/contacts/CrmList';
-import CrmCreate from './pages/contacts/CrmCreate';
-import CrmPipeline from './pages/contacts/CrmPipeline';
+import ContactManageHome from './pages/contacts/ContactManageHome';
+import ContactUpload from './pages/contacts/ContactUpload';
 import Companies from './pages/contacts/Companies';
 import Pipeline from './pages/contacts/Pipeline';
+// Contact Lists imports
+import ContactListManager from './pages/contacts/ContactListManager';
+import ContactListBuilder from './pages/contacts/ContactListBuilder';
+import ContactListView from './pages/contacts/ContactListView';
+import ContactListDetail from './pages/contacts/ContactListDetail';
 
 // Personas imports
 import Personas from './pages/personas/Personas';
@@ -111,15 +114,18 @@ function App() {
           <Route path="/business-development/email-campaigns" element={<OutreachHome />} />
           <Route path="/outreach/email-campaigns" element={<OutreachHome />} />
           
-          {/* Contacts/CRM Routes */}
-          <Route path="/contacts" element={<ContactsHub />} />
-          <Route path="/crm-hub" element={<CrmHub />} />
-          <Route path="/crm/list" element={<CrmList />} />
-          <Route path="/crm/create" element={<CrmCreate />} />
-          <Route path="/crm/pipeline" element={<CrmPipeline />} />
+          {/* Contacts Routes */}
+          <Route path="/contacts" element={<ContactManageHome />} />
+          <Route path="/contacts/hub" element={<ContactsHub />} />
+          <Route path="/contacts/upload" element={<ContactUpload />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/pipeline" element={<Pipeline />} />
-          <Route path="/business-development/events" element={<CrmList />} />
+          
+          {/* Contact Lists Routes */}
+          <Route path="/contact-list-manager" element={<ContactListManager />} />
+          <Route path="/contact-list-builder" element={<ContactListBuilder />} />
+          <Route path="/contact-list-view" element={<ContactListView />} />
+          <Route path="/contact-list-detail/:listId" element={<ContactListDetail />} />
           
           {/* Personas Routes */}
           <Route path="/personas" element={<Personas />} />

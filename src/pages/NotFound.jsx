@@ -34,8 +34,8 @@ export default function NotFound() {
                   NDA Management
                 </Link>
                 <span className="text-gray-400">•</span>
-                <Link to="/crm-hub" className="text-blue-600 hover:text-blue-800 underline">
-                  CRM Hub
+                <Link to="/contacts" className="text-blue-600 hover:text-blue-800 underline">
+                  Contact Management
                 </Link>
                 <span className="text-gray-400">•</span>
                 <Link to="/bd-central" className="text-blue-600 hover:text-blue-800 underline">

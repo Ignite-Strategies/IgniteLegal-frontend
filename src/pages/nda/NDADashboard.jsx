@@ -100,7 +100,7 @@ const NDADashboard = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     {nda.contactName ? (
                       <Link
-                        to={`/crm/list`}
+                        to={`/contacts`}
                         className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
                       >
                         <Users className="h-3 w-3" />

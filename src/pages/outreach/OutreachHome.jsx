@@ -123,7 +123,7 @@ export default function OutreachHome() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Contact Lists */}
           <button
-            onClick={() => navigate('/contacts')}
+            onClick={() => navigate('/contact-list-manager')}
             className="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-lg border-2 border-indigo-200 hover:border-indigo-400 transition text-left"
           >
             <div className="flex items-center mb-4">
