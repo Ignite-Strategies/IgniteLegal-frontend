@@ -14,17 +14,8 @@ export default function Relationship() {
   const todaysTarget = 5;
   const progressPercent = (todaysProgress / todaysTarget) * 100;
 
-  // Action cards (simplified, no KPIs)
+  // Action cards (simplified, no KPIs) - Outreach first
   const actionCards = [
-    {
-      id: 'contacts',
-      title: 'Contacts',
-      description: 'Manage your network',
-      icon: <Users className="h-6 w-6" />,
-      cta: 'View & Manage',
-      color: 'bg-blue-500',
-      route: '/contacts',
-    },
     {
       id: 'outreach',
       title: 'Outreach',
@@ -60,6 +51,15 @@ export default function Relationship() {
       cta: 'Review Learnings',
       color: 'bg-red-500',
       route: '/personas',
+    },
+    {
+      id: 'contacts',
+      title: 'Contacts',
+      description: 'Manage your network',
+      icon: <Users className="h-6 w-6" />,
+      cta: 'View & Manage',
+      color: 'bg-blue-500',
+      route: '/contacts',
     },
   ];
 
