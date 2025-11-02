@@ -44,9 +44,9 @@ export default function Relationship() {
       route: '/relationship-dashboard',
     },
     {
-      id: 'iterate',
-      title: 'Iterate',
-      description: 'Refine approach',
+      id: 'analyze',
+      title: 'Analyze',
+      description: 'Review learnings',
       icon: <Lightbulb className="h-6 w-6" />,
       cta: 'Review Learnings',
       color: 'bg-red-500',
