@@ -57,8 +57,8 @@ export default function Relationship() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <PageHeader
-        title="Connect"
-        subtitle="Your daily business-development loop"
+        title="Engage"
+        subtitle="Let's connect, engage, and win deals"
         backTo="/growth-dashboard"
         backLabel="Back to Growth Dashboard"
       />
