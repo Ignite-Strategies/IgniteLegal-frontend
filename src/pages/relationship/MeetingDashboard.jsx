@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, TrendingUp, Users, Building2, Tag, BarChart3, MessageSquare } from 'lucide-react';
-import { mockMeetings, mockMeetingMetrics, mockPersonTypes, mockCompanyTypes, mockFeedbackThemes } from '../data/mockData';
+import { mockMeetings, mockMeetingMetrics, mockPersonTypes, mockCompanyTypes, mockFeedbackThemes } from '../../data/mockData';
 
 export default function MeetingDashboard() {
   const navigate = useNavigate();

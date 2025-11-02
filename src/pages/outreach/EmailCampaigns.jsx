@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Plus, Send, Users, FileText, List, Sparkles, Building2 } from 'lucide-react';
 import PageHeader from '../components/PageHeader';
-import { mockContacts } from '../data/mockData';
+import { mockContacts } from '../../data/mockData';
 
 export default function EmailCampaigns() {
   const navigate = useNavigate();

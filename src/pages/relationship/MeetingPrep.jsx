@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Calendar, CheckCircle, FileText, Clock } from 'lucide-react';
-import { mockMeetings } from '../data/mockData';
+import { mockMeetings } from '../../data/mockData';
 
 export default function MeetingPrep() {
   const { id } = useParams();
