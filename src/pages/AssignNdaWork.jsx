@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Bell } from 'lucide-react';
+import { User, Mail } from 'lucide-react';
 
 // Mock team members
 const teamMembers = [
@@ -170,22 +170,6 @@ const AssignNdaWork = () => {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* How Assignment Works */}
-          <div className="mt-6 bg-blue-50 rounded-lg p-4">
-            <div className="flex items-start gap-3">
-              <Bell className="h-5 w-5 text-blue-600 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-blue-900 mb-2">How Assignment Works</h3>
-                <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Team member receives email notification</li>
-                  <li>• In-app notification appears in their dashboard</li>
-                  <li>• NDA appears in their "My Assigned NDAs" queue</li>
-                  <li>• They can review and start work immediately</li>
-                </ul>
-              </div>
-            </div>
           </div>
         </div>
       </div>
