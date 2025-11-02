@@ -23,6 +23,9 @@ import BillingDetail from './pages/financial/BillingDetail';
 import Forecasting from './pages/financial/Forecasting';
 import FinancialSpends from './pages/financial/FinancialSpends';
 
+// Attract imports
+import AttractHub from './pages/attract/AttractHub';
+
 // Relationship imports
 import RelationshipDashboard from './pages/relationship/RelationshipDashboard';
 import Relationship from './pages/relationship/Relationship';
@@ -82,6 +85,9 @@ function App() {
           {/* Growth Routes */}
           <Route path="/growth-dashboard" element={<GrowthDashboard />} />
           <Route path="/business-development" element={<GrowthDashboard />} />
+          
+          {/* Attract Routes */}
+          <Route path="/attract" element={<AttractHub />} />
           
           {/* Relationship Routes */}
           <Route path="/relationship" element={<Relationship />} />

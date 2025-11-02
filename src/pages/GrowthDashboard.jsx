@@ -110,43 +110,43 @@ export default function GrowthDashboard() {
   }).length;
   const emailsSent = messages.filter(m => m.status === 'sent').length;
 
-  // 3-Card offense model
+  // 3-Card offense model - Attract, Engage, Nurture
   const stackCards = [
     {
-      name: "Connect",
+      name: "Attract",
+      metrics: [
+        { label: "Ads Active", value: "3" },
+        { label: "SEO Rank", value: "12" },
+        { label: "Content Posts", value: "45" }
+      ],
+      insight: "Strong acquisition channels, ready to scale",
+      icon: <TrendingUp className="h-6 w-6 text-white" />,
+      color: "bg-blue-500",
+      route: "/attract"
+    },
+    {
+      name: "Engage",
       metrics: [
         { label: "Contacts", value: contacts.length.toString() },
-        { label: "New This Week", value: newThisWeek.toString() },
-        { label: "Emails Sent", value: emailsSent.toString() }
+        { label: "Events This Month", value: "8" },
+        { label: "Meetings Scheduled", value: "4" }
       ],
-      insight: "Strong relationship building, ready to scale",
+      insight: "Active relationship building, strong networking",
       icon: <Users className="h-6 w-6 text-white" />,
-      color: "bg-red-500",
+      color: "bg-orange-500",
       route: "/relationship"
     },
     {
-      name: "Events",
+      name: "Nurture",
       metrics: [
-        { label: "Upcoming Events", value: "4" },
-        { label: "This Month", value: "8" },
-        { label: "Networking Score", value: "9/10" }
+        { label: "Campaigns Active", value: "3" },
+        { label: "Emails Sent", value: emailsSent.toString() },
+        { label: "Response Rate", value: "18.5%" }
       ],
-      insight: "Active event schedule, strong networking",
-      icon: <Calendar className="h-6 w-6 text-white" />,
-      color: "bg-orange-500",
-      route: "/business-development/events"
-    },
-    {
-      name: "Content",
-      metrics: [
-        { label: "Blog Posts", value: "12" },
-        { label: "Social Posts", value: "45" },
-        { label: "Content Score", value: "B+" }
-      ],
-      insight: "Active content creation, strong engagement",
-      icon: <FileText className="h-6 w-6 text-white" />,
+      insight: "Effective email marketing, strong engagement",
+      icon: <MessageSquare className="h-6 w-6 text-white" />,
       color: "bg-purple-500",
-      route: "/business-development/content"
+      route: "/outreach"
     }
   ];
 
@@ -185,7 +185,7 @@ export default function GrowthDashboard() {
           Growth Drivers
         </h2>
         <p className="text-xs text-gray-400">
-          Attract (Events) • Engage (Connect) • Nurture (Content)
+          Attract (Ads, SEO, Content) • Engage (Connect, Events) • Nurture (Email Marketing)
         </p>
       </div>
 
