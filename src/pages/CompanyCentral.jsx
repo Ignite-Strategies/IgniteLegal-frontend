@@ -12,7 +12,7 @@ const mainNavOptions = [
     title: 'NDA Management',
     description: 'Manage NDA intake and review',
     icon: <FileText className="h-8 w-8" />,
-    path: '/nda-dashboard',
+    path: '/nda-hub',
     color: 'bg-blue-100 text-blue-600'
   },
   {

@@ -3,7 +3,10 @@ import Header from './components/Header';
 import CompanyCentral from './pages/CompanyCentral';
 import NDADashboard from './pages/NDADashboard';
 import NDAAnalytics from './pages/NDAAnalytics';
+import NDAHub from './pages/NDAHub';
 import Ingest from './pages/Ingest';
+import AssignNdaWork from './pages/AssignNdaWork';
+import ReviewNdaWork from './pages/ReviewNdaWork';
 import Review from './pages/Review';
 import FinancialHub from './pages/FinancialHub';
 import Billing from './pages/Billing';
@@ -20,9 +23,12 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<CompanyCentral />} />
+          <Route path="/nda-hub" element={<NDAHub />} />
           <Route path="/nda-dashboard" element={<NDADashboard />} />
           <Route path="/nda-analytics" element={<NDAAnalytics />} />
-          <Route path="/ingest" element={<Ingest />} />
+          <Route path="/nda/ingest" element={<Ingest />} />
+          <Route path="/nda/assign" element={<AssignNdaWork />} />
+          <Route path="/nda/review" element={<ReviewNdaWork />} />
           <Route path="/review/:id" element={<Review />} />
           <Route path="/financial-hub" element={<FinancialHub />} />
           <Route path="/financial/billing" element={<Billing />} />

@@ -40,13 +40,13 @@ const Ingest = () => {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
-        to="/nda-dashboard"
+        to="/nda-hub"
         className="text-sm text-gray-600 hover:text-gray-900 mb-6 inline-block"
       >
-        ← Back to NDA Dashboard
+        ← Back to NDA Management
       </Link>
 
-      <h2 className="text-2xl font-medium text-gray-900 mb-6">Ingest New NDA</h2>
+      <h2 className="text-2xl font-medium text-gray-900 mb-6">Ingest Party/Deal Data</h2>
 
       <div className="bg-white rounded-lg shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -134,7 +134,7 @@ const Ingest = () => {
             </button>
             <button
               type="button"
-              onClick={() => navigate('/nda-dashboard')}
+              onClick={() => navigate('/nda-hub')}
               className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium"
             >
               Cancel
