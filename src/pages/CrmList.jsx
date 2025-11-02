@@ -1,75 +1,51 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Plus, Edit, MessageSquare, Sparkles, Building2 } from 'lucide-react';
-
-// Mock contact data with enhanced fields
-const contacts = [
-  {
-    id: 1,
-    name: 'David Chen',
-    firm: 'Ares Capital',
-    type: 'Capital Partner',
-    status: 'Warm',
-    lastTouch: '2025-01-15',
-    nextTouch: '2025-01-22',
-    email: 'dchen@arescapital.com',
-    phone: '(555) 123-4567',
-  },
-  {
-    id: 2,
-    name: 'Sarah Martinez',
-    firm: 'Orion Holdings',
-    type: 'Portfolio Manager',
-    status: 'Active',
-    lastTouch: '2025-01-18',
-    nextTouch: '2025-01-25',
-    email: 'smartinez@orionholdings.com',
-    phone: '(555) 234-5678',
-  },
-  {
-    id: 3,
-    name: 'Michael Thompson',
-    firm: 'Meridian Partners',
-    type: 'Investment Director',
-    status: 'Cold',
-    lastTouch: '2024-12-10',
-    nextTouch: '2025-01-20',
-    email: 'mthompson@meridianpartners.com',
-    phone: '(555) 345-6789',
-  },
-  {
-    id: 4,
-    name: 'Jennifer Park',
-    firm: 'SolarTrust LLC',
-    type: 'General Counsel',
-    status: 'Signed',
-    lastTouch: '2025-01-12',
-    nextTouch: null,
-    email: 'jpark@solartrust.com',
-    phone: '(555) 456-7890',
-  },
-];
+import { Plus, Edit, MessageSquare, RefreshCw, Building2, User } from 'lucide-react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useMicrosoftGraph } from '../hooks/useMicrosoftGraph';
 
 export default function CrmList() {
   const navigate = useNavigate();
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
+  const { hydrateContacts, loading } = useMicrosoftGraph();
   const [selectedContact, setSelectedContact] = useState(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [formData, setFormData] = useState({});
+  const [showSendMessageModal, setShowSendMessageModal] = useState(false);
+
+  // If no contacts, initialize with some defaults
+  const displayContacts = contacts.length > 0 ? contacts : [];
+
+  const handleHydrate = async () => {
+    const result = await hydrateContacts();
+    if (result.success) {
+      // Refresh contacts
+      const updated = JSON.parse(localStorage.getItem('contacts') || '[]');
+      setContacts(updated);
+      alert(`Contacts synced from Microsoft Graph — ${result.count} new entries.`);
+    }
+  };
 
   const handleUpdate = (contact) => {
     setSelectedContact(contact);
     setFormData({
-      status: contact.status,
-      lastTouch: contact.lastTouch,
+      status: contact.status || 'Cold',
+      stage: contact.stage || 'Prospect',
+      lastTouch: contact.lastTouch || new Date().toISOString().split('T')[0],
       nextTouch: contact.nextTouch || '',
-      notes: ''
+      notes: contact.notes || ''
     });
     setShowUpdateModal(true);
   };
 
-  const handleHydrate = (contact) => {
-    // Mock hydration - prefills sector, LinkedIn, source
-    alert(`Hydrating ${contact.name}...\n\nSector: Private Equity\nLinkedIn: linkedin.com/in/${contact.name.toLowerCase().replace(' ', '-')}\nSource: Industry Conference`);
+  const handleSaveUpdate = () => {
+    const updated = contacts.map(c => 
+      c.id === selectedContact.id 
+        ? { ...c, ...formData }
+        : c
+    );
+    setContacts(updated);
+    setShowUpdateModal(false);
   };
 
   const getStatusColor = (status) => {
@@ -96,79 +72,129 @@ export default function CrmList() {
           <h1 className="text-3xl font-bold mb-2">Contacts</h1>
           <p className="text-gray-600">Your main working screen for relationship management</p>
         </div>
-        <button
-          onClick={() => navigate('/crm/create')}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          Add Contact
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleHydrate}
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            Hydrate from Microsoft 365
+          </button>
+          <button
+            onClick={() => navigate('/crm/create')}
+            className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Add Contact
+          </button>
+        </div>
       </div>
 
-      {/* Contact Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {contacts.map((contact) => (
-          <div key={contact.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">{contact.name}</h3>
-                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                  <Building2 className="h-4 w-4" />
-                  <span>{contact.firm}</span>
-                </div>
-                <p className="text-sm text-gray-500">{contact.type}</p>
-              </div>
-              <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(contact.status)}`}>
-                {contact.status}
-              </span>
-            </div>
-
-            <div className="space-y-2 mb-4 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Last Touch:</span>
-                <span className="font-medium text-gray-900">{contact.lastTouch}</span>
-              </div>
-              {contact.nextTouch && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Next Touch:</span>
-                  <span className="font-medium text-orange-600">{contact.nextTouch}</span>
-                </div>
-              )}
-            </div>
-
-            <div className="flex gap-2 pt-4 border-t border-gray-200">
-              <button
-                onClick={() => handleUpdate(contact)}
-                className="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium flex items-center justify-center gap-1"
-              >
-                <Edit className="h-4 w-4" />
-                Update
-              </button>
-              <button
-                onClick={() => navigate(`/messages?contact=${contact.id}`)}
-                className="flex-1 px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded text-sm font-medium flex items-center justify-center gap-1"
-              >
-                <MessageSquare className="h-4 w-4" />
-                Message
-              </button>
-              <button
-                onClick={() => handleHydrate(contact)}
-                className="px-3 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded text-sm font-medium"
-                title="Hydrate with sector/LinkedIn/source"
-              >
-                <Sparkles className="h-4 w-4" />
-              </button>
-            </div>
+      {/* Contacts Table */}
+      {displayContacts.length > 0 ? (
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Touch</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Next Touch</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {displayContacts.map((contact) => (
+                  <tr key={contact.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        {contact.photoUrl ? (
+                          <img src={contact.photoUrl} alt={contact.name} className="h-8 w-8 rounded-full" />
+                        ) : (
+                          <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <User className="h-4 w-4 text-blue-600" />
+                          </div>
+                        )}
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{contact.name}</p>
+                          <p className="text-xs text-gray-500">{contact.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        <Building2 className="h-4 w-4 text-gray-400" />
+                        <span className="text-sm text-gray-900">{contact.company || '-'}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {contact.title || '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(contact.status)}`}>
+                        {contact.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {contact.lastTouch || '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {contact.nextTouch ? (
+                        <span className="font-medium text-orange-600">{contact.nextTouch}</span>
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleUpdate(contact)}
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          Update
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedContact(contact);
+                            setShowSendMessageModal(true);
+                          }}
+                          className="text-green-600 hover:text-green-800"
+                        >
+                          Message
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+          <RefreshCw className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+          <p className="text-gray-500 mb-2">No contacts yet</p>
+          <p className="text-sm text-gray-400 mb-6">Hydrate from Microsoft 365 to get started</p>
+          <button
+            onClick={handleHydrate}
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-3 rounded-lg font-medium"
+          >
+            {loading ? 'Syncing...' : 'Hydrate from Microsoft 365'}
+          </button>
+        </div>
+      )}
 
       {/* Update Contact Modal */}
       {showUpdateModal && selectedContact && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
             <h2 className="text-2xl font-bold mb-4">Update Contact</h2>
-            <p className="text-sm text-gray-600 mb-6">{selectedContact.name} - {selectedContact.firm}</p>
+            <p className="text-sm text-gray-600 mb-6">{selectedContact.name} - {selectedContact.company}</p>
 
             <div className="space-y-4">
               <div>
@@ -182,6 +208,20 @@ export default function CrmList() {
                   <option value="Warm">Warm</option>
                   <option value="Active">Active</option>
                   <option value="Signed">Signed</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Stage</label>
+                <select
+                  value={formData.stage}
+                  onChange={(e) => setFormData({ ...formData, stage: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="Prospect">Prospect</option>
+                  <option value="Warm">Warm</option>
+                  <option value="Engaged">Engaged</option>
+                  <option value="Client">Client</option>
                 </select>
               </div>
 
@@ -225,14 +265,55 @@ export default function CrmList() {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  console.log('Updated contact:', selectedContact.id, formData);
-                  alert('Contact updated successfully!');
-                  setShowUpdateModal(false);
-                }}
+                onClick={handleSaveUpdate}
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Send Message Modal */}
+      {showSendMessageModal && selectedContact && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full p-6">
+            <h2 className="text-2xl font-bold mb-4">Send Message</h2>
+            <p className="text-sm text-gray-600 mb-6">To: {selectedContact.name} ({selectedContact.email})</p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                <input
+                  type="text"
+                  placeholder="Enter subject line"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                <textarea
+                  placeholder="Write your message here..."
+                  rows="8"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowSendMessageModal(false)}
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert('Message sent via Microsoft Graph (mocked)');
+                  setShowSendMessageModal(false);
+                }}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Send via Outlook
               </button>
             </div>
           </div>
