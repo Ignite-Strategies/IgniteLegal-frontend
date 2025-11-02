@@ -19,6 +19,7 @@ import CrmHub from './pages/CrmHub';
 import CrmList from './pages/CrmList';
 import CrmCreate from './pages/CrmCreate';
 import CrmPipeline from './pages/CrmPipeline';
+import EmailCampaigns from './pages/EmailCampaigns';
 import Personas from './pages/Personas';
 import PersonaCreate from './pages/PersonaCreate';
 import Settings from './pages/Settings';
@@ -59,7 +60,7 @@ function App() {
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
           <Route path="/business-development/seo" element={<Seo />} />
-          <Route path="/business-development/email-campaigns" element={<CrmList />} />
+          <Route path="/business-development/email-campaigns" element={<EmailCampaigns />} />
           <Route path="/business-development/events" element={<CrmList />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
