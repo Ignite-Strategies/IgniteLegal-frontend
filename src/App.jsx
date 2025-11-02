@@ -26,9 +26,9 @@ import FinancialSpends from './pages/financial/FinancialSpends';
 // Attract imports
 import AttractHub from './pages/attract/AttractHub';
 
-// Relationship imports
-import RelationshipDashboard from './pages/relationship/RelationshipDashboard';
-import Relationship from './pages/relationship/Relationship';
+// Engage imports (formerly Relationship)
+import EngageDashboard from './pages/relationship/RelationshipDashboard';
+import Engage from './pages/relationship/Relationship';
 import MeetingDashboard from './pages/relationship/MeetingDashboard';
 import MeetingPrep from './pages/relationship/MeetingPrep';
 import Ecosystem from './pages/relationship/Ecosystem';
@@ -92,9 +92,9 @@ function App() {
           {/* Attract Routes */}
           <Route path="/attract" element={<AttractHub />} />
           
-          {/* Relationship Routes */}
-          <Route path="/relationship" element={<Relationship />} />
-          <Route path="/relationship-dashboard" element={<RelationshipDashboard />} />
+          {/* Engage Routes (formerly Relationship) */}
+          <Route path="/engage" element={<Engage />} />
+          <Route path="/engage-dashboard" element={<EngageDashboard />} />
           <Route path="/meeting-dashboard" element={<MeetingDashboard />} />
           <Route path="/meeting-prep/:id" element={<MeetingPrep />} />
           <Route path="/ecosystem" element={<Ecosystem />} />

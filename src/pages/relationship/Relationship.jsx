@@ -41,7 +41,7 @@ export default function Relationship() {
       icon: <FileText className="h-6 w-6" />,
       cta: 'Log Insights',
       color: 'bg-purple-500',
-      route: '/relationship-dashboard',
+      route: '/engage-dashboard',
     },
     {
       id: 'analyze',

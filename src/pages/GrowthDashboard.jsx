@@ -134,7 +134,7 @@ export default function GrowthDashboard() {
       insight: "Active relationship building, strong networking",
       icon: <Users className="h-6 w-6 text-white" />,
       color: "bg-orange-500",
-      route: "/relationship"
+      route: "/engage"
     },
     {
       name: "Nurture",

@@ -96,7 +96,7 @@ export default function OutreachHome() {
         </div>
       </div>
 
-      {/* Launch New Campaign */}
+      {/* Set Up Your Engagement */}
       <div 
         className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-xl border-2 border-indigo-200 hover:border-indigo-400 transition cursor-pointer mb-8"
         onClick={() => navigate('/outreach/campaign-creator')}
@@ -107,12 +107,12 @@ export default function OutreachHome() {
               <Plus className="h-8 w-8" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">Launch New Campaign</h2>
-              <p className="text-gray-600">Send emails to your contact lists</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-1">Set Up Your Engagement</h2>
+              <p className="text-gray-600">Create campaigns and outreach strategies</p>
             </div>
           </div>
           <span className="inline-flex items-center text-indigo-600 font-semibold text-lg">
-            Start Campaign →
+            Get Started →
           </span>
         </div>
       </div>

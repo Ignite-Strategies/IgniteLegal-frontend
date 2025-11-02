@@ -16,7 +16,7 @@ export default function RelationshipDashboard() {
       kpi: `${mockBdLoopMetrics.outreach.emailsSent} sent / ${mockBdLoopMetrics.outreach.replies} replies`,
       cta: 'Send Outreach',
       color: 'from-blue-500 to-blue-600',
-      route: '/relationship',
+      route: '/engage',
     },
     {
       id: 'prep',
@@ -63,8 +63,8 @@ export default function RelationshipDashboard() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <PageHeader
-        title="Relationship Dashboard"
-        subtitle="Your relationship command center"
+        title="Engage Dashboard"
+        subtitle="Your engagement command center"
         backTo="/growth-dashboard"
         backLabel="Back to Growth Dashboard"
       />
