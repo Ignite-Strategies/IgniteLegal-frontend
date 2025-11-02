@@ -1,7 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { CheckCircle } from 'lucide-react';
 import PageHeader from '../../components/PageHeader';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+
+// Hardcoded demo contacts for when localStorage is empty
+const getMockContacts = () => [
+  { id: 'c1', name: 'Sarah Kim', email: 'sarah.kim@horizoncredit.com', company: 'Horizon Credit', status: 'Cold' },
+  { id: 'c2', name: 'Michael Rodriguez', email: 'mrodriguez@arscapital.com', company: 'Ares Capital', status: 'Cold' },
+  { id: 'c3', name: 'Jennifer Park', email: 'jpark@orionholdings.com', company: 'Orion Holdings', status: 'Cold' },
+  { id: 'c4', name: 'David Chen', email: 'dchen@meridianpartners.com', company: 'Meridian Partners', status: 'Cold' },
+  { id: 'c5', name: 'Lisa Thompson', email: 'lthompson@techventures.com', company: 'TechVentures Capital', status: 'Cold' },
+  { id: 'c6', name: 'Robert Wilson', email: 'rwilson@solartrust.com', company: 'SolarTrust LLC', status: 'Cold' },
+  { id: 'c7', name: 'Amanda Lee', email: 'alee@growthcapital.com', company: 'Growth Capital Partners', status: 'Cold' },
+  { id: 'c8', name: 'James Martinez', email: 'jmartinez@enterprisefund.com', company: 'Enterprise Fund', status: 'Cold' },
+  { id: 'c9', name: 'Emily Chen', email: 'echen@strategicventures.com', company: 'Strategic Ventures', status: 'Cold' },
+  { id: 'c10', name: 'Christopher Brown', email: 'cbrown@capitalpartners.com', company: 'Capital Partners Fund', status: 'Cold' },
+];
 
 export default function ContactListView() {
   const navigate = useNavigate();
@@ -16,6 +31,7 @@ export default function ContactListView() {
   const [selectedContacts, setSelectedContacts] = useState(new Set());
   const [listName, setListName] = useState(prefilledName);
   const [listDescription, setListDescription] = useState(prefilledDescription);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     // Update list name/description if URL params change
@@ -29,27 +45,30 @@ export default function ContactListView() {
   }, [type, contacts]);
 
   const loadContacts = () => {
+    // Use mock contacts if localStorage is empty (for demo)
+    const allContacts = contacts.length > 0 ? contacts : getMockContacts();
+    
     // Mock: Load contacts based on type
     // In real app, this would call API to hydrate contacts
     let filtered = [];
     
     switch (type) {
       case 'all_contacts':
-        filtered = contacts;
+        filtered = allContacts;
         break;
       case 'org_members':
         // Mock: filter by organization members (contacts with company)
-        filtered = contacts.filter(c => c.company || c.organizationId);
+        filtered = allContacts.filter(c => c.company || c.organizationId);
         break;
       case 'event_contacts':
         // Mock: filter by event attendees
-        filtered = contacts.filter(c => c.eventId || c.source === 'event');
+        filtered = allContacts.filter(c => c.eventId || c.source === 'event');
         break;
       case 'custom':
-        filtered = contacts;
+        filtered = allContacts;
         break;
       default:
-        filtered = [];
+        filtered = allContacts;
     }
     
     setDisplayedContacts(filtered);
@@ -106,7 +125,14 @@ export default function ContactListView() {
     };
 
     setLists([...lists, newList]);
-    navigate('/contact-list-manager');
+    
+    // Show success message
+    setShowSuccess(true);
+    
+    // Navigate to manager after a brief delay
+    setTimeout(() => {
+      navigate('/contact-list-manager');
+    }, 1500);
   };
 
   const getListName = () => {
@@ -120,7 +146,23 @@ export default function ContactListView() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+      {/* Success Overlay */}
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md mx-4 text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="h-8 w-8 text-green-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">List Created!</h3>
+            <p className="text-gray-600 mb-4">
+              Your contact list "{listName}" has been created successfully with {selectedContacts.size} contacts.
+            </p>
+            <p className="text-sm text-gray-500">Redirecting to Contact Lists...</p>
+          </div>
+        </div>
+      )}
+
       <PageHeader
         title={getListName()}
         subtitle={`${displayedContacts.length} contacts available`}
