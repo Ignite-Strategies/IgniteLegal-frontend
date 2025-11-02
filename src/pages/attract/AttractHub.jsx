@@ -11,7 +11,7 @@ export default function AttractHub() {
       title: 'Ads',
       description: 'Google Ads management and campaign tracking',
       icon: <Image className="h-8 w-8 text-blue-600" />,
-      route: '/business-development/ads',
+      route: '/attract/ads',
       color: 'bg-blue-100 text-blue-600',
       stats: {
         label: 'Active Campaigns',
@@ -23,7 +23,7 @@ export default function AttractHub() {
       title: 'SEO',
       description: 'Search insights, keyword research, and optimization',
       icon: <Search className="h-8 w-8 text-green-600" />,
-      route: '/business-development/seo',
+      route: '/attract/seo',
       color: 'bg-green-100 text-green-600',
       stats: {
         label: 'Avg Rank',
@@ -35,7 +35,7 @@ export default function AttractHub() {
       title: 'Content',
       description: 'Blog posts, social media, and content hub',
       icon: <FileText className="h-8 w-8 text-purple-600" />,
-      route: '/business-development/content',
+      route: '/attract/content',
       color: 'bg-purple-100 text-purple-600',
       stats: {
         label: 'Total Posts',
@@ -117,21 +117,21 @@ export default function AttractHub() {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <button
-            onClick={() => navigate('/business-development/ads')}
+            onClick={() => navigate('/attract/ads')}
             className="p-4 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors text-left"
           >
             <div className="text-blue-600 font-semibold mb-1">Create Ad Campaign</div>
             <div className="text-sm text-gray-600">Launch new Google Ads campaign</div>
           </button>
           <button
-            onClick={() => navigate('/business-development/seo')}
+            onClick={() => navigate('/attract/seo')}
             className="p-4 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors text-left"
           >
             <div className="text-green-600 font-semibold mb-1">Research Keywords</div>
             <div className="text-sm text-gray-600">Find new SEO opportunities</div>
           </button>
           <button
-            onClick={() => navigate('/business-development/content')}
+            onClick={() => navigate('/attract/content')}
             className="p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition-colors text-left"
           >
             <div className="text-purple-600 font-semibold mb-1">Create Content</div>

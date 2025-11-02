@@ -111,11 +111,18 @@ function App() {
           <Route path="/outreach/campaign-creator" element={<CampaignCreator />} />
           <Route path="/outreach/individual-email" element={<IndividualEmail />} />
           <Route path="/outreach/templates" element={<Templates />} />
+          <Route path="/outreach/email-campaigns" element={<OutreachHome />} />
+          
+          {/* Attract Routes */}
+          <Route path="/attract/ads" element={<Ads />} />
+          <Route path="/attract/content" element={<Content />} />
+          <Route path="/attract/seo" element={<Seo />} />
+          
+          {/* Legacy business-development routes - redirect to attract */}
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
           <Route path="/business-development/seo" element={<Seo />} />
           <Route path="/business-development/email-campaigns" element={<OutreachHome />} />
-          <Route path="/outreach/email-campaigns" element={<OutreachHome />} />
           
           {/* Contacts Routes */}
           <Route path="/contacts" element={<ContactManageHome />} />
