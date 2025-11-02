@@ -17,10 +17,28 @@ const Header = () => {
           </Link>
           <nav className="flex gap-6">
             <Link
-              to="/"
+              to="/growth-dashboard"
               className="text-sm font-medium text-gray-700 hover:text-gray-900"
             >
-              Company Central
+              Dashboard
+            </Link>
+            <Link
+              to="/pipeline"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              Pipeline
+            </Link>
+            <Link
+              to="/business-development/email-campaigns"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              Campaigns
+            </Link>
+            <Link
+              to="/contacts"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              Contacts
             </Link>
             <Link
               to="/settings"
@@ -36,4 +54,3 @@ const Header = () => {
 };
 
 export default Header;
-

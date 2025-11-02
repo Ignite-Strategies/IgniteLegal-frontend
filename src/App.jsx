@@ -27,6 +27,8 @@ import Ads from './pages/Ads';
 import Content from './pages/Content';
 import Seo from './pages/Seo';
 import BdCentral from './pages/BdCentral';
+import GrowthDashboard from './pages/GrowthDashboard';
+import ContactsHub from './pages/ContactsHub';
 import Messages from './pages/Messages';
 import BdInsights from './pages/BdInsights';
 import Companies from './pages/Companies';

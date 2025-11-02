@@ -17,10 +17,10 @@ const mainNavOptions = [
     color: 'bg-blue-100 text-blue-600'
   },
   {
-    title: 'Business Development',
-    description: 'CRM, contacts, and pipeline management',
+    title: 'Growth & Outreach',
+    description: 'Drive growth through relationships, events, and content',
     icon: <Users className="h-8 w-8" />,
-    path: '/bd-central',
+    path: '/growth-dashboard',
     color: 'bg-indigo-100 text-indigo-600'
   },
   {
@@ -38,8 +38,8 @@ export default function CompanyCentral() {
   const navigate = useNavigate();
 
   const handleSync = () => {
-    // Trigger sync from BdCentral
-    navigate('/bd-central?sync=true');
+    // Trigger sync from Growth Dashboard
+    navigate('/growth-dashboard?sync=true');
   };
 
   return (
