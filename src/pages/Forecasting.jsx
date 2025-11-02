@@ -1,5 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Plus, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // Mock forecasting data
 const forecasts = [
@@ -20,7 +19,6 @@ const forecasts = [
 ];
 
 const Forecasting = () => {
-  const navigate = useNavigate();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -31,18 +29,9 @@ const Forecasting = () => {
         ← Back to Financial Hub
       </Link>
 
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Forecasting</h1>
-          <p className="text-gray-600">Revenue and cash flow projections</p>
-        </div>
-        <Link
-          to="/financial/forecasting/create"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium flex items-center gap-2 inline-flex"
-        >
-          <Plus className="h-4 w-4" />
-          Create Forecast
-        </Link>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold mb-2">Forecasting</h1>
+        <p className="text-gray-600">Revenue and cash flow projections</p>
       </div>
 
       {/* Forecast Cards */}

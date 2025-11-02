@@ -14,7 +14,6 @@ import Billing from './pages/Billing';
 import BillingCreate from './pages/BillingCreate';
 import BillingDetail from './pages/BillingDetail';
 import Forecasting from './pages/Forecasting';
-import ForecastingCreate from './pages/ForecastingCreate';
 import FinancialSpends from './pages/FinancialSpends';
 import CrmHub from './pages/CrmHub';
 import CrmList from './pages/CrmList';
@@ -40,7 +39,6 @@ function App() {
           <Route path="/financial/billing/create" element={<BillingCreate />} />
           <Route path="/financial/billing/:id" element={<BillingDetail />} />
           <Route path="/financial/forecasting" element={<Forecasting />} />
-          <Route path="/financial/forecasting/create" element={<ForecastingCreate />} />
           <Route path="/financial/spends" element={<FinancialSpends />} />
           <Route path="/crm-hub" element={<CrmHub />} />
           <Route path="/crm/list" element={<CrmList />} />
