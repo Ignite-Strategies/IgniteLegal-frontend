@@ -109,12 +109,12 @@ export default function BdCentral() {
       route: "/business-development/ads"
     },
     {
-      name: "SEO & Content",
+      name: "SEO & Search Analytics",
       metrics: [
         { label: "Organic Traffic", value: "2.1K" },
-        { label: "Content Score", value: "B+" }
+        { label: "Top Keywords", value: "45" }
       ],
-      insight: "Good SEO foundation, content performing well",
+      insight: "Strong keyword performance, opportunities identified",
       cta: "Open",
       icon: <Search className="h-6 w-6 text-white" />,
       color: "bg-teal-500",

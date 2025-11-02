@@ -21,6 +21,7 @@ import Personas from './pages/Personas';
 import Settings from './pages/Settings';
 import Ads from './pages/Ads';
 import Content from './pages/Content';
+import Seo from './pages/Seo';
 import BdCentral from './pages/BdCentral';
 
 function App() {
@@ -50,7 +51,7 @@ function App() {
           <Route path="/personas" element={<Personas />} />
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
-          <Route path="/business-development/seo" element={<Content />} />
+          <Route path="/business-development/seo" element={<Seo />} />
           <Route path="/business-development/email-campaigns" element={<CrmList />} />
           <Route path="/business-development/events" element={<CrmList />} />
           <Route path="/settings" element={<Settings />} />
