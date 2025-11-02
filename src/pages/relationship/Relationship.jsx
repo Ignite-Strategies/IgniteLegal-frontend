@@ -21,7 +21,7 @@ export default function Relationship() {
       title: 'Outreach',
       description: 'Send campaigns',
       icon: <Mail className="h-6 w-6" />,
-      cta: 'Send Campaign',
+      cta: 'Go Home',
       color: 'bg-orange-500',
       route: '/outreach',
     },
