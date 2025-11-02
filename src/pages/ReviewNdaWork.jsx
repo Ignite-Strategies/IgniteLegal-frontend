@@ -4,6 +4,15 @@ import { Link, useNavigate } from 'react-router-dom';
 const ndasForReview = [
   {
     id: 1,
+    dealName: 'TechCorp – Innovation Labs Partnership',
+    counterparty: 'Innovation Labs Inc.',
+    assignedTo: 'Unassigned',
+    status: 'Draft Ready',
+    submittedDate: new Date().toISOString().split('T')[0],
+    priority: 'Medium',
+  },
+  {
+    id: 2,
     dealName: 'Ares Capital – SolarTrust Acquisition',
     counterparty: 'SolarTrust LLC',
     assignedTo: 'Sarah Chen',
@@ -12,7 +21,7 @@ const ndasForReview = [
     priority: 'High',
   },
   {
-    id: 2,
+    id: 3,
     dealName: 'Orion Holdings – Meridian JV',
     counterparty: 'Meridian Partners',
     assignedTo: 'Michael Rodriguez',

@@ -4,11 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 const Ingest = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    dealName: '',
-    counterparty: '',
-    purpose: '',
-    scope: '',
-    expiration: '',
+    dealName: 'TechCorp – Innovation Labs Partnership',
+    counterparty: 'Innovation Labs Inc.',
+    purpose: 'Due diligence and strategic partnership evaluation',
+    scope: 'Financial data, product roadmaps, and IP disclosures',
+    expiration: '2025-12-31',
   });
 
   const handleChange = (e) => {
@@ -24,17 +24,11 @@ const Ingest = () => {
     const newNDA = {
       id: Date.now(), // Simple ID generation
       ...formData,
-      status: "In Review",
+      status: "Draft Ready",
     };
-    console.log('New NDA:', newNDA);
-    // Reset form after submission
-    setFormData({
-      dealName: '',
-      counterparty: '',
-      purpose: '',
-      scope: '',
-      expiration: '',
-    });
+    console.log('New NDA created:', newNDA);
+    // Navigate to review workflow after saving
+    navigate('/nda/review');
   };
 
   return (
