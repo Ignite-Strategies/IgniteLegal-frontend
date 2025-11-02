@@ -62,6 +62,9 @@ function App() {
           <Route path="/financial/spends" element={<FinancialSpends />} />
           <Route path="/growth-dashboard" element={<GrowthDashboard />} />
           <Route path="/relationship" element={<Relationship />} />
+          <Route path="/relationship-dashboard" element={<RelationshipDashboard />} />
+          <Route path="/meeting-dashboard" element={<MeetingDashboard />} />
+          <Route path="/meeting-prep/:id" element={<MeetingPrep />} />
           <Route path="/contacts" element={<ContactsHub />} />
           <Route path="/business-development" element={<GrowthDashboard />} />
           <Route path="/bd-central" element={<BdCentral />} />
