@@ -17,6 +17,12 @@ const Header = () => {
           </Link>
           <nav className="flex gap-6">
             <Link
+              to="/"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              Company Central
+            </Link>
+            <Link
               to="/growth-dashboard"
               className="text-sm font-medium text-gray-700 hover:text-gray-900"
             >
@@ -39,6 +45,12 @@ const Header = () => {
               className="text-sm font-medium text-gray-700 hover:text-gray-900"
             >
               Contacts
+            </Link>
+            <Link
+              to="/crm-hub"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              CRM
             </Link>
             <Link
               to="/settings"
