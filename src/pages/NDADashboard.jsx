@@ -1,23 +1,34 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { Users } from 'lucide-react';
 
 const ndas = [
   {
     id: 1,
     dealName: "Ares Capital – SolarTrust Acquisition",
     counterparty: "SolarTrust LLC",
+    contactId: 1,
+    contactName: "David Chen",
     purpose: "Due diligence data room access",
     scope: "Financials only",
     expiration: "2025-12-31",
     status: "In Review",
+    turnaroundStatus: "In Progress",
+    daysSinceSubmission: 3,
+    signedDate: null,
   },
   {
     id: 2,
     dealName: "Orion Holdings – Meridian JV",
     counterparty: "Meridian Partners",
+    contactId: 2,
+    contactName: "Sarah Martinez",
     purpose: "Strategic partnership evaluation",
     scope: "IP roadmap + financial summaries",
     expiration: "2026-03-15",
     status: "Approved",
+    turnaroundStatus: "Completed",
+    daysSinceSubmission: 12,
+    signedDate: "2025-01-10",
   },
 ];
 
@@ -61,13 +72,13 @@ const NDADashboard = () => {
                   Counterparty
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Purpose
+                  Contact
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Scope
+                  Turnaround
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Expiration
+                  Signed Date
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -86,14 +97,30 @@ const NDADashboard = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {nda.counterparty}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {nda.purpose}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {nda.contactName ? (
+                      <Link
+                        to={`/crm/list`}
+                        className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                      >
+                        <Users className="h-3 w-3" />
+                        {nda.contactName}
+                      </Link>
+                    ) : (
+                      <span className="text-sm text-gray-400">No contact</span>
+                    )}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {nda.scope}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      nda.turnaroundStatus === "Completed"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-blue-100 text-blue-800"
+                    }`}>
+                      {nda.turnaroundStatus} ({nda.daysSinceSubmission} days)
+                    </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {nda.expiration}
+                    {nda.signedDate || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span

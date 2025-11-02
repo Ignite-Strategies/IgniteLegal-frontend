@@ -27,6 +27,8 @@ import Ads from './pages/Ads';
 import Content from './pages/Content';
 import Seo from './pages/Seo';
 import BdCentral from './pages/BdCentral';
+import Messages from './pages/Messages';
+import BdInsights from './pages/BdInsights';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -62,6 +64,8 @@ function App() {
           <Route path="/business-development/seo" element={<Seo />} />
           <Route path="/business-development/email-campaigns" element={<EmailCampaigns />} />
           <Route path="/business-development/events" element={<CrmList />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/bd-insights" element={<BdInsights />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
