@@ -38,10 +38,12 @@ import OutreachHome from './pages/outreach/OutreachHome';
 import CampaignCreator from './pages/outreach/CampaignCreator';
 import IndividualEmail from './pages/outreach/IndividualEmail';
 import EmailCampaigns from './pages/outreach/EmailCampaigns';
-import Ads from './pages/outreach/Ads';
-import Content from './pages/outreach/Content';
-import Seo from './pages/outreach/Seo';
 import Templates from './pages/outreach/Templates';
+
+// Attract imports
+import Ads from './pages/attract/Ads';
+import Content from './pages/attract/Content';
+import Seo from './pages/attract/Seo';
 
 // Contacts imports
 import ContactsHub from './pages/contacts/ContactsHub';
