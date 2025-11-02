@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Building2, Users, TrendingUp, RefreshCw } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { useDynamics } from '../hooks/useDynamics';
+import { useDynamics } from '../../hooks/useDynamics';
 
 export default function Companies() {
   const navigate = useNavigate();

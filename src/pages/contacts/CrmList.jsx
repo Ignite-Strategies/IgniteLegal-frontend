@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Edit, MessageSquare, RefreshCw, Building2, User } from 'lucide-react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { useMicrosoftGraph } from '../hooks/useMicrosoftGraph';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useMicrosoftGraph } from '../../hooks/useMicrosoftGraph';
 
 export default function CrmList() {
   const navigate = useNavigate();
