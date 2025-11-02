@@ -1,43 +1,57 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import CompanyCentral from './pages/CompanyCentral';
-import NDADashboard from './pages/NDADashboard';
-import NDAAnalytics from './pages/NDAAnalytics';
-import NDAHub from './pages/NDAHub';
-import Ingest from './pages/Ingest';
-import AssignNdaWork from './pages/AssignNdaWork';
-import ReviewNdaWork from './pages/ReviewNdaWork';
-import Review from './pages/Review';
-import ApprovalFinal from './pages/ApprovalFinal';
-import FinancialHub from './pages/FinancialHub';
-import Billing from './pages/Billing';
-import BillingCreate from './pages/BillingCreate';
-import BillingDetail from './pages/BillingDetail';
-import Forecasting from './pages/Forecasting';
-import FinancialSpends from './pages/FinancialSpends';
-import CrmHub from './pages/CrmHub';
-import CrmList from './pages/CrmList';
-import CrmCreate from './pages/CrmCreate';
-import CrmPipeline from './pages/CrmPipeline';
-import EmailCampaigns from './pages/EmailCampaigns';
-import Personas from './pages/Personas';
-import PersonaCreate from './pages/PersonaCreate';
-import Settings from './pages/Settings';
-import Ads from './pages/Ads';
-import Content from './pages/Content';
-import Seo from './pages/Seo';
-import BdCentral from './pages/BdCentral';
 import GrowthDashboard from './pages/GrowthDashboard';
-import Relationship from './pages/Relationship';
-import RelationshipDashboard from './pages/RelationshipDashboard';
-import MeetingDashboard from './pages/MeetingDashboard';
-import MeetingPrep from './pages/MeetingPrep';
-import ContactsHub from './pages/ContactsHub';
-import Messages from './pages/Messages';
-import BdInsights from './pages/BdInsights';
-import Companies from './pages/Companies';
-import Pipeline from './pages/Pipeline';
+import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
+
+// NDA imports
+import NDAHub from './pages/nda/NDAHub';
+import NDADashboard from './pages/nda/NDADashboard';
+import NDAAnalytics from './pages/nda/NDAAnalytics';
+import Ingest from './pages/nda/Ingest';
+import AssignNdaWork from './pages/nda/AssignNdaWork';
+import ReviewNdaWork from './pages/nda/ReviewNdaWork';
+import Review from './pages/nda/Review';
+import ApprovalFinal from './pages/nda/ApprovalFinal';
+
+// Financial imports
+import FinancialHub from './pages/financial/FinancialHub';
+import Billing from './pages/financial/Billing';
+import BillingCreate from './pages/financial/BillingCreate';
+import BillingDetail from './pages/financial/BillingDetail';
+import Forecasting from './pages/financial/Forecasting';
+import FinancialSpends from './pages/financial/FinancialSpends';
+
+// Relationship imports
+import RelationshipDashboard from './pages/relationship/RelationshipDashboard';
+import Relationship from './pages/relationship/Relationship';
+import MeetingDashboard from './pages/relationship/MeetingDashboard';
+import MeetingPrep from './pages/relationship/MeetingPrep';
+
+// Outreach imports
+import EmailCampaigns from './pages/outreach/EmailCampaigns';
+import Ads from './pages/outreach/Ads';
+import Content from './pages/outreach/Content';
+import Seo from './pages/outreach/Seo';
+
+// Contacts/CRM imports
+import ContactsHub from './pages/contacts/ContactsHub';
+import CrmHub from './pages/contacts/CrmHub';
+import CrmList from './pages/contacts/CrmList';
+import CrmCreate from './pages/contacts/CrmCreate';
+import CrmPipeline from './pages/contacts/CrmPipeline';
+import Companies from './pages/contacts/Companies';
+import Pipeline from './pages/contacts/Pipeline';
+import Messages from './pages/contacts/Messages';
+
+// Personas imports
+import Personas from './pages/personas/Personas';
+import PersonaCreate from './pages/personas/PersonaCreate';
+
+// Analytics imports
+import AnalyticsHub from './pages/analytics/AnalyticsHub';
+import GrowthInsights from './pages/analytics/GrowthInsights';
 
 function App() {
   return (
@@ -46,6 +60,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<CompanyCentral />} />
+          
+          {/* NDA Routes */}
           <Route path="/nda-hub" element={<NDAHub />} />
           <Route path="/nda-dashboard" element={<NDADashboard />} />
           <Route path="/nda-analytics" element={<NDAAnalytics />} />
@@ -54,35 +70,51 @@ function App() {
           <Route path="/nda/review" element={<ReviewNdaWork />} />
           <Route path="/review/:id" element={<Review />} />
           <Route path="/approval-final/:id" element={<ApprovalFinal />} />
+          
+          {/* Financial Routes */}
           <Route path="/financial-hub" element={<FinancialHub />} />
           <Route path="/financial/billing" element={<Billing />} />
           <Route path="/financial/billing/create" element={<BillingCreate />} />
           <Route path="/financial/billing/:id" element={<BillingDetail />} />
           <Route path="/financial/forecasting" element={<Forecasting />} />
           <Route path="/financial/spends" element={<FinancialSpends />} />
+          
+          {/* Growth Routes */}
           <Route path="/growth-dashboard" element={<GrowthDashboard />} />
+          <Route path="/business-development" element={<GrowthDashboard />} />
+          
+          {/* Relationship Routes */}
           <Route path="/relationship" element={<Relationship />} />
           <Route path="/relationship-dashboard" element={<RelationshipDashboard />} />
           <Route path="/meeting-dashboard" element={<MeetingDashboard />} />
           <Route path="/meeting-prep/:id" element={<MeetingPrep />} />
-          <Route path="/contacts" element={<ContactsHub />} />
-          <Route path="/business-development" element={<GrowthDashboard />} />
-          <Route path="/bd-central" element={<BdCentral />} />
-          <Route path="/crm-hub" element={<CrmHub />} />
-          <Route path="/crm/list" element={<CrmList />} />
-          <Route path="/crm/create" element={<CrmCreate />} />
-          <Route path="/crm/pipeline" element={<CrmPipeline />} />
-          <Route path="/personas" element={<Personas />} />
-          <Route path="/personas/create" element={<PersonaCreate />} />
+          
+          {/* Outreach Routes */}
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
           <Route path="/business-development/seo" element={<Seo />} />
           <Route path="/business-development/email-campaigns" element={<EmailCampaigns />} />
-          <Route path="/business-development/events" element={<CrmList />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/bd-insights" element={<BdInsights />} />
+          
+          {/* Contacts/CRM Routes */}
+          <Route path="/contacts" element={<ContactsHub />} />
+          <Route path="/crm-hub" element={<CrmHub />} />
+          <Route path="/crm/list" element={<CrmList />} />
+          <Route path="/crm/create" element={<CrmCreate />} />
+          <Route path="/crm/pipeline" element={<CrmPipeline />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/pipeline" element={<Pipeline />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/business-development/events" element={<CrmList />} />
+          
+          {/* Personas Routes */}
+          <Route path="/personas" element={<Personas />} />
+          <Route path="/personas/create" element={<PersonaCreate />} />
+          
+          {/* Analytics Routes */}
+          <Route path="/bd-central" element={<AnalyticsHub />} />
+          <Route path="/bd-insights" element={<GrowthInsights />} />
+          
+          {/* Settings & 404 */}
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -92,4 +124,3 @@ function App() {
 }
 
 export default App;
-
