@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Calendar, FileText, Lightbulb, MessageSquare, Users, TrendingUp } from 'lucide-react';
 import { mockMeetings, mockContacts, mockMeetingMetrics, mockBdLoopMetrics } from '../../data/mockData';
-import PageHeader from '../components/PageHeader';
+import PageHeader from '../../components/PageHeader';
 
 export default function RelationshipDashboard() {
   const navigate = useNavigate();
