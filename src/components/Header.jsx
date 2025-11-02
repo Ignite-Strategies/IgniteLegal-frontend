@@ -17,16 +17,16 @@ const Header = () => {
           </Link>
           <nav className="flex gap-6">
             <Link
-              to="/nda-dashboard"
+              to="/"
               className="text-sm font-medium text-gray-700 hover:text-gray-900"
             >
-              NDA Dashboard
+              Company Central
             </Link>
             <Link
-              to="/ingest"
+              to="/settings"
               className="text-sm font-medium text-gray-700 hover:text-gray-900"
             >
-              Ingest
+              Settings
             </Link>
           </nav>
         </div>
