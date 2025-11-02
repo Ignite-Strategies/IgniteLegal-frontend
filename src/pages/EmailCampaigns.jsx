@@ -1,90 +1,50 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Plus } from 'lucide-react';
+import { Mail, Plus, Send } from 'lucide-react';
 
 export default function EmailCampaigns() {
   const [activeTab, setActiveTab] = useState('campaigns');
-  const [campaignName, setCampaignName] = useState("");
-  const [campaignDescription, setCampaignDescription] = useState("");
-  const [contactList, setContactList] = useState(null);
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const dummyLists = [
-    { id: 1, name: "Capital Partners", contactCount: 12, description: "Debt financing and capital partners" },
-    { id: 2, name: "Portfolio Managers", contactCount: 8, description: "Portfolio management contacts" },
-    { id: 3, name: "Active Clients", contactCount: 24, description: "Current legal services clients" },
-    { id: 4, name: "Prospects", contactCount: 15, description: "Potential new clients" }
-  ];
-
-  const dummyCampaigns = [
+  // Mock campaign data
+  const campaigns = [
     {
       id: 1,
-      name: "Q1 Legal Services Update",
-      status: "Sent",
-      sentDate: "2025-01-15",
-      recipients: 24,
-      openRate: 68.5,
-      clickRate: 12.3,
-      subject: "Legal services update and NDA management insights"
+      name: 'Q1 Capital Partner Outreach',
+      status: 'Sent',
+      sentDate: '2025-01-15',
+      recipients: 12,
+      openRate: 75.0,
+      clickRate: 18.5,
+      subject: 'Streamlining Legal Operations for Capital Partners'
     },
     {
       id: 2,
-      name: "Portfolio Manager Newsletter",
-      status: "Draft",
+      name: 'Portfolio Manager Newsletter',
+      status: 'Draft',
       sentDate: null,
       recipients: 8,
       openRate: null,
       clickRate: null,
-      subject: "Streamline your legal document processes"
+      subject: 'Monthly Legal Insights for Portfolio Managers'
     },
     {
       id: 3,
-      name: "Capital Partner Outreach",
-      status: "Scheduled",
-      sentDate: "2025-01-25',
-      recipients: 12,
+      name: 'NDA Services Follow-up',
+      status: 'Scheduled',
+      sentDate: '2025-01-25',
+      recipients: 24,
       openRate: null,
       clickRate: null,
-      subject: "Legal support for your deal pipeline"
+      subject: 'Efficient NDA Management for Your Portfolio Companies'
     }
   ];
 
-  const handleCreateCampaign = async () => {
-    if (!campaignName.trim()) {
-      setError("Please enter a campaign name");
-      return;
-    }
-    setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setError("");
-    alert('Campaign created! Complete the steps below to send.');
-    setLoading(false);
-  };
-
-  const handleSelectList = (list) => {
-    setContactList(list);
-  };
-
-  const handleSendCampaign = async () => {
-    if (!campaignName.trim() || !subject.trim() || !message.trim() || !contactList) {
-      setError("Please complete all steps before sending");
-      return;
-    }
-    setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    alert("Campaign sent successfully!");
-    setError("");
-    // Reset form
-    setCampaignName("");
-    setCampaignDescription("");
-    setContactList(null);
-    setSubject("");
-    setMessage("");
-    setLoading(false);
-  };
+  const contactLists = [
+    { id: 1, name: 'Capital Partners', contactCount: 12, description: 'Debt financing and capital partners' },
+    { id: 2, name: 'Portfolio Managers', contactCount: 8, description: 'Active portfolio managers' },
+    { id: 3, name: 'Investment Directors', contactCount: 15, description: 'Investment directors and decision makers' },
+    { id: 4, name: 'Legal Decision Makers', contactCount: 20, description: 'General counsel and legal leaders' }
+  ];
 
   const renderCampaigns = () => (
     <div className="space-y-6">
@@ -100,7 +60,7 @@ export default function EmailCampaigns() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {dummyCampaigns.map((campaign) => (
+        {campaigns.map((campaign) => (
           <div key={campaign.id} className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
             <div className="flex items-center justify-between mb-4">
               <h4 className="font-semibold text-gray-900">{campaign.name}</h4>
@@ -143,11 +103,11 @@ export default function EmailCampaigns() {
   );
 
   const renderCreateCampaign = () => (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-xl font-bold text-gray-900">Create Email Campaign</h3>
-          <p className="text-gray-600">Build and send your email campaign</p>
+          <p className="text-gray-600">Build and send your outreach campaign</p>
         </div>
         <button
           onClick={() => setActiveTab('campaigns')}
@@ -157,131 +117,61 @@ export default function EmailCampaigns() {
         </button>
       </div>
 
-      {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-          {error}
-        </div>
-      )}
-
-      {/* Step 1: Campaign Name */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">
-          1. Campaign Name
-        </h2>
-        <div className="space-y-3">
-          <input
-            type="text"
-            placeholder="Enter campaign name"
-            value={campaignName}
-            onChange={(e) => setCampaignName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-          <input
-            type="text"
-            placeholder="Description (optional)"
-            value={campaignDescription}
-            onChange={(e) => setCampaignDescription(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-          <button
-            onClick={handleCreateCampaign}
-            disabled={!campaignName.trim() || loading}
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 transition-colors"
-          >
-            {loading ? 'Creating...' : 'Create Campaign'}
-          </button>
-        </div>
+      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded mb-6">
+        <p className="text-sm text-blue-800">
+          Email campaigns help you maintain relationships with capital partners, portfolio managers, and key decision makers in your network.
+        </p>
       </div>
 
-      {/* Step 2: Pick List */}
-      {campaignName && (
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
-            2. Pick a Contact List
-          </h2>
-
-          {contactList ? (
-            <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <div>
-                <h4 className="font-medium text-gray-900">{contactList.name}</h4>
-                <p className="text-sm text-gray-600">{contactList.contactCount} contacts</p>
-              </div>
-              <button
-                onClick={() => setContactList(null)}
-                className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded"
-              >
-                Change
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <p className="text-gray-600">Select a contact list to send your campaign to:</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {dummyLists.map((list) => (
-                  <button
-                    key={list.id}
-                    onClick={() => handleSelectList(list)}
-                    className="p-4 text-left border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
-                  >
-                    <h4 className="font-medium text-gray-900">{list.name}</h4>
-                    <p className="text-sm text-gray-600">{list.contactCount} contacts</p>
-                    <p className="text-xs text-gray-500">{list.description}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h4 className="font-semibold text-gray-900 mb-4">Step 1: Select Contact List</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+          {contactLists.map((list) => (
+            <button
+              key={list.id}
+              className="p-4 text-left border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+            >
+              <h5 className="font-medium text-gray-900">{list.name}</h5>
+              <p className="text-sm text-gray-600">{list.contactCount} contacts</p>
+              <p className="text-xs text-gray-500">{list.description}</p>
+            </button>
+          ))}
         </div>
-      )}
 
-      {/* Step 3: Write Email */}
-      {contactList && (
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
-            3. Write Your Email
-          </h2>
+        <h4 className="font-semibold text-gray-900 mb-4">Step 2: Compose Email</h4>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Subject Line</label>
+            <input
+              type="text"
+              placeholder="Enter subject line"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Subject Line</label>
-              <input
-                type="text"
-                placeholder="Enter subject line"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+            <textarea
+              placeholder="Hi {{firstName}},\n\nWrite your message here...\n\nBest regards,\nJoel"
+              rows="8"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Use {{firstName}}, {{lastName}}, {{company}} for personalization
+            </p>
+          </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Message</label>
-              <textarea
-                placeholder="Hi {{firstName}},\n\nWrite your message here...\n\nBest regards,\nJoel"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                rows="8"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Use {{firstName}}, {{lastName}}, {{company}} for personalization
-              </p>
-            </div>
-
-            <div className="flex gap-4">
-              <button
-                onClick={handleSendCampaign}
-                disabled={!subject.trim() || !message.trim() || loading}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 transition-colors"
-              >
-                {loading ? 'Sending...' : 'Send Campaign'}
-              </button>
-              <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                Preview
-              </button>
-            </div>
+          <div className="flex gap-4">
+            <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
+              <Send className="h-4 w-4" />
+              Send Campaign
+            </button>
+            <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+              Save as Draft
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 
@@ -294,9 +184,8 @@ export default function EmailCampaigns() {
         ← Back to CRM Hub
       </Link>
 
-      {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Email Campaigns</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Email Campaigns</h1>
         <p className="text-gray-600">Create and manage your email outreach campaigns</p>
       </div>
 
@@ -324,7 +213,7 @@ export default function EmailCampaigns() {
               }`}
             >
               <Plus className="h-4 w-4" />
-              Create
+              Create Campaign
             </button>
           </nav>
         </div>
@@ -338,4 +227,3 @@ export default function EmailCampaigns() {
     </div>
   );
 }
-
