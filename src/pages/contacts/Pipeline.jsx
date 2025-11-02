@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { User, Building2 } from 'lucide-react';
 
 const stages = [
