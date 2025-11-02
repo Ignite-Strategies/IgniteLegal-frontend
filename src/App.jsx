@@ -28,7 +28,7 @@ import Content from './pages/Content';
 import Seo from './pages/Seo';
 import BdCentral from './pages/BdCentral';
 import GrowthDashboard from './pages/GrowthDashboard';
-import Connect from './pages/Connect';
+import Relationship from './pages/Relationship';
 import ContactsHub from './pages/ContactsHub';
 import Messages from './pages/Messages';
 import BdInsights from './pages/BdInsights';
@@ -58,7 +58,7 @@ function App() {
           <Route path="/financial/forecasting" element={<Forecasting />} />
           <Route path="/financial/spends" element={<FinancialSpends />} />
           <Route path="/growth-dashboard" element={<GrowthDashboard />} />
-          <Route path="/connect" element={<Connect />} />
+          <Route path="/relationship" element={<Relationship />} />
           <Route path="/contacts" element={<ContactsHub />} />
           <Route path="/business-development" element={<GrowthDashboard />} />
           <Route path="/bd-central" element={<BdCentral />} />
