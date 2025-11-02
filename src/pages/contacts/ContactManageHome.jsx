@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Building2, Calendar, Search, RefreshCw, Upload, Users } from 'lucide-react';
+import { Building2, Calendar, Search, RefreshCw, Upload, Users, Tag, Clock, ArrowRight } from 'lucide-react';
 import PageHeader from '../../components/PageHeader';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useMicrosoftGraph } from '../../hooks/useMicrosoftGraph';
 
 export default function ContactManageHome() {
   const navigate = useNavigate();
-  const [contacts] = useLocalStorage('contacts', []);
+  const [lists] = useLocalStorage('contactLists', []);
   const { hydrateContacts, loading } = useMicrosoftGraph();
+  const [hydratingList, setHydratingList] = useState(null);
 
   const handleHydrateFromEmail = async () => {
     const result = await hydrateContacts();
@@ -19,50 +20,109 @@ export default function ContactManageHome() {
     }
   };
 
-  const options = [
+  const handleHydrateList = async (listId) => {
+    // For demo - in real app, this would call backend API
+    setHydratingList(listId);
+    // Simulate API call
+    setTimeout(() => {
+      setHydratingList(null);
+      navigate(`/contacts/demo-list/${listId}`);
+    }, 1000);
+  };
+
+  // Mock contact lists with metadata (in real app, from backend)
+  const contactLists = [
     {
       id: 'org_members',
-      title: '🏢 Organization Members',
-      description: 'View and manage all org members - your core team',
-      icon: <Building2 className="h-8 w-8" />,
-      color: 'from-blue-500 to-blue-600',
-      features: [
-        'Board members & staff',
-        'Core volunteers',
-        'Committee members',
-        'Engagement tracking'
-      ],
-      route: '/contacts/org-members'
+      name: 'Organization Members',
+      description: 'Board members, staff, and core volunteers',
+      type: 'org_members',
+      count: 24,
+      tags: ['Team', 'Internal', 'Active'],
+      uploadedLast30Days: 8,
+      lastHydrated: '2025-01-15',
+      color: 'blue',
+      icon: <Building2 className="h-6 w-6" />
     },
     {
       id: 'event_contacts',
-      title: '📅 Event Contacts',
-      description: 'Manage contacts for specific events - attendees and participants',
-      icon: <Calendar className="h-8 w-8" />,
-      color: 'from-indigo-500 to-purple-600',
-      features: [
-        'Event attendees',
-        'Pipeline stages',
-        'Form submissions',
-        'Elevate to org member'
-      ],
-      route: '/contacts/events'
+      name: 'Event Attendees',
+      description: 'Contacts from recent events and registrations',
+      type: 'event_contacts',
+      count: 142,
+      tags: ['Events', 'Prospects', 'Pipeline'],
+      uploadedLast30Days: 45,
+      lastHydrated: '2025-01-20',
+      color: 'indigo',
+      icon: <Calendar className="h-6 w-6" />
     },
     {
       id: 'all_contacts',
-      title: '🔍 All Contacts',
-      description: 'Search and manage anyone across your entire database',
-      icon: <Search className="h-8 w-8" />,
-      color: 'from-green-500 to-emerald-600',
-      features: [
-        'Universal search',
-        'Cross-reference data',
-        'Edit any contact',
-        'Find duplicates'
-      ],
-      route: '/contacts/all'
+      name: 'All Contacts',
+      description: 'Complete database of all contacts',
+      type: 'all_contacts',
+      count: 328,
+      tags: ['Master', 'Database'],
+      uploadedLast30Days: 67,
+      lastHydrated: '2025-01-22',
+      color: 'green',
+      icon: <Search className="h-6 w-6" />
+    },
+    {
+      id: 'email_sync',
+      name: 'Email Sync Contacts',
+      description: 'Contacts synced from Microsoft 365 / Outlook',
+      type: 'email_sync',
+      count: 89,
+      tags: ['Auto-Sync', 'Email'],
+      uploadedLast30Days: 23,
+      lastHydrated: '2025-01-22',
+      color: 'purple',
+      icon: <RefreshCw className="h-6 w-6" />
     }
   ];
+
+  // Calculate 30 days ago
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  const getColorClasses = (color) => {
+    const colors = {
+      blue: {
+        bg: 'bg-blue-50',
+        border: 'border-blue-200',
+        hover: 'hover:border-blue-400 hover:bg-blue-100',
+        icon: 'bg-blue-500',
+        text: 'text-blue-600',
+        badge: 'bg-blue-100 text-blue-700'
+      },
+      indigo: {
+        bg: 'bg-indigo-50',
+        border: 'border-indigo-200',
+        hover: 'hover:border-indigo-400 hover:bg-indigo-100',
+        icon: 'bg-indigo-500',
+        text: 'text-indigo-600',
+        badge: 'bg-indigo-100 text-indigo-700'
+      },
+      green: {
+        bg: 'bg-green-50',
+        border: 'border-green-200',
+        hover: 'hover:border-green-400 hover:bg-green-100',
+        icon: 'bg-green-500',
+        text: 'text-green-600',
+        badge: 'bg-green-100 text-green-700'
+      },
+      purple: {
+        bg: 'bg-purple-50',
+        border: 'border-purple-200',
+        hover: 'hover:border-purple-400 hover:bg-purple-100',
+        icon: 'bg-purple-500',
+        text: 'text-purple-600',
+        badge: 'bg-purple-100 text-purple-700'
+      }
+    };
+    return colors[color] || colors.blue;
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -71,137 +131,187 @@ export default function ContactManageHome() {
         subtitle="Manage your contacts with auto-sync, manual updates, and CSV uploads"
         backTo="/"
         backLabel="Back to Company Central"
+        actions={
+          <div className="flex gap-3">
+            <button
+              onClick={handleHydrateFromEmail}
+              disabled={loading}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+              Sync from Email
+            </button>
+            <button
+              onClick={() => navigate('/contacts/upload')}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+            >
+              <Upload className="h-4 w-4" />
+              Upload CSV
+            </button>
+          </div>
+        }
       />
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500 mb-1">Total Contacts</p>
-              <p className="text-3xl font-bold text-gray-900">{contacts.length}</p>
-            </div>
-            <Users className="h-8 w-8 text-blue-600" />
-          </div>
+      {/* Contact Lists Grid */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Lists</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {contactLists.map((list) => {
+            const colors = getColorClasses(list.color);
+            const isHydrating = hydratingList === list.id;
+            
+            return (
+              <div
+                key={list.id}
+                onClick={() => handleHydrateList(list.id)}
+                className={`bg-white rounded-xl shadow-lg border-2 ${colors.border} ${colors.hover} transition-all p-6 cursor-pointer relative overflow-hidden`}
+              >
+                {/* Loading Overlay */}
+                {isHydrating && (
+                  <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10">
+                    <div className="text-center">
+                      <RefreshCw className="h-8 w-8 text-indigo-600 animate-spin mx-auto mb-2" />
+                      <p className="text-sm text-gray-600">Hydrating from backend...</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <div className={`${colors.icon} text-white rounded-lg p-3`}>
+                      {list.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-1">
+                        {list.name}
+                      </h3>
+                      <p className="text-sm text-gray-600">{list.description}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stats Row */}
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-gray-400" />
+                    <span className="text-2xl font-bold text-gray-900">{list.count}</span>
+                    <span className="text-sm text-gray-500">contacts</span>
+                  </div>
+                  {list.uploadedLast30Days > 0 && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-gray-400" />
+                      <span className="text-sm text-gray-600">
+                        +{list.uploadedLast30Days} last 30 days
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {list.tags.map((tag, idx) => (
+                    <span
+                      key={idx}
+                      className={`${colors.badge} px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1`}
+                    >
+                      <Tag className="h-3 w-3" />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                  <span className="text-xs text-gray-500">
+                    Last hydrated: {new Date(list.lastHydrated).toLocaleDateString()}
+                  </span>
+                  <div className={`flex items-center gap-1 ${colors.text} font-semibold`}>
+                    <span>Hydrate</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500 mb-1">Auto-Sync Status</p>
-              <p className="text-lg font-semibold text-green-600">Active</p>
-            </div>
-            <RefreshCw className={`h-8 w-8 text-green-600 ${loading ? 'animate-spin' : ''}`} />
+      </div>
+
+      {/* Campaign Lists Section */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Campaign Lists</h2>
+            <p className="text-sm text-gray-600">Lists you've created for campaigns and outreach</p>
           </div>
+          <button
+            onClick={() => navigate('/contact-list-manager')}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center gap-2"
+          >
+            <Users className="h-4 w-4" />
+            Manage All Lists
+          </button>
         </div>
-        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500 mb-1">Last Sync</p>
-              <p className="text-lg font-semibold text-gray-900">
-                {new Date().toLocaleDateString()}
-              </p>
+        
+        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-dashed border-gray-300">
+          <div className="text-center py-8">
+            <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 mb-2">No campaign lists yet</p>
+            <p className="text-sm text-gray-400 mb-6">Create lists from your contacts for campaigns</p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => navigate('/contact-list-builder')}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+              >
+                Create First List
+              </button>
+              <button
+                onClick={() => navigate('/contact-list-manager')}
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+              >
+                View All Lists
+              </button>
             </div>
-            <Upload className="h-8 w-8 text-indigo-600" />
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <div className="bg-white rounded-xl shadow-lg p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
-            onClick={handleHydrateFromEmail}
-            disabled={loading}
-            className="flex items-center gap-3 px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition text-left"
+            onClick={() => navigate('/contact-list-builder')}
+            className="flex items-center gap-3 px-4 py-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-200 transition text-left"
           >
-            <RefreshCw className={`h-5 w-5 text-blue-600 ${loading ? 'animate-spin' : ''}`} />
+            <Upload className="h-5 w-5 text-indigo-600" />
             <div>
-              <p className="font-medium text-gray-900">Sync from Email</p>
-              <p className="text-sm text-gray-600">Microsoft 365 / Outlook</p>
+              <p className="font-medium text-gray-900">Build Campaign List</p>
+              <p className="text-sm text-gray-600">Create segment for campaigns</p>
             </div>
           </button>
           <button
-            onClick={() => navigate('/contacts/upload')}
+            onClick={() => navigate('/pipeline')}
+            className="flex items-center gap-3 px-4 py-3 bg-orange-50 hover:bg-orange-100 rounded-lg border border-orange-200 transition text-left"
+          >
+            <Calendar className="h-5 w-5 text-orange-600" />
+            <div>
+              <p className="font-medium text-gray-900">View Pipeline</p>
+              <p className="text-sm text-gray-600">Manage contact stages</p>
+            </div>
+          </button>
+          <button
+            onClick={() => navigate('/outreach')}
             className="flex items-center gap-3 px-4 py-3 bg-green-50 hover:bg-green-100 rounded-lg border border-green-200 transition text-left"
           >
-            <Upload className="h-5 w-5 text-green-600" />
+            <Calendar className="h-5 w-5 text-green-600" />
             <div>
-              <p className="font-medium text-gray-900">Upload CSV</p>
-              <p className="text-sm text-gray-600">Import contacts from file</p>
-            </div>
-          </button>
-          <button
-            onClick={() => navigate('/contact-list-manager')}
-            className="flex items-center gap-3 px-4 py-3 bg-purple-50 hover:bg-purple-100 rounded-lg border border-purple-200 transition text-left"
-          >
-            <Users className="h-5 w-5 text-purple-600" />
-            <div>
-              <p className="font-medium text-gray-900">Manage Lists</p>
-              <p className="text-sm text-gray-600">Create contact segments</p>
+              <p className="font-medium text-gray-900">Launch Campaign</p>
+              <p className="text-sm text-gray-600">Start outreach</p>
             </div>
           </button>
         </div>
-      </div>
-
-      {/* Contact Type Selection */}
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Which contacts do you want to manage?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {options.map((option) => (
-            <button
-              key={option.id}
-              onClick={() => navigate(option.route)}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all p-8 text-left group border-2 border-transparent hover:border-gray-300"
-            >
-              <div className="flex flex-col h-full">
-                {/* Icon */}
-                <div className={`w-20 h-20 bg-gradient-to-br ${option.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition text-white`}>
-                  {option.icon}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                    {option.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    {option.description}
-                  </p>
-                  
-                  <ul className="space-y-2 text-sm text-gray-600 mb-6">
-                    {option.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Arrow */}
-                <div className={`flex items-center justify-end font-semibold group-hover:translate-x-2 transition ${
-                  option.id === 'org_members' ? 'text-blue-600' :
-                  option.id === 'event_contacts' ? 'text-indigo-600' :
-                  'text-green-600'
-                }`}>
-                  View {option.title.split(' ')[1]} →
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Info Footer */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-        <p className="text-sm text-blue-800">
-          💡 <strong>Tip:</strong> Contacts auto-sync from email. You can also manually upload CSV files or update individual contacts.
-        </p>
       </div>
     </div>
   );
 }
-

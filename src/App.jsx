@@ -46,6 +46,7 @@ import Seo from './pages/outreach/Seo';
 import ContactsHub from './pages/contacts/ContactsHub';
 import ContactManageHome from './pages/contacts/ContactManageHome';
 import ContactUpload from './pages/contacts/ContactUpload';
+import DemoContactList from './pages/contacts/DemoContactList';
 import Companies from './pages/contacts/Companies';
 import Pipeline from './pages/contacts/Pipeline';
 // Contact Lists imports
@@ -118,6 +119,7 @@ function App() {
           <Route path="/contacts" element={<ContactManageHome />} />
           <Route path="/contacts/hub" element={<ContactsHub />} />
           <Route path="/contacts/upload" element={<ContactUpload />} />
+          <Route path="/contacts/demo-list/:listId" element={<DemoContactList />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/pipeline" element={<Pipeline />} />
           
