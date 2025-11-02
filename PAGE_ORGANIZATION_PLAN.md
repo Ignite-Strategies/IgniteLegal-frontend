@@ -53,9 +53,9 @@
 - `Personas.jsx`
 - `PersonaCreate.jsx`
 
-### 🗑️ Legacy/Deprecated (to clean up)
-- `BdCentral.jsx` - **DEPRECATED** → Replaced by GrowthDashboard
-- `BdInsights.jsx` - **DEPRECATED** → Should this go somewhere or delete?
+### 📝 Notes
+- BD pages can be refactored - rename to remove "Bd" prefix, focus on analytics/insights
+- Analytics folder holds all analytics/insights dashboards
 
 ## Final Structure
 
@@ -69,7 +69,7 @@ src/pages/
 ├── nda/
 │   ├── NDAHub.jsx
 │   ├── NDADashboard.jsx
-│   ├── NDAAnalytics.jsx
+│   ├── NDAAnalytics.jsx       # Could move to analytics/ or keep here
 │   ├── Ingest.jsx
 │   ├── AssignNdaWork.jsx
 │   ├── ReviewNdaWork.jsx
@@ -83,7 +83,12 @@ src/pages/
 │   ├── BillingDetail.jsx
 │   ├── Forecasting.jsx
 │   ├── FinancialSpends.jsx
-│   └── ForecastingCreate.jsx  # Merge or keep?
+│   └── ForecastingCreate.jsx
+│
+├── analytics/                  # Analytics & Insights
+│   ├── AnalyticsHub.jsx       # Renamed from BdCentral.jsx
+│   ├── GrowthInsights.jsx     # Renamed from BdInsights.jsx
+│   └── (NDAAnalytics.jsx could go here too)
 │
 ├── relationship/
 │   ├── RelationshipDashboard.jsx
@@ -114,10 +119,10 @@ src/pages/
 
 ## Key Decisions Needed
 
-1. **Messages.jsx** → Goes in `contacts/` (it's for messaging contacts)
-2. **BdCentral.jsx** → DELETE (replaced by GrowthDashboard)
-3. **BdInsights.jsx** → DELETE or merge into GrowthDashboard?
-4. **ForecastingCreate.jsx** → Merge into `financial/Forecasting.jsx` or keep separate?
+1. **Messages.jsx** → Goes in `contacts/` (it's for messaging contacts) ✅
+2. **BdCentral.jsx** → Rename to `AnalyticsHub.jsx` or `InsightsHub.jsx`, move to `analytics/` ✅
+3. **BdInsights.jsx** → Rename to `GrowthInsights.jsx` or `Insights.jsx`, move to `analytics/` ✅
+4. **NDAAnalytics.jsx** → Keep in `nda/` or move to `analytics/`? (probably keep in nda since it's NDA-specific)
 
 ## Migration Checklist
 
