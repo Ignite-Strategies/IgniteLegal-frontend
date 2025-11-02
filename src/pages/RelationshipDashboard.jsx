@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Calendar, FileText, Lightbulb, MessageSquare, Users, TrendingUp } from 'lucide-react';
 import { mockMeetings, mockContacts, mockMeetingMetrics, mockBdLoopMetrics } from '../data/mockData';
+import PageHeader from '../components/PageHeader';
 
 export default function RelationshipDashboard() {
   const navigate = useNavigate();
@@ -61,18 +62,12 @@ export default function RelationshipDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        to="/growth-dashboard"
-        className="text-sm text-gray-600 hover:text-gray-900 mb-6 inline-block"
-      >
-        ← Back to Growth Dashboard
-      </Link>
-
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Relationship Dashboard</h1>
-        <p className="text-gray-600 text-lg">Your relationship command center</p>
-      </div>
+      <PageHeader
+        title="Relationship Dashboard"
+        subtitle="Your relationship command center"
+        backTo="/growth-dashboard"
+        backLabel="Back to Growth Dashboard"
+      />
 
       {/* Top Summary Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
