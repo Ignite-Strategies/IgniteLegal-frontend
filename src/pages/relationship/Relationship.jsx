@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Users, Mail, Calendar, FileText, Lightbulb, TrendingUp } from 'lucide-react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { mockMeetings, mockContacts, mockMeetingMetrics } from '../../data/mockData';
 import PageHeader from '../../components/PageHeader';
 
