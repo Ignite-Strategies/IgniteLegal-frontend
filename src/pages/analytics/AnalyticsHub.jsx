@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Users, MessageSquare, FileText, Plus, RefreshCw, CheckCircle } from 'lucide-react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { useMicrosoftGraph } from '../hooks/useMicrosoftGraph';
-import { useDynamics } from '../hooks/useDynamics';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useMicrosoftGraph } from '../../hooks/useMicrosoftGraph';
+import { useDynamics } from '../../hooks/useDynamics';
 
 export default function AnalyticsHub() {
   const navigate = useNavigate();
