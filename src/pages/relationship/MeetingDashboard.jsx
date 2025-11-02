@@ -15,10 +15,10 @@ export default function MeetingDashboard() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
-        to="/relationship-dashboard"
+        to="/growth-dashboard"
         className="text-sm text-gray-600 hover:text-gray-900 mb-6 inline-block"
       >
-        ← Back to Relationship Dashboard
+        ← Back to Growth Dashboard
       </Link>
 
       {/* Header */}

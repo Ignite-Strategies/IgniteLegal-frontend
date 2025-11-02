@@ -59,8 +59,8 @@ export default function Relationship() {
       <PageHeader
         title="Connect"
         subtitle="Your daily business-development loop"
-        backTo="/relationship-dashboard"
-        backLabel="Back to Relationship Dashboard"
+        backTo="/growth-dashboard"
+        backLabel="Back to Growth Dashboard"
       />
 
       {/* Progress Bar */}

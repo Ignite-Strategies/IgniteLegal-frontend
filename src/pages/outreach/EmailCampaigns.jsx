@@ -102,8 +102,8 @@ export default function EmailCampaigns() {
       <PageHeader
         title="Outreach Workspace"
         subtitle="Build and manage your outreach campaigns"
-        backTo="/relationship-dashboard"
-        backLabel="Back to Relationship Dashboard"
+        backTo="/growth-dashboard"
+        backLabel="Back to Growth Dashboard"
       />
 
       {/* Header Metrics */}
@@ -206,7 +206,7 @@ export default function EmailCampaigns() {
             </div>
           </div>
           <button
-            onClick={() => navigate('/relationship-dashboard')}
+            onClick={() => navigate('/growth-dashboard')}
             className="mt-4 w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors"
           >
             View Full Ecosystem →
