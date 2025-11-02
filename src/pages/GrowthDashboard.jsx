@@ -119,7 +119,7 @@ export default function GrowthDashboard() {
       cta: "Open",
       icon: <Users className="h-6 w-6 text-white" />,
       color: "bg-red-500",
-      route: "/contacts"
+      route: "/connect"
     },
     {
       name: "Events",
