@@ -150,6 +150,19 @@ export default function GrowthDashboard() {
     }
   ];
 
+  // Quick access to Ecosystem (optional addition)
+  const ecosystemCard = {
+    name: "Ecosystem",
+    metrics: [
+      { label: "Partners Mapped", value: "0" },
+      { label: "Influence Score", value: "0/10" }
+    ],
+    insight: "Map your business ecosystem and relationships",
+    icon: "🌐",
+    color: "bg-blue-500",
+    route: "/ecosystem"
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link

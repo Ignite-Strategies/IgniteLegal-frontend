@@ -28,6 +28,7 @@ import RelationshipDashboard from './pages/relationship/RelationshipDashboard';
 import Relationship from './pages/relationship/Relationship';
 import MeetingDashboard from './pages/relationship/MeetingDashboard';
 import MeetingPrep from './pages/relationship/MeetingPrep';
+import Ecosystem from './pages/relationship/Ecosystem';
 
 // Outreach imports
 import EmailCampaigns from './pages/outreach/EmailCampaigns';
@@ -87,6 +88,7 @@ function App() {
           <Route path="/relationship-dashboard" element={<RelationshipDashboard />} />
           <Route path="/meeting-dashboard" element={<MeetingDashboard />} />
           <Route path="/meeting-prep/:id" element={<MeetingPrep />} />
+          <Route path="/ecosystem" element={<Ecosystem />} />
           
           {/* Outreach Routes */}
           <Route path="/outreach" element={<OutreachHome />} />
