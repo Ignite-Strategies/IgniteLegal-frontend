@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { MessageSquare, Plus, Send, FileText, Clock, CheckCircle } from 'lucide-react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { useMicrosoftGraph } from '../hooks/useMicrosoftGraph';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useMicrosoftGraph } from '../../hooks/useMicrosoftGraph';
+import PageHeader from '../../components/PageHeader';
 
 export default function Messages() {
   const navigate = useNavigate();
@@ -91,18 +92,12 @@ Joel`
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        to="/bd-central"
-        className="text-sm text-gray-600 hover:text-gray-900 mb-6 inline-block"
-      >
-        ← Back to Business Development
-      </Link>
-
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Messages / Activity Feed</h1>
-          <p className="text-gray-600">Outlook messages and communication history</p>
-        </div>
+      <PageHeader
+        title="Personal Email"
+        subtitle="Send 1:1 emails to your contacts"
+        backTo="/outreach/outreach-home"
+        backLabel="← Back to Outreach"
+      />
         <button
           onClick={() => setShowComposeModal(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"

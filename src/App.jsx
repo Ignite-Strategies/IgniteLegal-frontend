@@ -43,7 +43,6 @@ import CrmCreate from './pages/contacts/CrmCreate';
 import CrmPipeline from './pages/contacts/CrmPipeline';
 import Companies from './pages/contacts/Companies';
 import Pipeline from './pages/contacts/Pipeline';
-import Messages from './pages/contacts/Messages';
 
 // Personas imports
 import Personas from './pages/personas/Personas';
@@ -90,10 +89,13 @@ function App() {
           <Route path="/meeting-prep/:id" element={<MeetingPrep />} />
           
           {/* Outreach Routes */}
+          <Route path="/outreach/outreach-home" element={<OutreachHome />} />
+          <Route path="/outreach/campaign-creator" element={<CampaignCreator />} />
+          <Route path="/outreach/personal-email" element={<PersonalEmail />} />
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
           <Route path="/business-development/seo" element={<Seo />} />
-          <Route path="/business-development/email-campaigns" element={<EmailCampaigns />} />
+          <Route path="/business-development/email-campaigns" element={<OutreachHome />} />
           
           {/* Contacts/CRM Routes */}
           <Route path="/contacts" element={<ContactsHub />} />
@@ -103,7 +105,7 @@ function App() {
           <Route path="/crm/pipeline" element={<CrmPipeline />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/pipeline" element={<Pipeline />} />
-          <Route path="/messages" element={<Messages />} />
+          <Route path="/messages" element={<PersonalEmail />} />
           <Route path="/business-development/events" element={<CrmList />} />
           
           {/* Personas Routes */}
