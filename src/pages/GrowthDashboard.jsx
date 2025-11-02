@@ -46,24 +46,28 @@ function HeaderSummary({ targetRevenue, currentRevenue, timeHorizon }) {
 }
 
 // Stack Card Component
-function StackCard({ name, metrics, insight, cta, icon, color, route }) {
+function StackCard({ name, metrics, insight, icon, color, route }) {
   const navigate = useNavigate();
   
+  // Get hover color based on base color
+  const hoverColors = {
+    'bg-red-500': 'hover:border-red-400 hover:bg-red-50',
+    'bg-orange-500': 'hover:border-orange-400 hover:bg-orange-50',
+    'bg-purple-500': 'hover:border-purple-400 hover:bg-purple-50',
+  };
+  
   return (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
-         onClick={() => navigate(route)}>
+    <div 
+      className={`bg-white rounded-xl shadow-md border border-gray-200 ${hoverColors[color]} transition-all duration-300 cursor-pointer`}
+      onClick={() => navigate(route)}
+    >
       <div className="p-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-lg ${color} flex items-center justify-center`}>
-              {icon}
-            </div>
-            <h3 className="text-lg font-bold text-gray-900">{name}</h3>
+        <div className="flex items-center gap-3 mb-4">
+          <div className={`w-10 h-10 rounded-lg ${color} flex items-center justify-center`}>
+            {icon}
           </div>
-          <div className="text-red-500 text-sm font-semibold">
-            {cta} →
-          </div>
+          <h3 className="text-lg font-bold text-gray-900">{name}</h3>
         </div>
         
         {/* Metrics */}
@@ -76,8 +80,8 @@ function StackCard({ name, metrics, insight, cta, icon, color, route }) {
           ))}
         </div>
         
-        {/* Insight */}
-        <div className="text-sm text-gray-600 italic">
+        {/* Insight Quote */}
+        <div className="text-sm text-gray-600 italic border-t border-gray-100 pt-4">
           "{insight}"
         </div>
       </div>
@@ -116,7 +120,6 @@ export default function GrowthDashboard() {
         { label: "Emails Sent", value: emailsSent.toString() }
       ],
       insight: "Strong relationship building, ready to scale",
-      cta: "Open",
       icon: <Users className="h-6 w-6 text-white" />,
       color: "bg-red-500",
       route: "/relationship"
@@ -129,7 +132,6 @@ export default function GrowthDashboard() {
         { label: "Networking Score", value: "9/10" }
       ],
       insight: "Active event schedule, strong networking",
-      cta: "Open",
       icon: <Calendar className="h-6 w-6 text-white" />,
       color: "bg-orange-500",
       route: "/business-development/events"
@@ -142,7 +144,6 @@ export default function GrowthDashboard() {
         { label: "Content Score", value: "B+" }
       ],
       insight: "Active content creation, strong engagement",
-      cta: "Open",
       icon: <FileText className="h-6 w-6 text-white" />,
       color: "bg-purple-500",
       route: "/business-development/content"
@@ -165,40 +166,50 @@ export default function GrowthDashboard() {
         timeHorizon={dashboardData.timeHorizon}
       />
 
+      {/* Growth Drivers Banner */}
+      <div className="flex flex-col items-center mb-6">
+        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">
+          Growth Drivers
+        </h2>
+        <p className="text-xs text-gray-400">
+          Attract (Events) • Engage (Connect) • Nurture (Content)
+        </p>
+      </div>
+
       {/* 3-Card Offense Model */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
         {stackCards.map((card, index) => (
           <StackCard key={index} {...card} />
         ))}
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-12 bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <section className="mt-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-3">Quick Actions</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <button
-            onClick={() => navigate('/contacts')}
-            className="p-4 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 transition-colors text-left"
+            onClick={() => navigate('/contacts/crm/create')}
+            className="p-4 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 hover:border-red-300 transition-colors text-left"
           >
-            <div className="text-red-600 font-semibold">Add Contact</div>
+            <div className="text-red-600 font-semibold mb-1">Add Contact</div>
             <div className="text-sm text-gray-600">Create a new relationship entry</div>
           </button>
           <button
-            onClick={() => navigate('/messages')}
-            className="p-4 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors text-left"
+            onClick={() => navigate('/outreach/personal-email')}
+            className="p-4 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 hover:border-blue-300 transition-colors text-left"
           >
-            <div className="text-blue-600 font-semibold">Send Message</div>
+            <div className="text-blue-600 font-semibold mb-1">Send Message</div>
             <div className="text-sm text-gray-600">Compose outreach</div>
           </button>
           <button
             onClick={() => navigate('/outreach')}
-            className="p-4 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors text-left"
+            className="p-4 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 hover:border-green-300 transition-colors text-left"
           >
-            <div className="text-green-600 font-semibold">Review Campaigns</div>
+            <div className="text-green-600 font-semibold mb-1">Review Campaigns</div>
             <div className="text-sm text-gray-600">Check performance metrics</div>
           </button>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
