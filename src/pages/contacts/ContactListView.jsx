@@ -7,20 +7,30 @@ export default function ContactListView() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get('type');
+  const prefilledName = searchParams.get('name') || '';
+  const prefilledDescription = searchParams.get('description') || '';
   
-  const [contacts, setContacts] = useLocalStorage('contacts', []);
+  const [contacts] = useLocalStorage('contacts', []);
   const [lists, setLists] = useLocalStorage('contactLists', []);
+  const [displayedContacts, setDisplayedContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState(new Set());
-  const [listName, setListName] = useState('');
-  const [listDescription, setListDescription] = useState('');
+  const [listName, setListName] = useState(prefilledName);
+  const [listDescription, setListDescription] = useState(prefilledDescription);
+
+  useEffect(() => {
+    // Update list name/description if URL params change
+    if (prefilledName) setListName(prefilledName);
+    if (prefilledDescription) setListDescription(prefilledDescription);
+  }, [prefilledName, prefilledDescription]);
 
   useEffect(() => {
     loadContacts();
-  }, [type]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type, contacts]);
 
   const loadContacts = () => {
     // Mock: Load contacts based on type
-    // In real app, this would call API
+    // In real app, this would call API to hydrate contacts
     let filtered = [];
     
     switch (type) {
@@ -28,8 +38,12 @@ export default function ContactListView() {
         filtered = contacts;
         break;
       case 'org_members':
-        // Mock: filter by some criteria
-        filtered = contacts.filter(c => c.company);
+        // Mock: filter by organization members (contacts with company)
+        filtered = contacts.filter(c => c.company || c.organizationId);
+        break;
+      case 'event_contacts':
+        // Mock: filter by event attendees
+        filtered = contacts.filter(c => c.eventId || c.source === 'event');
         break;
       case 'custom':
         filtered = contacts;
@@ -38,7 +52,15 @@ export default function ContactListView() {
         filtered = [];
     }
     
-    setContacts(filtered);
+    setDisplayedContacts(filtered);
+    
+    // Auto-select all contacts when they hydrate
+    if (filtered.length > 0) {
+      const allIds = filtered.map(c => c.id);
+      setSelectedContacts(new Set(allIds));
+    } else {
+      setSelectedContacts(new Set());
+    }
   };
 
   const handleSelectContact = (contactId) => {
@@ -52,7 +74,7 @@ export default function ContactListView() {
   };
 
   const handleSelectAll = () => {
-    const allIds = contacts.map(c => c.id);
+    const allIds = displayedContacts.map(c => c.id);
     setSelectedContacts(new Set(allIds));
   };
 
@@ -66,9 +88,7 @@ export default function ContactListView() {
       return;
     }
 
-    const contactIds = selectedContacts.size > 0 
-      ? Array.from(selectedContacts)
-      : contacts.map(c => c.id);
+    const contactIds = Array.from(selectedContacts);
 
     if (contactIds.length === 0) {
       alert('Please select at least one contact');
@@ -93,12 +113,11 @@ export default function ContactListView() {
     switch (type) {
       case 'all_contacts': return 'All Contacts';
       case 'org_members': return 'Organization Members';
+      case 'event_contacts': return 'Event Contacts';
       case 'custom': return 'Custom Selection';
       default: return 'Contact List';
     }
   };
-
-  const displayedContacts = contacts.length > 0 ? contacts : [];
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

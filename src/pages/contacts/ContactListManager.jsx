@@ -4,12 +4,82 @@ import { Plus, Search, Eye, Trash2, CheckCircle, XCircle } from 'lucide-react';
 import PageHeader from '../../components/PageHeader';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 
+// Mock initial lists if none exist
+const getInitialLists = () => [
+  {
+    id: 'demo-q1-outreach',
+    name: 'Q1 Outreach Targets',
+    description: 'High-priority contacts for Q1 outreach campaign',
+    type: 'Campaign',
+    totalContacts: 47,
+    contactIds: [],
+    createdAt: new Date('2024-01-15').toISOString(),
+  },
+  {
+    id: 'demo-event-attendees',
+    name: 'Legal Tech Conference 2024',
+    description: 'All attendees from the Legal Tech Conference',
+    type: 'Event',
+    totalContacts: 128,
+    contactIds: [],
+    createdAt: new Date('2024-02-10').toISOString(),
+  },
+  {
+    id: 'demo-org-members',
+    name: 'Organization Members',
+    description: 'All active members from your organization',
+    type: 'Organization',
+    totalContacts: 89,
+    contactIds: [],
+    createdAt: new Date('2024-01-01').toISOString(),
+  },
+  {
+    id: 'demo-warm-leads',
+    name: 'Warm Leads - Follow Up',
+    description: 'Contacts who have engaged but need follow-up',
+    type: 'Custom',
+    totalContacts: 23,
+    contactIds: [],
+    createdAt: new Date('2024-02-20').toISOString(),
+  },
+  {
+    id: 'demo-referrals',
+    name: 'Referral Partners',
+    description: 'Partners who have provided referrals',
+    type: 'Custom',
+    totalContacts: 15,
+    contactIds: [],
+    createdAt: new Date('2024-01-30').toISOString(),
+  },
+];
+
 export default function ContactListManager() {
   const navigate = useNavigate();
   const [lists, setLists] = useLocalStorage('contactLists', []);
-  const [campaigns] = useLocalStorage('campaigns', []);
+  const [campaigns, setCampaigns] = useLocalStorage('campaigns', []);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Initialize with mock data if lists are empty
+  useEffect(() => {
+    if (lists.length === 0) {
+      const initialLists = getInitialLists();
+      setLists(initialLists);
+      
+      // Initialize a mock campaign so one list shows as "Assigned"
+      if (campaigns.length === 0) {
+        const mockCampaign = {
+          id: 'demo-q1-campaign',
+          name: 'Q1 Outreach Campaign',
+          contactListId: 'demo-q1-outreach',
+          status: 'active',
+          createdAt: new Date('2024-01-15').toISOString(),
+        };
+        setCampaigns([mockCampaign]);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Filter lists
   const filteredLists = lists.filter(list => 
@@ -99,7 +169,10 @@ export default function ContactListManager() {
               
               <div className="text-xs text-gray-500 mb-4 space-y-1">
                 <p>Type: {list.type || 'Standard'}</p>
-                <p>Contacts: {list.totalContacts || list.contactIds?.length || 0}</p>
+                <p>Contacts: {list.totalContacts ?? (list.contactIds?.length || 0)}</p>
+                {list.createdAt && (
+                  <p>Created: {new Date(list.createdAt).toLocaleDateString()}</p>
+                )}
                 {status.isAssigned && (
                   <p className="text-orange-600 font-medium">
                     Assigned to: {status.campaign?.name || 'Campaign'}

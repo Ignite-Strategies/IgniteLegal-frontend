@@ -19,21 +19,24 @@ export default function ContactListBuilder() {
       name: 'All Contacts',
       description: 'Include all contacts from your CRM',
       icon: <Users className="h-6 w-6" />,
-      route: '/contact-list-view?type=all_contacts'
     },
     {
       id: 'org_members',
       name: 'Organization Members',
       description: 'All members from your organization',
       icon: <Building2 className="h-6 w-6" />,
-      route: '/contact-list-view?type=org_members'
+    },
+    {
+      id: 'event_contacts',
+      name: 'Event Contacts',
+      description: 'Contacts from events and conferences',
+      icon: <Building2 className="h-6 w-6" />,
     },
     {
       id: 'custom',
       name: 'Custom Selection',
       description: 'Manually select contacts',
       icon: <Mail className="h-6 w-6" />,
-      route: '/contact-list-view?type=custom'
     }
   ];
 
@@ -54,7 +57,12 @@ export default function ContactListBuilder() {
     
     const selectedTypeObj = listTypes.find(t => t.id === selectedType);
     if (selectedTypeObj) {
-      navigate(selectedTypeObj.route);
+      // Pass listName and description as URL params
+      const params = new URLSearchParams();
+      params.set('type', selectedType);
+      if (listName) params.set('name', listName);
+      if (listDescription) params.set('description', listDescription);
+      navigate(`/contact-list-view?${params.toString()}`);
     }
   };
 
