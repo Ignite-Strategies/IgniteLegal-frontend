@@ -18,6 +18,7 @@ import FinancialSpends from './pages/FinancialSpends';
 import CrmHub from './pages/CrmHub';
 import CrmList from './pages/CrmList';
 import Personas from './pages/Personas';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/crm-hub" element={<CrmHub />} />
           <Route path="/crm/list" element={<CrmList />} />
           <Route path="/personas" element={<Personas />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </Router>
