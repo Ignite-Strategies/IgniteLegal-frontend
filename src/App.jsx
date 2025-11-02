@@ -26,6 +26,7 @@ import Ads from './pages/Ads';
 import Content from './pages/Content';
 import Seo from './pages/Seo';
 import BdCentral from './pages/BdCentral';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function App() {
           <Route path="/business-development/email-campaigns" element={<CrmList />} />
           <Route path="/business-development/events" element={<CrmList />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>
