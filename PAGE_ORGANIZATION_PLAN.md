@@ -1,15 +1,72 @@
-# Page Organization Plan (Revised - Flatter Structure)
+# Page Organization Plan (Complete File Mapping)
 
-## Proposed Structure
+## Current Files Analysis
+
+### ✅ Keep at Root (Hubs)
+- `CompanyCentral.jsx` - Main company hub
+- `GrowthDashboard.jsx` - Main growth hub
+- `Settings.jsx` - Settings
+- `NotFound.jsx` - 404
+
+### 📁 NDA Folder
+- `NDAHub.jsx`
+- `NDADashboard.jsx`
+- `NDAAnalytics.jsx`
+- `Ingest.jsx`
+- `AssignNdaWork.jsx`
+- `ReviewNdaWork.jsx`
+- `Review.jsx`
+- `ApprovalFinal.jsx`
+
+### 📁 Financial Folder
+- `FinancialHub.jsx`
+- `Billing.jsx`
+- `BillingCreate.jsx`
+- `BillingDetail.jsx`
+- `Forecasting.jsx`
+- `FinancialSpends.jsx`
+- `ForecastingCreate.jsx` - **CHECK: Merge into Forecasting.jsx or separate?**
+
+### 📁 Relationship Folder
+- `RelationshipDashboard.jsx`
+- `Relationship.jsx` (Connect workspace)
+- `MeetingDashboard.jsx`
+- `MeetingPrep.jsx`
+
+### 📁 Outreach Folder
+- `EmailCampaigns.jsx` (Outreach Workspace)
+- `Ads.jsx`
+- `Content.jsx`
+- `Seo.jsx`
+
+### 📁 Contacts Folder (CRM + Messaging)
+- `ContactsHub.jsx` - Main contacts view
+- `CrmHub.jsx`
+- `CrmList.jsx`
+- `CrmCreate.jsx`
+- `CrmPipeline.jsx`
+- `Companies.jsx` - Company list
+- `Pipeline.jsx` - Kanban board for contacts
+- `Messages.jsx` - **Email/message interface for contacts**
+
+### 📁 Personas Folder
+- `Personas.jsx`
+- `PersonaCreate.jsx`
+
+### 🗑️ Legacy/Deprecated (to clean up)
+- `BdCentral.jsx` - **DEPRECATED** → Replaced by GrowthDashboard
+- `BdInsights.jsx` - **DEPRECATED** → Should this go somewhere or delete?
+
+## Final Structure
 
 ```
 src/pages/
 ├── CompanyCentral.jsx          # Main company hub
-├── GrowthDashboard.jsx         # Main growth hub (navigation center)
-├── Settings.jsx                # Settings
-├── NotFound.jsx                # 404
+├── GrowthDashboard.jsx         # Main growth hub
+├── Settings.jsx
+├── NotFound.jsx
 │
-├── nda/                        # NDA Management
+├── nda/
 │   ├── NDAHub.jsx
 │   ├── NDADashboard.jsx
 │   ├── NDAAnalytics.jsx
@@ -19,71 +76,59 @@ src/pages/
 │   ├── Review.jsx
 │   └── ApprovalFinal.jsx
 │
-├── financial/                  # Financial Tools
+├── financial/
 │   ├── FinancialHub.jsx
 │   ├── Billing.jsx
 │   ├── BillingCreate.jsx
 │   ├── BillingDetail.jsx
 │   ├── Forecasting.jsx
-│   └── FinancialSpends.jsx
+│   ├── FinancialSpends.jsx
+│   └── ForecastingCreate.jsx  # Merge or keep?
 │
-├── relationship/               # Relationship Management (Connect workspace)
+├── relationship/
 │   ├── RelationshipDashboard.jsx
-│   ├── Relationship.jsx       # Connect workspace
+│   ├── Relationship.jsx        # Connect workspace
 │   ├── MeetingDashboard.jsx
 │   └── MeetingPrep.jsx
 │
-├── outreach/                   # Outreach & Marketing
-│   ├── EmailCampaigns.jsx     # Outreach Workspace
+├── outreach/
+│   ├── EmailCampaigns.jsx      # Outreach Workspace
 │   ├── Ads.jsx
 │   ├── Content.jsx
 │   └── Seo.jsx
 │
-├── contacts/                   # Contact/CRM Management
+├── contacts/                   # CRM + Messaging
 │   ├── ContactsHub.jsx
 │   ├── CrmHub.jsx
 │   ├── CrmList.jsx
 │   ├── CrmCreate.jsx
 │   ├── CrmPipeline.jsx
 │   ├── Companies.jsx
-│   ├── Pipeline.jsx
-│   └── Messages.jsx
+│   ├── Pipeline.jsx            # Kanban board
+│   └── Messages.jsx             # Email/messaging interface
 │
-└── personas/                   # Persona Management
+└── personas/
     ├── Personas.jsx
     └── PersonaCreate.jsx
-
-# Legacy/Deprecated (clean up later)
-├── BdCentral.jsx              # → relationship/GrowthDashboard?
-├── BdInsights.jsx             # → relationship/GrowthDashboard?
-└── ForecastingCreate.jsx      # → financial/Forecasting?
 ```
 
-## Organization Logic
+## Key Decisions Needed
 
-### ✅ Flat Structure - No "growth" wrapper
-- Each functional area gets its own folder
-- Easier to navigate, less nesting
+1. **Messages.jsx** → Goes in `contacts/` (it's for messaging contacts)
+2. **BdCentral.jsx** → DELETE (replaced by GrowthDashboard)
+3. **BdInsights.jsx** → DELETE or merge into GrowthDashboard?
+4. **ForecastingCreate.jsx** → Merge into `financial/Forecasting.jsx` or keep separate?
 
-### ✅ Folder Breakdown:
-1. **nda/** - Legal NDA workflow
-2. **financial/** - Billing, forecasting, spending
-3. **relationship/** - Connect workspace, meetings, relationship dashboard
-4. **outreach/** - Marketing, campaigns, content
-5. **contacts/** - CRM, contacts, pipeline
-6. **personas/** - Persona development
+## Migration Checklist
 
-## Key Decisions
-
-1. **GrowthDashboard** → Goes in `relationship/` folder (it's the relationship/growth hub)
-2. **Relationship = Connect** - Same component, just naming
-3. **No nested folders** - Keep it flat and scannable
-4. **CRM = contacts** - All goes in `contacts/` folder
-
-## Migration Steps
-
-1. Create folder structure (no growth wrapper)
-2. Move files (git mv to preserve history)
-3. Update all imports in App.jsx
-4. Update any internal page imports
-5. Test all routes still work
+- [ ] Create all folders
+- [ ] Move NDA files → `nda/`
+- [ ] Move Financial files → `financial/`
+- [ ] Move Relationship files → `relationship/`
+- [ ] Move Outreach files → `outreach/`
+- [ ] Move Contacts/CRM files → `contacts/`
+- [ ] Move Personas files → `personas/`
+- [ ] Update all imports in App.jsx
+- [ ] Update internal page imports
+- [ ] Delete/clean up legacy files (BdCentral, BdInsights)
+- [ ] Test all routes work
