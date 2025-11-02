@@ -36,13 +36,20 @@ const teamMembers = [
 const pendingNDAs = [
   {
     id: 1,
+    dealName: 'TechCorp – Innovation Labs Partnership',
+    counterparty: 'Innovation Labs Inc.',
+    priority: 'Medium',
+    dueDate: '2025-01-25',
+  },
+  {
+    id: 2,
     dealName: 'Ares Capital – SolarTrust Acquisition',
     counterparty: 'SolarTrust LLC',
     priority: 'High',
     dueDate: '2025-01-25',
   },
   {
-    id: 2,
+    id: 3,
     dealName: 'Orion Holdings – Meridian JV',
     counterparty: 'Meridian Partners',
     priority: 'Medium',

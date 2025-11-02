@@ -24,11 +24,11 @@ const Ingest = () => {
     const newNDA = {
       id: Date.now(), // Simple ID generation
       ...formData,
-      status: "Draft Ready",
+      status: "Pending Assignment",
     };
     console.log('New NDA created:', newNDA);
-    // Navigate to review workflow after saving
-    navigate('/nda/review');
+    // Navigate to assign workflow after saving
+    navigate('/nda/assign');
   };
 
   return (
