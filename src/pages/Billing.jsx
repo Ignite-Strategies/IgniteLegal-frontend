@@ -54,13 +54,13 @@ const Billing = () => {
           <h1 className="text-3xl font-bold mb-2">Billing</h1>
           <p className="text-gray-600">Manage client invoices and payments</p>
         </div>
-        <button
-          onClick={() => navigate('/financial/billing/create')}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium flex items-center gap-2"
+        <Link
+          to="/financial/billing/create"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium flex items-center gap-2 inline-flex"
         >
           <Plus className="h-4 w-4" />
           Create Invoice
-        </button>
+        </Link>
       </div>
 
       {/* Summary Cards */}

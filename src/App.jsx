@@ -11,6 +11,7 @@ import Review from './pages/Review';
 import ApprovalFinal from './pages/ApprovalFinal';
 import FinancialHub from './pages/FinancialHub';
 import Billing from './pages/Billing';
+import BillingCreate from './pages/BillingCreate';
 import Forecasting from './pages/Forecasting';
 import FinancialSpends from './pages/FinancialSpends';
 import CrmHub from './pages/CrmHub';
@@ -34,6 +35,7 @@ function App() {
           <Route path="/approval-final/:id" element={<ApprovalFinal />} />
           <Route path="/financial-hub" element={<FinancialHub />} />
           <Route path="/financial/billing" element={<Billing />} />
+          <Route path="/financial/billing/create" element={<BillingCreate />} />
           <Route path="/financial/forecasting" element={<Forecasting />} />
           <Route path="/financial/spends" element={<FinancialSpends />} />
           <Route path="/crm-hub" element={<CrmHub />} />
