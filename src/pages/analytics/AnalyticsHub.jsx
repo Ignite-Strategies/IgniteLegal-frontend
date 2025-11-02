@@ -5,7 +5,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useMicrosoftGraph } from '../hooks/useMicrosoftGraph';
 import { useDynamics } from '../hooks/useDynamics';
 
-export default function BdCentral() {
+export default function AnalyticsHub() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [contacts] = useLocalStorage('contacts', []);

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { TrendingUp, Clock, Users, Calendar } from 'lucide-react';
 
-export default function BdInsights() {
+export default function GrowthInsights() {
   // Mock insights data
   const insights = {
     firmsContactedThisWeek: 8,
