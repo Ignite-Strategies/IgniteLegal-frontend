@@ -4,7 +4,8 @@
 
 ```
 src/pages/
-├── CompanyCentral.jsx          # Main hub
+├── CompanyCentral.jsx          # Main company hub
+├── GrowthDashboard.jsx         # Main growth hub (navigation center)
 ├── Settings.jsx                # Settings
 ├── NotFound.jsx                # 404
 │
@@ -27,7 +28,6 @@ src/pages/
 │   └── FinancialSpends.jsx
 │
 ├── relationship/               # Relationship Management (Connect workspace)
-│   ├── GrowthDashboard.jsx    # Main growth hub (could rename or keep here)
 │   ├── RelationshipDashboard.jsx
 │   ├── Relationship.jsx       # Connect workspace
 │   ├── MeetingDashboard.jsx
