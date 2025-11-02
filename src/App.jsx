@@ -34,6 +34,9 @@ import MeetingPrep from './pages/relationship/MeetingPrep';
 import Ecosystem from './pages/relationship/Ecosystem';
 
 // Outreach imports
+import OutreachHome from './pages/outreach/OutreachHome';
+import CampaignCreator from './pages/outreach/CampaignCreator';
+import IndividualEmail from './pages/outreach/IndividualEmail';
 import EmailCampaigns from './pages/outreach/EmailCampaigns';
 import Ads from './pages/outreach/Ads';
 import Content from './pages/outreach/Content';
@@ -97,17 +100,16 @@ function App() {
           <Route path="/ecosystem" element={<Ecosystem />} />
           
           {/* Outreach Routes */}
-          {/* COMMENTED OUT - OutreachHome breaking app */}
-          {/* <Route path="/outreach" element={<OutreachHome />} /> */}
-          {/* <Route path="/outreach/outreach-home" element={<OutreachHome />} /> */}
-          {/* <Route path="/outreach/create" element={<CampaignCreator />} /> */}
-          {/* <Route path="/outreach/campaign-creator" element={<CampaignCreator />} /> */}
-          {/* <Route path="/outreach/personal-email" element={<PersonalEmail />} /> */}
+          <Route path="/outreach" element={<OutreachHome />} />
+          <Route path="/outreach/outreach-home" element={<OutreachHome />} />
+          <Route path="/outreach/create" element={<CampaignCreator />} />
+          <Route path="/outreach/campaign-creator" element={<CampaignCreator />} />
+          <Route path="/outreach/individual-email" element={<IndividualEmail />} />
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
           <Route path="/business-development/seo" element={<Seo />} />
-          {/* <Route path="/business-development/email-campaigns" element={<OutreachHome />} /> */}
-          {/* <Route path="/outreach/email-campaigns" element={<OutreachHome />} /> */}
+          <Route path="/business-development/email-campaigns" element={<OutreachHome />} />
+          <Route path="/outreach/email-campaigns" element={<OutreachHome />} />
           
           {/* Contacts/CRM Routes */}
           <Route path="/contacts" element={<ContactsHub />} />
@@ -117,8 +119,6 @@ function App() {
           <Route path="/crm/pipeline" element={<CrmPipeline />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/pipeline" element={<Pipeline />} />
-          {/* <Route path="/messages" element={<PersonalEmail />} /> COMMENTED OUT - PersonalEmail breaking app */}
-          {/* <Route path="/personal-email" element={<PersonalEmail />} /> COMMENTED OUT - PersonalEmail breaking app */}
           <Route path="/business-development/events" element={<CrmList />} />
           
           {/* Personas Routes */}

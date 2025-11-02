@@ -172,9 +172,9 @@ export default function OutreachHome() {
             <p className="text-sm text-orange-700">Track opens, clicks, and engagement</p>
           </button>
 
-          {/* Personal Email */}
+          {/* Individual Email */}
           <button
-            onClick={() => navigate('/outreach/personal-email')}
+            onClick={() => navigate('/outreach/individual-email')}
             className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-lg border-2 border-emerald-200 hover:border-emerald-400 transition text-left"
           >
             <div className="flex items-center mb-4">
@@ -182,7 +182,7 @@ export default function OutreachHome() {
                 <Mail className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Personal Email</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Individual Email</h3>
                 <p className="text-sm text-gray-600">Send 1:1 email</p>
               </div>
             </div>
