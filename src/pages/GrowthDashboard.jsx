@@ -191,7 +191,7 @@ export default function GrowthDashboard() {
             <div className="text-sm text-gray-600">Compose outreach</div>
           </button>
           <button
-            onClick={() => navigate('/business-development/email-campaigns')}
+            onClick={() => navigate('/outreach')}
             className="p-4 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors text-left"
           >
             <div className="text-green-600 font-semibold">Review Campaigns</div>

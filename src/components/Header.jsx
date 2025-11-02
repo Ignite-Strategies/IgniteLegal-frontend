@@ -29,7 +29,7 @@ const Header = () => {
               Pipeline
             </Link>
             <Link
-              to="/business-development/email-campaigns"
+              to="/outreach"
               className="text-sm font-medium text-gray-700 hover:text-gray-900"
             >
               Campaigns

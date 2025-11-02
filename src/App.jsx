@@ -89,13 +89,16 @@ function App() {
           <Route path="/meeting-prep/:id" element={<MeetingPrep />} />
           
           {/* Outreach Routes */}
+          <Route path="/outreach" element={<OutreachHome />} />
           <Route path="/outreach/outreach-home" element={<OutreachHome />} />
+          <Route path="/outreach/create" element={<CampaignCreator />} />
           <Route path="/outreach/campaign-creator" element={<CampaignCreator />} />
           <Route path="/outreach/personal-email" element={<PersonalEmail />} />
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
           <Route path="/business-development/seo" element={<Seo />} />
           <Route path="/business-development/email-campaigns" element={<OutreachHome />} />
+          <Route path="/outreach/email-campaigns" element={<OutreachHome />} />
           
           {/* Contacts/CRM Routes */}
           <Route path="/contacts" element={<ContactsHub />} />

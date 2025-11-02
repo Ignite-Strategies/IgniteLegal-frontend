@@ -20,7 +20,7 @@ const crmNavOptions = [
     title: 'Email Campaigns',
     description: 'Manage outreach and email campaigns',
     icon: <Mail className="h-8 w-8" />,
-    path: '/business-development/email-campaigns',
+    path: '/outreach',
     color: 'bg-cyan-100 text-cyan-600'
   },
   {

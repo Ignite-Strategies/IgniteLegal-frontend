@@ -323,7 +323,7 @@ export default function EmailCampaigns() {
             <p className="text-sm text-gray-600">Refine messages</p>
           </button>
           <button
-            onClick={() => navigate('/business-development/email-campaigns')}
+            onClick={() => navigate('/outreach')}
             className="p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors text-left"
           >
             <div className="flex items-center gap-3 mb-2">

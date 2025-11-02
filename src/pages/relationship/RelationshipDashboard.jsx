@@ -56,7 +56,7 @@ export default function RelationshipDashboard() {
       kpi: `${mockBdLoopMetrics.message.templates} templates`,
       cta: 'Manage Templates',
       color: 'from-red-500 to-red-600',
-      route: '/business-development/email-campaigns',
+      route: '/outreach',
     },
   ];
 

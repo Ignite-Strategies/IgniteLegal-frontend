@@ -23,7 +23,7 @@ export default function Relationship() {
       icon: <Mail className="h-6 w-6" />,
       cta: 'Send Campaign',
       color: 'bg-orange-500',
-      route: '/business-development/email-campaigns',
+      route: '/outreach',
     },
     {
       id: 'meetings',
