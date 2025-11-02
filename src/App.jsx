@@ -19,6 +19,8 @@ import CrmHub from './pages/CrmHub';
 import CrmList from './pages/CrmList';
 import Personas from './pages/Personas';
 import Settings from './pages/Settings';
+import Ads from './pages/Ads';
+import Content from './pages/Content';
 
 function App() {
   return (
@@ -44,6 +46,11 @@ function App() {
           <Route path="/crm-hub" element={<CrmHub />} />
           <Route path="/crm/list" element={<CrmList />} />
           <Route path="/personas" element={<Personas />} />
+          <Route path="/business-development/ads" element={<Ads />} />
+          <Route path="/business-development/content" element={<Content />} />
+          <Route path="/business-development/seo" element={<Content />} />
+          <Route path="/business-development/email-campaigns" element={<CrmList />} />
+          <Route path="/business-development/events" element={<CrmList />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
