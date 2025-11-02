@@ -52,15 +52,6 @@ export default function Relationship() {
       color: 'bg-red-500',
       route: '/personas',
     },
-    {
-      id: 'contacts',
-      title: 'Contacts',
-      description: 'Manage your network',
-      icon: <Users className="h-6 w-6" />,
-      cta: 'View & Manage',
-      color: 'bg-blue-500',
-      route: '/contacts',
-    },
   ];
 
   return (
@@ -195,8 +186,8 @@ export default function Relationship() {
         )}
       </div>
 
-      {/* 5-Card Action Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      {/* 4-Card Action Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {actionCards.map((card) => (
           <div
             key={card.id}
