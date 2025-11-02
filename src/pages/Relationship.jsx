@@ -1,478 +1,223 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Calendar, FileText, Lightbulb, MessageSquare, Plus, CheckCircle, Clock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Users, Mail, Calendar, FileText, Lightbulb, TrendingUp } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { mockMeetings, mockContacts, mockMeetingMetrics } from '../data/mockData';
+import PageHeader from '../components/PageHeader';
 
-export default function Connect() {
+export default function Relationship() {
   const navigate = useNavigate();
   const [contacts] = useLocalStorage('contacts', []);
-  const [messages] = useLocalStorage('messages', []);
-  const [meetings, setMeetings] = useLocalStorage('meetings', [
-    { id: 1, contactName: 'David Chen', company: 'SolarTrust LLC', date: '2025-01-20', time: '2:00 PM', status: 'upcoming', notes: '' },
-    { id: 2, contactName: 'Sarah Martinez', company: 'Meridian Partners', date: '2025-01-22', time: '10:00 AM', status: 'upcoming', notes: '' },
-  ]);
-  const [insights, setInsights] = useLocalStorage('insights', [
-    { id: 1, date: '2025-01-15', theme: 'Capital Partners', keyTakeaway: 'Interested in renewable energy deals', source: 'David Chen' },
-    { id: 2, date: '2025-01-10', theme: 'Portfolio Managers', keyTakeaway: 'Focus on deal velocity, not just size', source: 'Sarah Martinez' },
-  ]);
-  const [showMeetingModal, setShowMeetingModal] = useState(false);
-  const [showPostMeetingModal, setShowPostMeetingModal] = useState(false);
-  const [showInsightModal, setShowInsightModal] = useState(false);
-  const [selectedMeeting, setSelectedMeeting] = useState(null);
-  const [postMeetingData, setPostMeetingData] = useState({
-    meetingId: '',
-    keyTakeaways: '',
-    painPoints: '',
-    nextSteps: '',
-  });
-  const [insightData, setInsightData] = useState({
-    theme: '',
-    keyTakeaway: '',
-    source: '',
-  });
-
-  // Calculate metrics
-  const emailsSent = messages.filter(m => m.status === 'sent').length;
-  const repliesReceived = messages.filter(m => m.status === 'replied').length;
-  const upcomingMeetings = meetings.filter(m => m.status === 'upcoming').length;
-  const meetingsThisWeek = meetings.filter(m => {
-    const meetingDate = new Date(m.date);
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-    return meetingDate >= weekAgo && m.status === 'completed';
-  }).length;
-  const insightsLogged = insights.length;
-  const themesDiscovered = new Set(insights.map(i => i.theme)).size;
-  const templatesUpdated = 8; // Mock
-  const followUpsDue = contacts.filter(c => {
-    if (!c.nextTouch) return false;
-    const nextDate = new Date(c.nextTouch);
-    return nextDate <= new Date();
-  }).length;
+  const upcomingMeetings = mockMeetings.filter(m => m.status === 'Scheduled').slice(0, 5);
 
   // Calculate today's progress (mock: 2/5 completed)
   const todaysProgress = 2;
   const todaysTarget = 5;
   const progressPercent = (todaysProgress / todaysTarget) * 100;
 
-  const handleMeetingPrep = () => {
-    const nextMeeting = meetings.find(m => m.status === 'upcoming');
-    if (nextMeeting) {
-      setSelectedMeeting(nextMeeting);
-      setShowMeetingModal(true);
-    } else {
-      alert('No upcoming meetings found. Add one to get started.');
-    }
-  };
-
-  const handlePostMeeting = () => {
-    const recentMeeting = meetings.find(m => m.status === 'upcoming');
-    if (recentMeeting) {
-      setPostMeetingData({ ...postMeetingData, meetingId: recentMeeting.id });
-      setShowPostMeetingModal(true);
-    }
-  };
-
-  const handleSavePostMeeting = () => {
-    // Mark meeting as completed and save insights
-    const updatedMeetings = meetings.map(m => 
-      m.id === parseInt(postMeetingData.meetingId)
-        ? { ...m, status: 'completed', notes: postMeetingData.keyTakeaways }
-        : m
-    );
-    setMeetings(updatedMeetings);
-
-    // Create insight if takeaways provided
-    if (postMeetingData.keyTakeaways) {
-      const newInsight = {
-        id: Date.now(),
-        date: new Date().toISOString().split('T')[0],
-        theme: 'Meeting Insight',
-        keyTakeaway: postMeetingData.keyTakeaways,
-        source: meetings.find(m => m.id === parseInt(postMeetingData.meetingId))?.contactName || 'Meeting',
-      };
-      setInsights([...insights, newInsight]);
-    }
-
-    setShowPostMeetingModal(false);
-    setPostMeetingData({ meetingId: '', keyTakeaways: '', painPoints: '', nextSteps: '' });
-  };
-
-  const handleAddInsight = () => {
-    if (insightData.theme && insightData.keyTakeaway) {
-      const newInsight = {
-        id: Date.now(),
-        date: new Date().toISOString().split('T')[0],
-        ...insightData,
-      };
-      setInsights([...insights, newInsight]);
-      setInsightData({ theme: '', keyTakeaway: '', source: '' });
-      setShowInsightModal(false);
-    }
-  };
-
-  // Stage Cards
-  const stages = [
+  // Action cards (simplified, no KPIs)
+  const actionCards = [
+    {
+      id: 'contacts',
+      title: 'Contacts',
+      description: 'Manage your network',
+      icon: <Users className="h-6 w-6" />,
+      cta: 'View & Manage',
+      color: 'bg-blue-500',
+      route: '/contacts',
+    },
     {
       id: 'outreach',
       title: 'Outreach',
+      description: 'Send campaigns',
       icon: <Mail className="h-6 w-6" />,
-      color: 'from-blue-500 to-blue-600',
-      kpi: `${emailsSent} sent / ${repliesReceived} replies`,
-      primaryCta: 'Send Outreach',
-      primaryAction: () => navigate('/messages'),
-      secondaryCta: 'View Contacts',
-      secondaryAction: () => navigate('/contacts'),
-      subtext: 'Reach out to 5 warm or adjacent contacts today.',
-      active: todaysProgress < 1,
+      cta: 'Send Campaign',
+      color: 'bg-orange-500',
+      route: '/business-development/email-campaigns',
     },
     {
-      id: 'meeting-prep',
-      title: 'Meeting Prep',
+      id: 'meetings',
+      title: 'Meetings',
+      description: 'Schedule and prep',
       icon: <Calendar className="h-6 w-6" />,
-      color: 'from-orange-500 to-orange-600',
-      kpi: `${upcomingMeetings} upcoming`,
-      primaryCta: 'Review Agenda',
-      primaryAction: handleMeetingPrep,
-      secondaryCta: 'Add Meeting',
-      secondaryAction: () => alert('Add meeting functionality - integrate with calendar'),
-      subtext: 'Know who you\'re meeting and why it matters.',
-      active: todaysProgress >= 1 && todaysProgress < 2,
+      cta: 'Prep or Add Meeting',
+      color: 'bg-green-500',
+      route: '/meeting-dashboard',
     },
     {
-      id: 'post-meeting',
-      title: 'Post-Meeting',
+      id: 'feedback',
+      title: 'Feedback',
+      description: 'Capture insights',
       icon: <FileText className="h-6 w-6" />,
-      color: 'from-green-500 to-green-600',
-      kpi: `${meetingsThisWeek} logged / ${upcomingMeetings} remaining`,
-      primaryCta: 'Add Shakedown Notes',
-      primaryAction: handlePostMeeting,
-      secondaryCta: 'View Past Meetings',
-      secondaryAction: () => alert('View past meetings'),
-      subtext: 'Capture insights while they\'re fresh.',
-      active: todaysProgress >= 2 && todaysProgress < 3,
+      cta: 'Log Insights',
+      color: 'bg-purple-500',
+      route: '/relationship-dashboard',
     },
     {
       id: 'iterate',
       title: 'Iterate',
+      description: 'Refine approach',
       icon: <Lightbulb className="h-6 w-6" />,
-      color: 'from-purple-500 to-purple-600',
-      kpi: `${insightsLogged} insights / ${themesDiscovered} themes`,
-      primaryCta: 'Review Learnings',
-      primaryAction: () => setShowInsightModal(true),
-      secondaryCta: 'Refine Persona / Message',
-      secondaryAction: () => navigate('/personas'),
-      subtext: 'Update your target list and language from what you\'ve learned.',
-      active: todaysProgress >= 3 && todaysProgress < 4,
-    },
-    {
-      id: 'message',
-      title: 'Message',
-      icon: <MessageSquare className="h-6 w-6" />,
-      color: 'from-red-500 to-red-600',
-      kpi: `${templatesUpdated} templates / ${followUpsDue} follow-ups due`,
-      primaryCta: 'Open Template Library',
-      primaryAction: () => alert('Template library - integrate with email campaigns'),
-      secondaryCta: 'Schedule Follow-up',
-      secondaryAction: () => navigate('/messages'),
-      subtext: 'Sharpen your message and stay consistent.',
-      active: todaysProgress >= 4,
+      cta: 'Review Learnings',
+      color: 'bg-red-500',
+      route: '/personas',
     },
   ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        to="/relationship-dashboard"
-        className="text-sm text-gray-600 hover:text-gray-900 mb-6 inline-block"
-      >
-        ← Back to Relationship Dashboard
-      </Link>
+      <PageHeader
+        title="Connect"
+        subtitle="Your daily business-development loop"
+        backTo="/relationship-dashboard"
+        backLabel="Back to Relationship Dashboard"
+      />
 
-      {/* Header */}
+      {/* Progress Bar */}
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-4xl font-bold mb-2">Connect</h1>
-            <p className="text-gray-600 text-lg">Your daily business-development loop</p>
-          </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-gray-900">
-              {progressPercent.toFixed(0)}% Complete
-            </div>
-            <div className="text-sm text-gray-500">
-              {todaysProgress} of {todaysTarget} stages today
-            </div>
-          </div>
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-sm font-medium text-gray-700">Today's Progress</span>
+          <span className="text-sm font-bold text-gray-900">
+            {todaysProgress}/{todaysTarget} ({progressPercent.toFixed(0)}%)
+          </span>
         </div>
-        {/* Progress Bar */}
         <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
-            className="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full transition-all duration-500"
+          <div
+            className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full transition-all duration-500"
             style={{ width: `${progressPercent}%` }}
           ></div>
         </div>
       </div>
 
-      {/* 5-Stage Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-        {stages.map((stage) => (
-          <div
-            key={stage.id}
-            className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ${
-              stage.active ? 'ring-4 ring-blue-400 ring-opacity-50' : ''
-            }`}
+      {/* Summary Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        {/* Total Contacts */}
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+          <div className="flex items-center gap-2 mb-2">
+            <Users className="h-5 w-5 text-blue-600" />
+            <h3 className="text-sm font-medium text-blue-900">Total Contacts</h3>
+          </div>
+          <p className="text-2xl font-bold text-blue-900">{mockContacts.total}</p>
+        </div>
+
+        {/* Segments */}
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+          <h3 className="text-sm font-medium text-purple-900 mb-2">Segments</h3>
+          <div className="grid grid-cols-2 gap-1 text-xs">
+            <div>
+              <span className="text-purple-700 font-semibold">Aware:</span> {mockContacts.segments.Aware}
+            </div>
+            <div>
+              <span className="text-purple-700 font-semibold">Warm:</span> {mockContacts.segments.Warm}
+            </div>
+            <div>
+              <span className="text-purple-700 font-semibold">Closed:</span> {mockContacts.segments.Closed}
+            </div>
+            <div>
+              <span className="text-purple-700 font-semibold">Lost:</span> {mockContacts.segments.Lost}
+            </div>
+          </div>
+        </div>
+
+        {/* Ecosystem */}
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
+          <h3 className="text-sm font-medium text-orange-900 mb-2">Ecosystem</h3>
+          <div className="space-y-1 text-xs">
+            <div>
+              <span className="text-orange-700 font-semibold">Collaborator:</span> {mockContacts.ecosystem.Collaborator}
+            </div>
+            <div>
+              <span className="text-orange-700 font-semibold">Vendor:</span> {mockContacts.ecosystem.Vendor}
+            </div>
+            <div>
+              <span className="text-orange-700 font-semibold">Partner:</span> {mockContacts.ecosystem.Partner}
+            </div>
+          </div>
+        </div>
+
+        {/* Meeting Goal */}
+        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
+          <div className="flex items-center gap-2 mb-2">
+            <Calendar className="h-5 w-5 text-green-600" />
+            <h3 className="text-sm font-medium text-green-900">Meeting Goal</h3>
+          </div>
+          <p className="text-2xl font-bold text-green-900">{mockMeetingMetrics.weeklyGoal}</p>
+        </div>
+
+        {/* Scheduled */}
+        <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 border border-red-200">
+          <h3 className="text-sm font-medium text-red-900 mb-2">Scheduled</h3>
+          <p className="text-2xl font-bold text-red-900">{mockMeetingMetrics.scheduled}</p>
+        </div>
+      </div>
+
+      {/* Upcoming Meetings */}
+      <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Upcoming Meetings</h2>
+          <button
+            onClick={() => navigate('/meeting-dashboard')}
+            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
           >
-            {/* Card Header */}
-            <div className={`bg-gradient-to-r ${stage.color} p-6 text-white rounded-t-xl`}>
-              <div className="flex items-center gap-3 mb-2">
-                {stage.icon}
-                <h2 className="text-xl font-bold">{stage.title}</h2>
-              </div>
-              {stage.active && (
-                <div className="flex items-center gap-2 text-sm text-white/90">
-                  <Clock className="h-4 w-4" />
-                  <span>Active Stage</span>
-                </div>
-              )}
-            </div>
-
-            {/* Card Body */}
-            <div className="p-6">
-              <div className="mb-4">
-                <p className="text-sm text-gray-500 mb-1">KPI</p>
-                <p className="text-lg font-semibold text-gray-900">{stage.kpi}</p>
-              </div>
-
-              <div className="space-y-2 mb-4">
-                <button
-                  onClick={stage.primaryAction}
-                  className="w-full px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors"
-                >
-                  {stage.primaryCta}
-                </button>
-                <button
-                  onClick={stage.secondaryAction}
-                  className="w-full px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg text-sm font-medium transition-colors"
-                >
-                  {stage.secondaryCta}
-                </button>
-              </div>
-
-              <p className="text-xs text-gray-500 italic">{stage.subtext}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Quick Stats Footer */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {stages.map((stage) => (
-          <div key={stage.id} className="bg-white rounded-lg shadow-sm p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">{stage.title}</p>
-            <div className={`w-3 h-3 rounded-full mx-auto ${
-              stage.active ? 'bg-green-500' : 'bg-gray-300'
-            }`}></div>
-          </div>
-        ))}
-      </div>
-
-      {/* Meeting Prep Modal */}
-      {showMeetingModal && selectedMeeting && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">Meeting Agenda</h2>
-            
-            <div className="space-y-4 mb-6">
-              <div>
-                <label className="text-sm font-medium text-gray-700">Contact</label>
-                <p className="text-lg text-gray-900">{selectedMeeting.contactName}</p>
-                <p className="text-sm text-gray-600">{selectedMeeting.company}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Date & Time</label>
-                <p className="text-lg text-gray-900">{selectedMeeting.date} at {selectedMeeting.time}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Meeting Purpose</label>
-                <textarea
-                  placeholder="Add agenda items, talking points, and key questions..."
-                  rows="4"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Key Topics</label>
-                <textarea
-                  placeholder="What do you want to discuss?"
-                  rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowMeetingModal(false)}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
-              >
-                Close
-              </button>
-              <button
-                onClick={() => {
-                  alert('Agenda saved!');
-                  setShowMeetingModal(false);
-                }}
-                className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
-              >
-                Save Agenda
-              </button>
-            </div>
-          </div>
+            View All →
+          </button>
         </div>
-      )}
-
-      {/* Post-Meeting Modal */}
-      {showPostMeetingModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">Post-Meeting Notes</h2>
-            
-            <div className="space-y-4 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Key Takeaways</label>
-                <textarea
-                  value={postMeetingData.keyTakeaways}
-                  onChange={(e) => setPostMeetingData({ ...postMeetingData, keyTakeaways: e.target.value })}
-                  placeholder="What were the main points discussed?"
-                  rows="4"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Pain Points Identified</label>
-                <textarea
-                  value={postMeetingData.painPoints}
-                  onChange={(e) => setPostMeetingData({ ...postMeetingData, painPoints: e.target.value })}
-                  placeholder="What challenges or pain points did they mention?"
-                  rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Next Steps</label>
-                <textarea
-                  value={postMeetingData.nextSteps}
-                  onChange={(e) => setPostMeetingData({ ...postMeetingData, nextSteps: e.target.value })}
-                  placeholder="What are the agreed-upon next steps?"
-                  rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  setShowPostMeetingModal(false);
-                  setPostMeetingData({ meetingId: '', keyTakeaways: '', painPoints: '', nextSteps: '' });
-                }}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+        {upcomingMeetings.length > 0 ? (
+          <div className="space-y-3">
+            {upcomingMeetings.map((meeting) => (
+              <div
+                key={meeting.id}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
               >
-                Cancel
-              </button>
-              <button
-                onClick={handleSavePostMeeting}
-                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-              >
-                Save Notes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Insights Modal */}
-      {showInsightModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">Review Learnings & Insights</h2>
-            
-            {/* Existing Insights */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-3">Recent Insights</h3>
-              <div className="space-y-3 max-h-64 overflow-y-auto">
-                {insights.map((insight) => (
-                  <div key={insight.id} className="bg-purple-50 border-l-4 border-purple-500 p-4 rounded">
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm font-medium text-purple-900">{insight.theme}</span>
-                      <span className="text-xs text-gray-500">{insight.date}</span>
-                    </div>
-                    <p className="text-sm text-gray-700">{insight.keyTakeaway}</p>
-                    <p className="text-xs text-gray-500 mt-1">Source: {insight.source}</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center text-white font-semibold">
+                    {meeting.avatar}
                   </div>
-                ))}
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{meeting.name}</h3>
+                    <p className="text-sm text-gray-600">{meeting.company}</p>
+                    <p className="text-xs text-gray-500 mt-1">{meeting.datetime}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => navigate(`/meeting-prep/${meeting.id}`)}
+                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
+                >
+                  Prep
+                </button>
               </div>
-            </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8 text-gray-500">
+            <Calendar className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+            <p>No upcoming meetings scheduled</p>
+          </div>
+        )}
+      </div>
 
-            {/* Add New Insight */}
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold mb-3">Add New Insight</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Theme</label>
-                  <input
-                    type="text"
-                    value={insightData.theme}
-                    onChange={(e) => setInsightData({ ...insightData, theme: e.target.value })}
-                    placeholder="e.g., Capital Partners, Portfolio Managers"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Key Takeaway</label>
-                  <textarea
-                    value={insightData.keyTakeaway}
-                    onChange={(e) => setInsightData({ ...insightData, keyTakeaway: e.target.value })}
-                    placeholder="What did you learn?"
-                    rows="3"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Source</label>
-                  <input
-                    type="text"
-                    value={insightData.source}
-                    onChange={(e) => setInsightData({ ...insightData, source: e.target.value })}
-                    placeholder="Contact name or meeting"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
+      {/* 5-Card Action Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        {actionCards.map((card) => (
+          <div
+            key={card.id}
+            onClick={() => navigate(card.route)}
+            className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100"
+          >
+            <div className={`${card.color} p-6 text-white rounded-t-xl`}>
+              <div className="flex items-center gap-3 mb-2">
+                {card.icon}
+                <h3 className="text-lg font-bold">{card.title}</h3>
               </div>
+              <p className="text-sm text-white/90">{card.description}</p>
             </div>
-
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => {
-                  setShowInsightModal(false);
-                  setInsightData({ theme: '', keyTakeaway: '', source: '' });
-                }}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
-              >
-                Close
-              </button>
-              <button
-                onClick={handleAddInsight}
-                className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-              >
-                Add Insight
+            <div className="p-6">
+              <button className="w-full px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors">
+                {card.cta}
               </button>
             </div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }
-
