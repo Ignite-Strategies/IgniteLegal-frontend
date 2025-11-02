@@ -45,7 +45,7 @@ const Review = () => {
 
   const handleApprove = () => {
     console.log(`Approved NDA ID: ${nda.id}`);
-    navigate('/nda-dashboard');
+    navigate(`/approval-final/${nda.id}`);
   };
 
   return (

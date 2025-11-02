@@ -8,6 +8,7 @@ import Ingest from './pages/Ingest';
 import AssignNdaWork from './pages/AssignNdaWork';
 import ReviewNdaWork from './pages/ReviewNdaWork';
 import Review from './pages/Review';
+import ApprovalFinal from './pages/ApprovalFinal';
 import FinancialHub from './pages/FinancialHub';
 import Billing from './pages/Billing';
 import Forecasting from './pages/Forecasting';
@@ -30,6 +31,7 @@ function App() {
           <Route path="/nda/assign" element={<AssignNdaWork />} />
           <Route path="/nda/review" element={<ReviewNdaWork />} />
           <Route path="/review/:id" element={<Review />} />
+          <Route path="/approval-final/:id" element={<ApprovalFinal />} />
           <Route path="/financial-hub" element={<FinancialHub />} />
           <Route path="/financial/billing" element={<Billing />} />
           <Route path="/financial/forecasting" element={<Forecasting />} />
