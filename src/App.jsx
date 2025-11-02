@@ -41,6 +41,7 @@ import EmailCampaigns from './pages/outreach/EmailCampaigns';
 import Ads from './pages/outreach/Ads';
 import Content from './pages/outreach/Content';
 import Seo from './pages/outreach/Seo';
+import Templates from './pages/outreach/Templates';
 
 // Contacts imports
 import ContactsHub from './pages/contacts/ContactsHub';
@@ -109,6 +110,7 @@ function App() {
           <Route path="/outreach/create" element={<CampaignCreator />} />
           <Route path="/outreach/campaign-creator" element={<CampaignCreator />} />
           <Route path="/outreach/individual-email" element={<IndividualEmail />} />
+          <Route path="/outreach/templates" element={<Templates />} />
           <Route path="/business-development/ads" element={<Ads />} />
           <Route path="/business-development/content" element={<Content />} />
           <Route path="/business-development/seo" element={<Seo />} />
