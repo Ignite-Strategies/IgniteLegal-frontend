@@ -112,6 +112,16 @@ export default function BdCentral() {
                   <p className="text-sm text-gray-500">View message history and templates</p>
                 </div>
               </button>
+              <button
+                onClick={() => navigate('/bd-insights')}
+                className="w-full flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-left"
+              >
+                <FileText className="h-5 w-5 text-purple-600" />
+                <div>
+                  <p className="font-medium text-gray-900">Insights & Plan</p>
+                  <p className="text-sm text-gray-500">View BD summary and follow-ups</p>
+                </div>
+              </button>
             </div>
           </div>
         </div>
