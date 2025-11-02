@@ -17,6 +17,8 @@ import Forecasting from './pages/Forecasting';
 import FinancialSpends from './pages/FinancialSpends';
 import CrmHub from './pages/CrmHub';
 import CrmList from './pages/CrmList';
+import CrmCreate from './pages/CrmCreate';
+import CrmPipeline from './pages/CrmPipeline';
 import Personas from './pages/Personas';
 import PersonaCreate from './pages/PersonaCreate';
 import Settings from './pages/Settings';
@@ -49,6 +51,8 @@ function App() {
           <Route path="/bd-central" element={<BdCentral />} />
           <Route path="/crm-hub" element={<CrmHub />} />
           <Route path="/crm/list" element={<CrmList />} />
+          <Route path="/crm/create" element={<CrmCreate />} />
+          <Route path="/crm/pipeline" element={<CrmPipeline />} />
           <Route path="/personas" element={<Personas />} />
           <Route path="/personas/create" element={<PersonaCreate />} />
           <Route path="/business-development/ads" element={<Ads />} />
