@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Mail, FileText, Lightbulb, TrendingUp, Send, BarChart3, UserCircle, Plus } from 'lucide-react';
+import { Users, Mail, FileText, Lightbulb, TrendingUp, Send, BarChart3, UserCircle, Plus, MessageSquare } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { mockContacts, mockPersonTypes } from '../../data/mockData';
 import PageHeader from '../../components/PageHeader';
@@ -50,6 +50,15 @@ export default function Engage() {
       cta: 'View Analytics',
       color: 'bg-purple-500',
       route: '/outreach/analytics',
+    },
+    {
+      id: 'insights',
+      title: 'Insights',
+      description: 'What people actually said',
+      icon: <MessageSquare className="h-6 w-6" />,
+      cta: 'View Insights',
+      color: 'bg-indigo-500',
+      route: '/engage/insights',
     },
     {
       id: 'contacts',

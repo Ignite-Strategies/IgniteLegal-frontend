@@ -29,6 +29,7 @@ import AttractHub from './pages/attract/AttractHub';
 // Engage imports (formerly Relationship)
 import EngageDashboard from './pages/relationship/RelationshipDashboard';
 import Engage from './pages/relationship/Engage';
+import EngagementInsights from './pages/engage/EngagementInsights';
 import Ecosystem from './pages/relationship/Ecosystem';
 
 // Meetings imports
@@ -110,6 +111,7 @@ function App() {
           
           {/* Engage Routes (formerly Relationship) */}
           <Route path="/engage" element={<Engage />} />
+          <Route path="/engage/insights" element={<EngagementInsights />} />
           <Route path="/engage-dashboard" element={<EngageDashboard />} />
           {/* Meetings Routes */}
           <Route path="/meeting-dashboard" element={<MeetingDashboard />} />
