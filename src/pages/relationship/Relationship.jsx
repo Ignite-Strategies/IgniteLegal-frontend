@@ -1,56 +1,58 @@
 import { useNavigate } from 'react-router-dom';
-import { Users, Mail, Calendar, FileText, Lightbulb, TrendingUp } from 'lucide-react';
+import { Users, Mail, FileText, Lightbulb, TrendingUp, Send, BarChart3 } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { mockMeetings, mockContacts, mockMeetingMetrics } from '../../data/mockData';
+import { mockContacts } from '../../data/mockData';
 import PageHeader from '../../components/PageHeader';
 
 export default function Relationship() {
   const navigate = useNavigate();
   const [contacts] = useLocalStorage('contacts', []);
-  const upcomingMeetings = mockMeetings.filter(m => m.status === 'Scheduled').slice(0, 5);
 
-  // Calculate today's progress (mock: 2/5 completed)
-  const todaysProgress = 2;
-  const todaysTarget = 5;
-  const progressPercent = (todaysProgress / todaysTarget) * 100;
+  // Mock engagement metrics
+  const engagementMetrics = {
+    campaignsSent: 12,
+    activeCampaigns: 3,
+    openRate: 68,
+    responseRate: 24,
+  };
 
-  // Action cards (simplified, no KPIs) - Outreach first
+  // Action cards focused on engagement activities
   const actionCards = [
     {
       id: 'outreach',
       title: 'Outreach',
-      description: 'Send campaigns',
+      description: 'Send campaigns and engage',
       icon: <Mail className="h-6 w-6" />,
       cta: 'Engage Contacts',
       color: 'bg-orange-500',
       route: '/outreach',
     },
     {
-      id: 'meetings',
-      title: 'Meetings',
-      description: 'Schedule and prep',
-      icon: <Calendar className="h-6 w-6" />,
-      cta: 'Prep or Add Meeting',
-      color: 'bg-green-500',
-      route: '/meeting-dashboard',
+      id: 'campaigns',
+      title: 'Campaigns',
+      description: 'View and manage campaigns',
+      icon: <Send className="h-6 w-6" />,
+      cta: 'View Campaigns',
+      color: 'bg-blue-500',
+      route: '/outreach/email-campaigns',
     },
     {
-      id: 'feedback',
-      title: 'Feedback',
-      description: 'Capture insights',
-      icon: <FileText className="h-6 w-6" />,
-      cta: 'Log Insights',
+      id: 'analytics',
+      title: 'Analytics',
+      description: 'Track engagement metrics',
+      icon: <BarChart3 className="h-6 w-6" />,
+      cta: 'View Analytics',
       color: 'bg-purple-500',
-      route: '/engage-dashboard',
+      route: '/outreach/analytics',
     },
     {
-      id: 'analyze',
-      title: 'Analyze',
-      description: 'Review learnings',
-      icon: <Lightbulb className="h-6 w-6" />,
-      cta: 'Review Learnings',
-      color: 'bg-red-500',
-      route: '/personas',
+      id: 'contacts',
+      title: 'Contacts',
+      description: 'Manage your contacts',
+      icon: <Users className="h-6 w-6" />,
+      cta: 'Manage Contacts',
+      color: 'bg-green-500',
+      route: '/contacts',
     },
   ];
 
@@ -63,24 +65,8 @@ export default function Relationship() {
         backLabel="Back to Growth Dashboard"
       />
 
-      {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-700">Today's Progress</span>
-          <span className="text-sm font-bold text-gray-900">
-            {todaysProgress}/{todaysTarget} ({progressPercent.toFixed(0)}%)
-          </span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full transition-all duration-500"
-            style={{ width: `${progressPercent}%` }}
-          ></div>
-        </div>
-      </div>
-
-      {/* Summary Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+      {/* Engagement Metrics Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {/* Total Contacts */}
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
           <div className="flex items-center gap-2 mb-2">
@@ -90,86 +76,55 @@ export default function Relationship() {
           <p className="text-2xl font-bold text-blue-900">{mockContacts.total}</p>
         </div>
 
-        {/* Segments */}
-        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
-          <h3 className="text-sm font-medium text-purple-900 mb-2">Segments</h3>
-          <div className="grid grid-cols-2 gap-1 text-xs">
-            <div>
-              <span className="text-purple-700 font-semibold">Aware:</span> {mockContacts.segments.Aware}
-            </div>
-            <div>
-              <span className="text-purple-700 font-semibold">Warm:</span> {mockContacts.segments.Warm}
-            </div>
-            <div>
-              <span className="text-purple-700 font-semibold">Closed:</span> {mockContacts.segments.Closed}
-            </div>
-            <div>
-              <span className="text-purple-700 font-semibold">Lost:</span> {mockContacts.segments.Lost}
-            </div>
+        {/* Active Campaigns */}
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
+          <div className="flex items-center gap-2 mb-2">
+            <Send className="h-5 w-5 text-orange-600" />
+            <h3 className="text-sm font-medium text-orange-900">Active Campaigns</h3>
           </div>
+          <p className="text-2xl font-bold text-orange-900">{engagementMetrics.activeCampaigns}</p>
         </div>
 
-        {/* Ecosystem - Expand to full row below */}
-
-        {/* Meeting Goal */}
+        {/* Open Rate */}
         <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="h-5 w-5 text-green-600" />
-            <h3 className="text-sm font-medium text-green-900">Meeting Goal</h3>
+            <TrendingUp className="h-5 w-5 text-green-600" />
+            <h3 className="text-sm font-medium text-green-900">Open Rate</h3>
           </div>
-          <p className="text-2xl font-bold text-green-900">{mockMeetingMetrics.weeklyGoal}</p>
+          <p className="text-2xl font-bold text-green-900">{engagementMetrics.openRate}%</p>
         </div>
 
-        {/* Scheduled */}
-        <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 border border-red-200">
-          <h3 className="text-sm font-medium text-red-900 mb-2">Scheduled</h3>
-          <p className="text-2xl font-bold text-red-900">{mockMeetingMetrics.scheduled}</p>
+        {/* Response Rate */}
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+          <div className="flex items-center gap-2 mb-2">
+            <Mail className="h-5 w-5 text-purple-600" />
+            <h3 className="text-sm font-medium text-purple-900">Response Rate</h3>
+          </div>
+          <p className="text-2xl font-bold text-purple-900">{engagementMetrics.responseRate}%</p>
         </div>
       </div>
 
-      {/* Upcoming Meetings */}
+      {/* Contact Segments */}
       <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Upcoming Meetings</h2>
-          <button
-            onClick={() => navigate('/meeting-dashboard')}
-            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-          >
-            View All →
-          </button>
+        <h2 className="text-2xl font-bold mb-4">Contact Segments</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+            <h3 className="text-sm font-medium text-blue-900 mb-1">Aware</h3>
+            <p className="text-2xl font-bold text-blue-900">{mockContacts.segments.Aware}</p>
+          </div>
+          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg p-4 border border-yellow-200">
+            <h3 className="text-sm font-medium text-yellow-900 mb-1">Warm</h3>
+            <p className="text-2xl font-bold text-yellow-900">{mockContacts.segments.Warm}</p>
+          </div>
+          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
+            <h3 className="text-sm font-medium text-green-900 mb-1">Closed</h3>
+            <p className="text-2xl font-bold text-green-900">{mockContacts.segments.Closed}</p>
+          </div>
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
+            <h3 className="text-sm font-medium text-gray-900 mb-1">Lost</h3>
+            <p className="text-2xl font-bold text-gray-900">{mockContacts.segments.Lost}</p>
+          </div>
         </div>
-        {upcomingMeetings.length > 0 ? (
-          <div className="space-y-3">
-            {upcomingMeetings.map((meeting) => (
-              <div
-                key={meeting.id}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center text-white font-semibold">
-                    {meeting.avatar}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{meeting.name}</h3>
-                    <p className="text-sm text-gray-600">{meeting.company}</p>
-                    <p className="text-xs text-gray-500 mt-1">{meeting.datetime}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => navigate(`/meeting-prep/${meeting.id}`)}
-                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
-                >
-                  Prep
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            <Calendar className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-            <p>No upcoming meetings scheduled</p>
-          </div>
-        )}
       </div>
 
       {/* Ecosystem Summary */}
