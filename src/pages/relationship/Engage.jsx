@@ -131,32 +131,72 @@ export default function Engage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {mockPersonTypes.map((persona, idx) => {
-            const colors = [
-              'from-red-50 to-red-100 border-red-200 text-red-900',
-              'from-orange-50 to-orange-100 border-orange-200 text-orange-900',
-              'from-purple-50 to-purple-100 border-purple-200 text-purple-900',
-              'from-blue-50 to-blue-100 border-blue-200 text-blue-900',
-            ];
-            const colorClass = colors[idx % colors.length];
-            
-            return (
-              <div
-                key={persona.type}
-                className={`bg-gradient-to-br ${colorClass.split(' ')[0]} ${colorClass.split(' ')[1]} rounded-lg p-4 border ${colorClass.split(' ')[2]} cursor-pointer hover:shadow-md transition-shadow`}
-                onClick={() => navigate('/personas')}
-              >
-                <h3 className="text-lg font-bold mb-1">{persona.type}</h3>
-                <p className="text-2xl font-bold">{persona.count}</p>
-                <p className="text-xs mt-2 opacity-75">contacts</p>
+        {/* Persona Cards - showing actual personas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+          {/* Capital Partner */}
+          <div
+            className="bg-white border-2 border-red-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer"
+            onClick={() => navigate('/personas')}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                <UserCircle className="h-5 w-5 text-red-600" />
               </div>
-            );
-          })}
+              <div>
+                <h3 className="font-semibold text-gray-900">David Chen</h3>
+                <p className="text-xs text-gray-500">Capital Partner</p>
+              </div>
+            </div>
+            <p className="text-sm font-medium text-gray-700 mb-1">Ares Capital</p>
+            <p className="text-xs text-gray-500 line-clamp-2">
+              Managing complex deal structures requires rapid legal document turnaround
+            </p>
+          </div>
+
+          {/* Portfolio Manager */}
+          <div
+            className="bg-white border-2 border-orange-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer"
+            onClick={() => navigate('/personas')}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                <UserCircle className="h-5 w-5 text-orange-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900">Sarah Martinez</h3>
+                <p className="text-xs text-gray-500">Portfolio Manager</p>
+              </div>
+            </div>
+            <p className="text-sm font-medium text-gray-700 mb-1">Orion Holdings</p>
+            <p className="text-xs text-gray-500 line-clamp-2">
+              Overseeing multiple portfolio companies means constant legal document review
+            </p>
+          </div>
+
+          {/* Investment Director */}
+          <div
+            className="bg-white border-2 border-purple-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer"
+            onClick={() => navigate('/personas')}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                <UserCircle className="h-5 w-5 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900">Michael Thompson</h3>
+                <p className="text-xs text-gray-500">Investment Director</p>
+              </div>
+            </div>
+            <p className="text-sm font-medium text-gray-700 mb-1">Meridian Partners</p>
+            <p className="text-xs text-gray-500 line-clamp-2">
+              Due diligence processes require extensive legal document management
+            </p>
+          </div>
         </div>
+
         <button
           onClick={() => navigate('/personas')}
-          className="w-full mt-4 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium flex items-center justify-center gap-2"
+          className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium flex items-center justify-center gap-2"
         >
           View All Personas →
         </button>
