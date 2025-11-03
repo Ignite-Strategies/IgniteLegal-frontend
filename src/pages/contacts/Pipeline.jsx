@@ -1,229 +1,264 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { User, Building2, Plus, Inbox } from 'lucide-react';
+import { User, Building2, Inbox } from 'lucide-react';
 import PageHeader from '../../components/PageHeader';
 
+// Pipeline stages matching BD Pipeline
 const stages = [
-  { id: 'prospect', name: 'Prospect', color: 'bg-gray-100', borderColor: 'border-gray-300', textColor: 'text-gray-700' },
-  { id: 'warm', name: 'Warm', color: 'bg-orange-100', borderColor: 'border-orange-300', textColor: 'text-orange-700' },
-  { id: 'engaged', name: 'Engaged', color: 'bg-blue-100', borderColor: 'border-blue-300', textColor: 'text-blue-700' },
-  { id: 'client', name: 'Client', color: 'bg-green-100', borderColor: 'border-green-300', textColor: 'text-green-700' }
+  { id: 'prospecting', name: 'Prospecting', color: 'bg-gray-100', borderColor: 'border-gray-300', textColor: 'text-gray-700' },
+  { id: 'qualification', name: 'Qualification', color: 'bg-blue-100', borderColor: 'border-blue-300', textColor: 'text-blue-700' },
+  { id: 'proposal', name: 'Proposal', color: 'bg-yellow-100', borderColor: 'border-yellow-300', textColor: 'text-yellow-700' },
+  { id: 'negotiation', name: 'Negotiation', color: 'bg-orange-100', borderColor: 'border-orange-300', textColor: 'text-orange-700' },
+  { id: 'closed-won', name: 'Closed Won', color: 'bg-green-100', borderColor: 'border-green-300', textColor: 'text-green-700' },
+  { id: 'closed-lost', name: 'Closed Lost', color: 'bg-red-100', borderColor: 'border-red-300', textColor: 'text-red-700' }
+];
+
+// Contact types
+const contactTypes = [
+  { key: 'all', label: 'All', color: 'bg-gray-100 text-gray-700' },
+  { key: 'customers', label: 'Customers', color: 'bg-blue-100 text-blue-700' },
+  { key: 'collaborators', label: 'Collaborators', color: 'bg-green-100 text-green-700' },
+  { key: 'tech-partners', label: 'Tech Partners', color: 'bg-purple-100 text-purple-700' }
 ];
 
 export default function Pipeline() {
   const navigate = useNavigate();
   const [contacts, setContacts] = useLocalStorage('contacts', []);
-  const [draggedContact, setDraggedContact] = useState(null);
-  const [draggedOverStage, setDraggedOverStage] = useState(null);
+  const [selectedStage, setSelectedStage] = useState(null);
+  const [contactType, setContactType] = useState('all');
 
-  // Group contacts by stage
-  const contactsByStage = {
-    prospect: contacts.filter(c => (c.stage || 'Prospect').toLowerCase() === 'prospect'),
-    warm: contacts.filter(c => (c.stage || '').toLowerCase() === 'warm'),
-    engaged: contacts.filter(c => (c.stage || '').toLowerCase() === 'engaged'),
-    client: contacts.filter(c => (c.stage || '').toLowerCase() === 'client')
-  };
-
-  const handleDragStart = (contact) => {
-    setDraggedContact(contact);
-  };
-
-  const handleDragOver = (e, stageId) => {
-    e.preventDefault();
-    setDraggedOverStage(stageId);
-  };
-
-  const handleDragLeave = () => {
-    setDraggedOverStage(null);
-  };
-
-  const handleDrop = (e, targetStage) => {
-    e.preventDefault();
-    setDraggedOverStage(null);
-    if (!draggedContact) return;
-
-    // Update contact stage
-    const updated = contacts.map(c => {
-      if (c.id === draggedContact.id) {
-        const updatedContact = {
-          ...c,
-          stage: targetStage.charAt(0).toUpperCase() + targetStage.slice(1)
-        };
-        
-        // Log activity
-        const activities = JSON.parse(localStorage.getItem('activities') || '[]');
-        activities.unshift({
-          id: `activity-${Date.now()}`,
-          contactId: c.id,
-          contactName: c.name,
-          type: 'stage_change',
-          message: `${c.name} moved to ${targetStage}`,
-          timestamp: new Date().toISOString()
-        });
-        localStorage.setItem('activities', JSON.stringify(activities));
-
-        return updatedContact;
-      }
-      return c;
+  // Group contacts by stage with normalized stage names
+  const contactsByStage = useMemo(() => {
+    const grouped = {};
+    stages.forEach(stage => {
+      grouped[stage.id] = contacts.filter(c => {
+        const contactStage = (c.stage || 'Prospecting').toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace('prospect', 'prospecting')
+          .replace('warm', 'qualification')
+          .replace('engaged', 'proposal')
+          .replace('client', 'closed-won');
+        return contactStage === stage.id;
+      });
     });
+    return grouped;
+  }, [contacts]);
 
-    setContacts(updated);
-    setDraggedContact(null);
+  const getStageCount = (stageId) => {
+    const deals = contactsByStage[stageId] || [];
+    if (contactType === 'all') return deals.length;
+    return deals.filter(deal => (deal.type || 'customers') === contactType).length;
   };
 
-  const handleDragEnd = () => {
-    setDraggedContact(null);
-    setDraggedOverStage(null);
+  const getFilteredContacts = (stageId) => {
+    const deals = contactsByStage[stageId] || [];
+    if (contactType === 'all') return deals;
+    return deals.filter(deal => (deal.type || 'customers') === contactType);
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      Cold: 'bg-gray-100 text-gray-800',
-      Warm: 'bg-orange-100 text-orange-800',
-      Active: 'bg-blue-100 text-blue-800',
-      Signed: 'bg-green-100 text-green-800'
+  const formatCurrency = (amount) => {
+    if (!amount || amount === 0) return '$0';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const getStageTotal = (stageId) => {
+    const deals = contactsByStage[stageId] || [];
+    return deals.reduce((sum, deal) => sum + (deal.value || deal.dealValue || 0), 0);
+  };
+
+  const getContactTypeColor = (type) => {
+    const contactTypeMap = {
+      'customers': 'bg-blue-100 text-blue-700',
+      'collaborators': 'bg-green-100 text-green-700',
+      'tech-partners': 'bg-purple-100 text-purple-700',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return contactTypeMap[type] || 'bg-gray-100 text-gray-700';
   };
 
-  // Filter by stage
-  const [selectedStage, setSelectedStage] = useState('all');
-
-  const filteredContacts = selectedStage === 'all' 
-    ? contacts 
-    : contacts.filter(c => (c.stage || 'Prospect').toLowerCase() === selectedStage);
-
-  const totalByStage = stages.reduce((acc, stage) => {
-    acc[stage.id] = contactsByStage[stage.id]?.length || 0;
-    return acc;
-  }, {});
+  const getContactTypeLabel = (type) => {
+    if (type === 'tech-partners') return 'Tech Partner';
+    return type ? type.charAt(0).toUpperCase() + type.slice(1) : 'Customer';
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <PageHeader
         title="Pipeline"
-        subtitle="Manage contacts across pipeline stages"
+        subtitle="Manage deals and contacts across pipeline stages"
         backTo="/contacts"
         backLabel="← Back to Contacts"
       />
 
-      {/* Stage Filters */}
+      {/* Contact Type Filter */}
       <div className="bg-white rounded-xl shadow-lg p-4 mb-6">
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setSelectedStage('all')}
-            className={`px-4 py-2 rounded-lg font-medium transition ${
-              selectedStage === 'all'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            All ({contacts.length})
-          </button>
-          {stages.map((stage) => (
-            <button
-              key={stage.id}
-              onClick={() => setSelectedStage(stage.id)}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                selectedStage === stage.id
-                  ? `${stage.color} ${stage.textColor} border-2 ${stage.borderColor}`
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {stage.name} ({totalByStage[stage.id] || 0})
-            </button>
-          ))}
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700">Filter by contact type:</span>
+          <div className="flex gap-2">
+            {contactTypes.map((type) => (
+              <button
+                key={type.key}
+                onClick={() => setContactType(type.key)}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  contactType === type.key 
+                    ? `${type.color} ring-2 ring-current` 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {type.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Contacts List */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        {filteredContacts.length === 0 ? (
-          <div className="text-center py-12">
-            <Inbox className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 mb-2">No contacts in this stage</p>
-            <button
-              onClick={() => navigate('/contacts')}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-            >
-              Add Contacts
-            </button>
+      {/* Stage Overview Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        {stages.map((stage) => (
+          <div
+            key={stage.id}
+            className={`${stage.color} rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow ${
+              selectedStage === stage.id ? 'ring-2 ring-indigo-500' : ''
+            }`}
+            onClick={() => setSelectedStage(selectedStage === stage.id ? null : stage.id)}
+          >
+            <h3 className="font-semibold text-gray-900 mb-1 text-base">{stage.name}</h3>
+            <div className="text-sm text-gray-600">
+              {getStageCount(stage.id)} {getStageCount(stage.id) === 1 ? 'deal' : 'deals'}
+            </div>
+            <div className="text-sm font-medium text-gray-800 mt-1">
+              {formatCurrency(getStageTotal(stage.id))}
+            </div>
           </div>
-        ) : (
-          <div className="divide-y divide-gray-200">
-            {filteredContacts.map((contact) => {
-              const contactStage = (contact.stage || 'Prospect').toLowerCase();
-              const stageInfo = stages.find(s => s.id === contactStage) || stages[0];
-              
-              return (
-                <div
-                  key={contact.id}
-                  className="p-4 hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 flex-1">
-                      {contact.photoUrl ? (
-                        <img src={contact.photoUrl} alt={contact.name} className="h-10 w-10 rounded-full" />
-                      ) : (
-                        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                          <User className="h-5 w-5 text-blue-600" />
-                        </div>
-                      )}
+        ))}
+      </div>
+
+      {/* Selected Stage Details */}
+      {selectedStage && (
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {stages.find(s => s.id === selectedStage)?.name} Deals
+            </h2>
+            <div className="text-sm text-gray-600">
+              {getStageCount(selectedStage)} deals • {formatCurrency(getStageTotal(selectedStage))}
+            </div>
+          </div>
+
+          {/* Contacts List */}
+          {getFilteredContacts(selectedStage).length === 0 ? (
+            <div className="text-center py-12">
+              <Inbox className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 mb-2">No contacts in this stage</p>
+              <button
+                onClick={() => navigate('/contacts')}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+              >
+                Add Contacts
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {getFilteredContacts(selectedStage).map((contact) => {
+                const contactTypeValue = contact.type || 'customers';
+                const stageInfo = stages.find(s => s.id === selectedStage) || stages[0];
+                
+                return (
+                  <div
+                    key={contact.id}
+                    className="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow"
+                  >
+                    <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3">
-                          <p className="font-semibold text-gray-900">{contact.name}</p>
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="font-semibold text-gray-900 text-base">{contact.name || contact.contact || 'Unknown'}</div>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getContactTypeColor(contactTypeValue)}`}>
+                            {getContactTypeLabel(contactTypeValue)}
+                          </span>
                           <span className={`inline-flex px-2 py-1 text-xs rounded-full font-medium ${stageInfo.color} ${stageInfo.textColor}`}>
                             {stageInfo.name}
                           </span>
-                          {contact.status && (
-                            <span className={`inline-flex px-2 py-1 text-xs rounded-full ${getStatusColor(contact.status)}`}>
-                              {contact.status}
-                            </span>
-                          )}
                         </div>
-                        <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
-                          {contact.company && (
-                            <div className="flex items-center gap-1">
-                              <Building2 className="h-4 w-4" />
-                              <span>{contact.company}</span>
-                            </div>
-                          )}
-                          {contact.email && (
-                            <span>{contact.email}</span>
-                          )}
-                          {contact.nextTouch && (
-                            <span className="text-orange-600">Next: {contact.nextTouch}</span>
-                          )}
+                        <div className="text-sm text-gray-600">
+                          {contact.company || 'No company'} {contact.title && `• ${contact.title}`}
+                        </div>
+                        <div className="text-sm text-gray-500 mt-1">
+                          {formatCurrency(contact.value || contact.dealValue || 0)} {contact.source && `• ${contact.source}`}
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <select
-                        value={contactStage}
-                        onChange={(e) => {
-                          const updated = contacts.map(c => 
-                            c.id === contact.id 
-                              ? { ...c, stage: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1) }
-                              : c
-                          );
-                          setContacts(updated);
-                        }}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium border-2 ${stageInfo.borderColor} ${stageInfo.color} ${stageInfo.textColor} focus:outline-none focus:ring-2 focus:ring-indigo-500`}
-                      >
-                        {stages.map(stage => (
-                          <option key={stage.id} value={stage.id}>
-                            {stage.name}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <div className="text-lg font-semibold text-gray-900">
+                            {formatCurrency(contact.value || contact.dealValue || 0)}
+                          </div>
+                          {contact.source && (
+                            <div className="text-xs text-gray-500 capitalize">
+                              {contact.source}
+                            </div>
+                          )}
+                        </div>
+                        <select
+                          value={selectedStage}
+                          onChange={(e) => {
+                            const updated = contacts.map(c => 
+                              c.id === contact.id 
+                                ? { 
+                                    ...c, 
+                                    stage: e.target.value.split('-').map(word => 
+                                      word.charAt(0).toUpperCase() + word.slice(1)
+                                    ).join(' ')
+                                  }
+                                : c
+                            );
+                            setContacts(updated);
+                            setSelectedStage(e.target.value);
+                          }}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-medium border-2 ${stageInfo.borderColor} ${stageInfo.color} ${stageInfo.textColor} focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                        >
+                          {stages.map(stage => (
+                            <option key={stage.id} value={stage.id}>
+                              {stage.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Quick Stats */}
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Pipeline Summary</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-gray-900">
+              {contacts.length}
+            </div>
+            <div className="text-sm text-gray-600">Total Contacts</div>
           </div>
-        )}
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">
+              {formatCurrency(getStageTotal('closed-won'))}
+            </div>
+            <div className="text-sm text-gray-600">Closed Won</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">
+              {formatCurrency(stages.reduce((sum, stage) => sum + getStageTotal(stage.id), 0))}
+            </div>
+            <div className="text-sm text-gray-600">Total Pipeline Value</div>
+          </div>
+        </div>
       </div>
     </div>
   );
