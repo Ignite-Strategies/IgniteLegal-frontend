@@ -215,91 +215,6 @@ export default function ContactManageHome() {
         }
       />
 
-      {/* Contact Lists Grid */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Lists</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {contactLists.map((list) => {
-            const colors = getColorClasses(list.color);
-            const isHydrating = hydratingList === list.id;
-            
-            return (
-              <div
-                key={list.id}
-                onClick={() => handleHydrateList(list.id)}
-                className={`bg-white rounded-xl shadow-lg border-2 ${colors.border} ${colors.hover} transition-all p-6 cursor-pointer relative overflow-hidden`}
-              >
-                {/* Loading Overlay */}
-                {isHydrating && (
-                  <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10">
-                    <div className="text-center">
-                      <RefreshCw className="h-8 w-8 text-indigo-600 animate-spin mx-auto mb-2" />
-                      <p className="text-sm text-gray-600">Hydrating from backend...</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className={`${colors.icon} text-white rounded-lg p-3`}>
-                      {list.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">
-                        {list.name}
-                      </h3>
-                      <p className="text-sm text-gray-600">{list.description}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Stats Row */}
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-gray-400" />
-                    <span className="text-2xl font-bold text-gray-900">{list.count}</span>
-                    <span className="text-sm text-gray-500">contacts</span>
-                  </div>
-                  {list.uploadedLast30Days > 0 && (
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">
-                        +{list.uploadedLast30Days} last 30 days
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {list.tags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className={`${colors.badge} px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1`}
-                    >
-                      <Tag className="h-3 w-3" />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                  <span className="text-xs text-gray-500">
-                    Last hydrated: {new Date(list.lastHydrated).toLocaleDateString()}
-                  </span>
-                  <div className={`flex items-center gap-1 ${colors.text} font-semibold`}>
-                    <span>Hydrate</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Campaign Lists Section */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
@@ -316,27 +231,110 @@ export default function ContactManageHome() {
           </button>
         </div>
         
-        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-dashed border-gray-300">
-          <div className="text-center py-8">
-            <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 mb-2">No campaign lists yet</p>
-            <p className="text-sm text-gray-400 mb-6">Create lists from your contacts for campaigns</p>
-            <div className="flex gap-3 justify-center">
-              <button
-                onClick={() => navigate('/contact-list-builder')}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-              >
-                Create First List
-              </button>
-              <button
-                onClick={() => navigate('/contact-list-manager')}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
-              >
-                View All Lists
-              </button>
+        {lists.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-dashed border-gray-300">
+            <div className="text-center py-8">
+              <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 mb-2">No campaign lists yet</p>
+              <p className="text-sm text-gray-400 mb-6">Create lists from your contacts for campaigns</p>
+              <div className="flex gap-3 justify-center">
+                <button
+                  onClick={() => navigate('/contact-list-builder')}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                >
+                  Create First List
+                </button>
+                <button
+                  onClick={() => navigate('/contact-list-manager')}
+                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+                >
+                  View All Lists
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {contactLists.map((list) => {
+              const colors = getColorClasses(list.color);
+              const isHydrating = hydratingList === list.id;
+              
+              return (
+                <div
+                  key={list.id}
+                  onClick={() => handleHydrateList(list.id)}
+                  className={`bg-white rounded-xl shadow-lg border-2 ${colors.border} ${colors.hover} transition-all p-6 cursor-pointer relative overflow-hidden`}
+                >
+                  {/* Loading Overlay */}
+                  {isHydrating && (
+                    <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10">
+                      <div className="text-center">
+                        <RefreshCw className="h-8 w-8 text-indigo-600 animate-spin mx-auto mb-2" />
+                        <p className="text-sm text-gray-600">Hydrating from backend...</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-4">
+                      <div className={`${colors.icon} text-white rounded-lg p-3`}>
+                        {list.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-1">
+                          {list.name}
+                        </h3>
+                        <p className="text-sm text-gray-600">{list.description}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stats Row */}
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4 text-gray-400" />
+                      <span className="text-2xl font-bold text-gray-900">{list.count}</span>
+                      <span className="text-sm text-gray-500">contacts</span>
+                    </div>
+                    {list.uploadedLast30Days > 0 && (
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-gray-400" />
+                        <span className="text-sm text-gray-600">
+                          +{list.uploadedLast30Days} last 30 days
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {list.tags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className={`${colors.badge} px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1`}
+                      >
+                        <Tag className="h-3 w-3" />
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                    <span className="text-xs text-gray-500">
+                      Last hydrated: {new Date(list.lastHydrated).toLocaleDateString()}
+                    </span>
+                    <div className={`flex items-center gap-1 ${colors.text} font-semibold`}>
+                      <span>Hydrate</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* CSV Upload Modal */}
