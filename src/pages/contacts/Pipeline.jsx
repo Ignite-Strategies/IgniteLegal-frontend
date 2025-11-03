@@ -4,14 +4,12 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { User, Building2, Inbox } from 'lucide-react';
 import PageHeader from '../../components/PageHeader';
 
-// Pipeline stages matching BD Pipeline
+// Pipeline stages for legal services
 const stages = [
-  { id: 'prospecting', name: 'Prospecting', color: 'bg-gray-100', borderColor: 'border-gray-300', textColor: 'text-gray-700' },
-  { id: 'qualification', name: 'Qualification', color: 'bg-blue-100', borderColor: 'border-blue-300', textColor: 'text-blue-700' },
-  { id: 'proposal', name: 'Proposal', color: 'bg-yellow-100', borderColor: 'border-yellow-300', textColor: 'text-yellow-700' },
-  { id: 'negotiation', name: 'Negotiation', color: 'bg-orange-100', borderColor: 'border-orange-300', textColor: 'text-orange-700' },
-  { id: 'closed-won', name: 'Closed Won', color: 'bg-green-100', borderColor: 'border-green-300', textColor: 'text-green-700' },
-  { id: 'closed-lost', name: 'Closed Lost', color: 'bg-red-100', borderColor: 'border-red-300', textColor: 'text-red-700' }
+  { id: 'interested', name: 'Interested', color: 'bg-blue-100', borderColor: 'border-blue-300', textColor: 'text-blue-700' },
+  { id: 'had-meeting', name: 'Had Meeting', color: 'bg-purple-100', borderColor: 'border-purple-300', textColor: 'text-purple-700' },
+  { id: 'contract-negotiations', name: 'Contract Negotiations', color: 'bg-orange-100', borderColor: 'border-orange-300', textColor: 'text-orange-700' },
+  { id: 'contract-signed', name: 'Contract Signed', color: 'bg-green-100', borderColor: 'border-green-300', textColor: 'text-green-700' }
 ];
 
 // Contact types
@@ -33,12 +31,19 @@ export default function Pipeline() {
     const grouped = {};
     stages.forEach(stage => {
       grouped[stage.id] = contacts.filter(c => {
-        const contactStage = (c.stage || 'Prospecting').toLowerCase()
+        const contactStage = (c.stage || 'Interested').toLowerCase()
           .replace(/\s+/g, '-')
-          .replace('prospect', 'prospecting')
-          .replace('warm', 'qualification')
-          .replace('engaged', 'proposal')
-          .replace('client', 'closed-won');
+          .replace('prospect', 'interested')
+          .replace('prospecting', 'interested')
+          .replace('warm', 'interested')
+          .replace('meeting', 'had-meeting')
+          .replace('had-meeting', 'had-meeting')
+          .replace('negotiation', 'contract-negotiations')
+          .replace('negotiations', 'contract-negotiations')
+          .replace('proposal', 'contract-negotiations')
+          .replace('client', 'contract-signed')
+          .replace('closed-won', 'contract-signed')
+          .replace('signed', 'contract-signed');
         return contactStage === stage.id;
       });
     });
@@ -118,7 +123,7 @@ export default function Pipeline() {
       </div>
 
       {/* Stage Overview Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {stages.map((stage) => (
           <div
             key={stage.id}
@@ -248,9 +253,9 @@ export default function Pipeline() {
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600">
-              {formatCurrency(getStageTotal('closed-won'))}
+              {formatCurrency(getStageTotal('contract-signed'))}
             </div>
-            <div className="text-sm text-gray-600">Closed Won</div>
+            <div className="text-sm text-gray-600">Contract Signed</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600">
