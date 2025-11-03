@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Calendar, CheckCircle, FileText, Clock } from 'lucide-react';
+import { Calendar, CheckCircle, Clock } from 'lucide-react';
 import { mockMeetings } from '../../data/mockData';
 
 export default function MeetingPrep() {
   const { id } = useParams();
   const navigate = useNavigate();
   const meeting = mockMeetings.find(m => m.id === parseInt(id));
-  const [agendaItems, setAgendaItems] = useState([
-    { id: 1, text: 'Discuss current portfolio strategy', completed: false },
-    { id: 2, text: 'Review potential deal pipeline', completed: false },
-    { id: 3, text: 'Explore collaboration opportunities', completed: false },
-  ]);
-  const [notes, setNotes] = useState('');
+  const [theirPotentialAsk, setTheirPotentialAsk] = useState('');
+  const [whatWeWant, setWhatWeWant] = useState('');
   const [isComplete, setIsComplete] = useState(false);
 
   if (!meeting) {
@@ -29,45 +25,12 @@ export default function MeetingPrep() {
     );
   }
 
-  const toggleAgendaItem = (itemId) => {
-    setAgendaItems(items =>
-      items.map(item =>
-        item.id === itemId ? { ...item, completed: !item.completed } : item
-      )
-    );
-  };
-
-  const addAgendaItem = () => {
-    const newItem = {
-      id: Date.now(),
-      text: '',
-      completed: false,
-      isNew: true,
-    };
-    setAgendaItems([...agendaItems, newItem]);
-  };
-
-  const updateAgendaItem = (itemId, text) => {
-    setAgendaItems(items =>
-      items.map(item =>
-        item.id === itemId ? { ...item, text, isNew: false } : item
-      )
-    );
-  };
-
-  const removeAgendaItem = (itemId) => {
-    setAgendaItems(items => items.filter(item => item.id !== itemId));
-  };
-
   const handleMarkComplete = () => {
     setIsComplete(true);
     setTimeout(() => {
       navigate('/meeting-dashboard');
     }, 1500);
   };
-
-  const completedCount = agendaItems.filter(item => item.completed).length;
-  const progressPercent = agendaItems.length > 0 ? (completedCount / agendaItems.length) * 100 : 0;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -105,109 +68,50 @@ export default function MeetingPrep() {
           </span>
         </div>
 
-        {/* Progress Indicator */}
-        <div className="border-t border-gray-200 pt-6">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-700">Agenda Progress</span>
-            <span className="text-sm font-bold text-gray-900">
-              {completedCount}/{agendaItems.length} completed
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
-            ></div>
-          </div>
-        </div>
       </div>
 
-      {/* Agenda Checklist */}
+      {/* Strategic Prep Questions */}
       <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold flex items-center gap-3">
-            <CheckCircle className="h-6 w-6 text-orange-600" />
-            Agenda Checklist
-          </h2>
-          <button
-            onClick={addAgendaItem}
-            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
-          >
-            + Add Item
-          </button>
-        </div>
-        <div className="space-y-3">
-          {agendaItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <button
-                onClick={() => toggleAgendaItem(item.id)}
-                className={`mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                  item.completed
-                    ? 'bg-green-500 border-green-500 text-white'
-                    : 'border-gray-300 hover:border-green-400'
-                }`}
-              >
-                {item.completed && <CheckCircle className="h-4 w-4" />}
-              </button>
-              {item.isNew ? (
-                <input
-                  type="text"
-                  placeholder="Enter agenda item..."
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                  autoFocus
-                  onBlur={(e) => {
-                    if (e.target.value.trim()) {
-                      updateAgendaItem(item.id, e.target.value);
-                    } else {
-                      removeAgendaItem(item.id);
-                    }
-                  }}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      e.target.blur();
-                    }
-                  }}
-                />
-              ) : (
-                <>
-                  <p
-                    className={`flex-1 text-sm ${
-                      item.completed
-                        ? 'line-through text-gray-400'
-                        : 'text-gray-900'
-                    }`}
-                  >
-                    {item.text}
-                  </p>
-                  <button
-                    onClick={() => removeAgendaItem(item.id)}
-                    className="text-red-600 hover:text-red-800 text-sm font-medium"
-                  >
-                    Remove
-                  </button>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+        <h2 className="text-2xl font-bold flex items-center gap-3 mb-6">
+          <CheckCircle className="h-6 w-6 text-orange-600" />
+          Meeting Prep
+        </h2>
+        
+        <div className="space-y-6">
+          {/* Their Potential Ask */}
+          <div>
+            <label className="block text-lg font-semibold text-gray-900 mb-2">
+              What's her potential ask?
+            </label>
+            <p className="text-sm text-gray-600 mb-3">
+              What might they ask for or need from us in this meeting?
+            </p>
+            <textarea
+              value={theirPotentialAsk}
+              onChange={(e) => setTheirPotentialAsk(e.target.value)}
+              placeholder="e.g., Looking for legal support on portfolio company NDAs, exploring partnership opportunities, seeking expertise on deal structuring..."
+              rows="5"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+            />
+          </div>
 
-      {/* Notes Section */}
-      <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
-        <div className="flex items-center gap-3 mb-4">
-          <FileText className="h-6 w-6 text-purple-600" />
-          <h2 className="text-2xl font-bold">Meeting Notes</h2>
+          {/* What We Want */}
+          <div>
+            <label className="block text-lg font-semibold text-gray-900 mb-2">
+              What we want from her?
+            </label>
+            <p className="text-sm text-gray-600 mb-3">
+              What are our goals and desired outcomes from this meeting?
+            </p>
+            <textarea
+              value={whatWeWant}
+              onChange={(e) => setWhatWeWant(e.target.value)}
+              placeholder="e.g., Establish partnership for portfolio company services, get referral to other portfolio companies, secure retainer agreement..."
+              rows="5"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+            />
+          </div>
         </div>
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Add your notes, questions, talking points, and key information here..."
-          rows="10"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"
-        />
       </div>
 
       {/* Action Buttons */}
