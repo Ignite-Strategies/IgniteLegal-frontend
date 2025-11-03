@@ -94,8 +94,14 @@ export default function Events() {
     },
   ]);
 
-  const upcomingEvents = events.filter(e => e.status === 'upcoming');
-  const pastEvents = events.filter(e => e.status === 'past');
+  // Sort events by date - upcoming first (chronological), then past (reverse chronological)
+  const upcomingEvents = events
+    .filter(e => e.status === 'upcoming')
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+  const pastEvents = events
+    .filter(e => e.status === 'past')
+    .sort((a, b) => new Date(b.date) - new Date(a.date)); // Most recent first
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
