@@ -11,7 +11,7 @@ const marketIndicators = {
   },
   maActivity: {
     level: 'High',
-    count: 1,247,
+    count: 1247,
     change: '+18%',
     trend: 'up',
   },
