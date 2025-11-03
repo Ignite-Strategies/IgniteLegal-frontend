@@ -69,7 +69,6 @@ import PersonaCreate from './pages/personas/PersonaCreate';
 // Analytics imports
 import AnalyticsHub from './pages/analytics/AnalyticsHub';
 import GrowthInsights from './pages/analytics/GrowthInsights';
-import CampaignAnalytics from './pages/outreach/CampaignAnalytics';
 
 function App() {
   return (
