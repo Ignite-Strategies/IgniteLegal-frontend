@@ -115,7 +115,7 @@ function App() {
           <Route path="/outreach/individual-email" element={<IndividualEmail />} />
           <Route path="/outreach/templates" element={<Templates />} />
           <Route path="/outreach/templates/:templateId" element={<TemplateView />} />
-          <Route path="/outreach/email-campaigns" element={<OutreachHome />} />
+          <Route path="/outreach/email-campaigns" element={<EmailCampaigns />} />
           
           {/* Attract Routes */}
           <Route path="/attract/ads" element={<Ads />} />
