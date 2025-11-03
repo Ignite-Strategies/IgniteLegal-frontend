@@ -109,7 +109,11 @@ export default function MeetingDashboard() {
         </div>
         <div className="space-y-4">
           {mockPersonTypes.map((person) => (
-            <div key={person.type}>
+            <div
+              key={person.type}
+              className="cursor-pointer hover:bg-gray-50 p-3 rounded-lg transition-colors"
+              onClick={() => navigate(`/meeting-analytics/person-type/${encodeURIComponent(person.type)}`)}
+            >
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium text-gray-700">{person.type}</span>
                 <span className="text-sm font-bold text-gray-900">{person.count}</span>
@@ -133,7 +137,11 @@ export default function MeetingDashboard() {
         </div>
         <div className="space-y-4">
           {mockCompanyTypes.map((company) => (
-            <div key={company.type} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div
+              key={company.type}
+              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+              onClick={() => navigate(`/meeting-analytics/company-type/${encodeURIComponent(company.type)}`)}
+            >
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
                 <span className="text-sm font-medium text-gray-700">{company.type}</span>
@@ -152,15 +160,16 @@ export default function MeetingDashboard() {
         </div>
         <div className="flex flex-wrap gap-3">
           {mockFeedbackThemes.map((theme) => (
-            <div
+            <button
               key={theme.theme}
-              className={`${theme.color} px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2`}
+              onClick={() => navigate(`/meeting-feedback/theme/${encodeURIComponent(theme.theme)}`)}
+              className={`${theme.color} px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity`}
             >
               <span>{theme.theme}</span>
               <span className="bg-white bg-opacity-30 px-2 py-0.5 rounded-full text-xs font-bold">
                 {theme.count}
               </span>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -168,14 +177,14 @@ export default function MeetingDashboard() {
       {/* CTA Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <button
-          onClick={() => alert('Analytics view - to be implemented')}
+          onClick={() => navigate('/meeting-analytics')}
           className="p-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3"
         >
           <BarChart3 className="h-6 w-6" />
           <span className="text-lg font-semibold">Open Analytics</span>
         </button>
         <button
-          onClick={() => alert('Feedback view - to be implemented')}
+          onClick={() => navigate('/meeting-feedback')}
           className="p-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3"
         >
           <MessageSquare className="h-6 w-6" />

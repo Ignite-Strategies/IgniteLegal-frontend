@@ -31,6 +31,8 @@ import EngageDashboard from './pages/relationship/RelationshipDashboard';
 import Engage from './pages/relationship/Relationship';
 import MeetingDashboard from './pages/relationship/MeetingDashboard';
 import MeetingPrep from './pages/relationship/MeetingPrep';
+import MeetingAnalytics from './pages/relationship/MeetingAnalytics';
+import MeetingFeedback from './pages/relationship/MeetingFeedback';
 import Ecosystem from './pages/relationship/Ecosystem';
 
 // Outreach imports
@@ -108,6 +110,11 @@ function App() {
           <Route path="/engage-dashboard" element={<EngageDashboard />} />
           <Route path="/meeting-dashboard" element={<MeetingDashboard />} />
           <Route path="/meeting-prep/:id" element={<MeetingPrep />} />
+          <Route path="/meeting-analytics" element={<MeetingAnalytics />} />
+          <Route path="/meeting-analytics/person-type/:type" element={<MeetingAnalytics />} />
+          <Route path="/meeting-analytics/company-type/:type" element={<MeetingAnalytics />} />
+          <Route path="/meeting-feedback" element={<MeetingFeedback />} />
+          <Route path="/meeting-feedback/theme/:theme" element={<MeetingFeedback />} />
           <Route path="/ecosystem" element={<Ecosystem />} />
           
           {/* Outreach Routes */}
