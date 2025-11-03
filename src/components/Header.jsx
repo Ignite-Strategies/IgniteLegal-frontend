@@ -35,6 +35,12 @@ const Header = () => {
               Pipeline
             </Link>
             <Link
+              to="/bd-pipeline-roadmap"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              Roadmap
+            </Link>
+            <Link
               to="/outreach"
               className="text-sm font-medium text-gray-700 hover:text-gray-900"
             >

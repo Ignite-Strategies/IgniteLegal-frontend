@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Users, Calendar, FileText, MessageSquare, TrendingUp } from 'lucide-react';
+import { Users, Calendar, FileText, MessageSquare, TrendingUp, Map } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 // Header Summary Component
@@ -115,11 +115,11 @@ export default function GrowthDashboard() {
     {
       name: "Attract",
       metrics: [
-        { label: "Ads Active", value: "3" },
-        { label: "SEO Rank", value: "12" },
+        { label: "Upcoming Events", value: "5" },
+        { label: "Ads & SEO Active", value: "3" },
         { label: "Content Posts", value: "45" }
       ],
-      insight: "Strong acquisition channels, ready to scale",
+      insight: "Strong acquisition channels with events, ready to scale",
       icon: <TrendingUp className="h-6 w-6 text-white" />,
       color: "bg-blue-500",
       route: "/attract"
@@ -173,11 +173,21 @@ export default function GrowthDashboard() {
       </Link>
 
       {/* Header Summary */}
-      <HeaderSummary 
-        targetRevenue={dashboardData.targetRevenue}
-        currentRevenue={dashboardData.currentRevenue}
-        timeHorizon={dashboardData.timeHorizon}
-      />
+      <div className="relative">
+        <HeaderSummary 
+          targetRevenue={dashboardData.targetRevenue}
+          currentRevenue={dashboardData.currentRevenue}
+          timeHorizon={dashboardData.timeHorizon}
+        />
+        {/* BD Roadmap Button */}
+        <button
+          onClick={() => navigate('/bd-pipeline-roadmap')}
+          className="absolute top-8 right-8 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center gap-2 shadow-md"
+        >
+          <Map className="h-4 w-4" />
+          BD Roadmap
+        </button>
+      </div>
 
       {/* Growth Drivers Banner */}
       <div className="flex flex-col items-center mb-6">
