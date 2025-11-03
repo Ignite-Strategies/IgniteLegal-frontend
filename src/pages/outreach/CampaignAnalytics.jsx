@@ -67,6 +67,14 @@ export default function CampaignAnalytics() {
         backLabel="Back to Outreach"
       />
 
+      {/* Show different header if accessed from /analytics */}
+      {window.location.pathname === '/analytics' && (
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Email Outreach Analytics</h1>
+          <p className="text-gray-600">Track your campaign performance and engagement metrics</p>
+        </div>
+      )}
+
       {/* Overall Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">

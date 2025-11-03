@@ -67,6 +67,7 @@ import PersonaCreate from './pages/personas/PersonaCreate';
 // Analytics imports
 import AnalyticsHub from './pages/analytics/AnalyticsHub';
 import GrowthInsights from './pages/analytics/GrowthInsights';
+import CampaignAnalytics from './pages/outreach/CampaignAnalytics';
 
 function App() {
   return (
@@ -149,6 +150,7 @@ function App() {
           <Route path="/personas/create" element={<PersonaCreate />} />
           
           {/* Analytics Routes */}
+          <Route path="/analytics" element={<CampaignAnalytics />} />
           <Route path="/bd-central" element={<AnalyticsHub />} />
           <Route path="/bd-insights" element={<GrowthInsights />} />
           
