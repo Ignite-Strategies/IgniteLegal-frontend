@@ -25,16 +25,22 @@ export default function CampaignCreator() {
 
   // Mock contact lists - pre-populated
   useEffect(() => {
-    setAvailableLists([
+    const lists = [
       { id: 1, name: 'Capital Partners', contactCount: 12, description: 'Debt financing and capital partners' },
       { id: 2, name: 'Portfolio Managers', contactCount: 8, description: 'Active portfolio managers' },
       { id: 3, name: 'Investment Directors', contactCount: 15, description: 'Investment directors and decision makers' },
       { id: 4, name: 'Tech Partners', contactCount: 22, description: 'Technology and vendor partnerships' },
-    ]);
+    ];
+    setAvailableLists(lists);
     
     // Auto-select first list for demo
-    if (availableLists.length > 0 && !contactList) {
-      handleSelectList(availableLists[0]);
+    if (!contactList) {
+      setContactList(lists[0]);
+      setContacts(Array(lists[0].contactCount).fill(null).map((_, i) => ({
+        id: i + 1,
+        name: `Contact ${i + 1}`,
+        email: `contact${i + 1}@example.com`
+      })));
     }
   }, []);
 
