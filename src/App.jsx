@@ -133,7 +133,7 @@ function App() {
           {/* Contacts Routes */}
           <Route path="/contacts" element={<ContactManageHome />} />
           <Route path="/contacts/hub" element={<ContactsHub />} />
-          <Route path="/contacts/upload" element={<ContactUpload />} />
+          <Route path="/contacts/upload" element={<ContactManageHome />} /> {/* Redirect to main contact management */}
           <Route path="/contacts/demo-list/:listId" element={<DemoContactList />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/pipeline" element={<Pipeline />} />

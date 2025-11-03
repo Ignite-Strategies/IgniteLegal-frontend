@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Building2, Calendar, Search, RefreshCw, Upload, Users, Tag, Clock, ArrowRight } from 'lucide-react';
+import { Building2, Calendar, Search, RefreshCw, Upload, Users, Tag, Clock, ArrowRight, FileSpreadsheet, X } from 'lucide-react';
 import PageHeader from '../../components/PageHeader';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useMicrosoftGraph } from '../../hooks/useMicrosoftGraph';
@@ -8,8 +8,12 @@ import { useMicrosoftGraph } from '../../hooks/useMicrosoftGraph';
 export default function ContactManageHome() {
   const navigate = useNavigate();
   const [lists] = useLocalStorage('contactLists', []);
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
   const { hydrateContacts, loading } = useMicrosoftGraph();
   const [hydratingList, setHydratingList] = useState(null);
+  const [showCsvUpload, setShowCsvUpload] = useState(false);
+  const [csvFile, setCsvFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const handleHydrateFromEmail = async () => {
     const result = await hydrateContacts();
@@ -17,6 +21,65 @@ export default function ContactManageHome() {
       alert(`✅ Synced ${result.count} contacts from Microsoft 365 / Email`);
     } else {
       alert('❌ Error syncing contacts: ' + result.error);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      if (selectedFile.type === 'text/csv' || selectedFile.name.endsWith('.csv')) {
+        setCsvFile(selectedFile);
+      } else {
+        alert('Please select a CSV file');
+        setCsvFile(null);
+      }
+    }
+  };
+
+  const handleCsvUpload = async () => {
+    if (!csvFile) {
+      alert('Please select a CSV file');
+      return;
+    }
+
+    setUploading(true);
+    
+    try {
+      const text = await csvFile.text();
+      const lines = text.split('\n').filter(line => line.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      
+      const newContacts = lines.slice(1).map((line, idx) => {
+        const values = line.split(',').map(v => v.trim());
+        const contact = {};
+        headers.forEach((header, i) => {
+          contact[header.toLowerCase().replace(/\s+/g, '')] = values[i] || '';
+        });
+        
+        return {
+          id: `csv-${Date.now()}-${idx}`,
+          name: contact.name || `${contact.firstname || ''} ${contact.lastname || ''}`.trim(),
+          email: contact.email || '',
+          phone: contact.phone || '',
+          company: contact.company || '',
+          title: contact.title || contact.jobtitle || '',
+          status: contact.status || 'Prospect',
+          stage: contact.stage || 'Prospect',
+          source: 'CSV Upload',
+          uploadedAt: new Date().toISOString(),
+          ...contact
+        };
+      }).filter(c => c.email); // Only contacts with email
+
+      setContacts([...contacts, ...newContacts]);
+      alert(`✅ Successfully uploaded ${newContacts.length} contacts from CSV!`);
+      setCsvFile(null);
+      setShowCsvUpload(false);
+    } catch (error) {
+      console.error('Error parsing CSV:', error);
+      alert('Error parsing CSV file. Please check the format.');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -142,7 +205,7 @@ export default function ContactManageHome() {
               Sync from Email
             </button>
             <button
-              onClick={() => navigate('/contacts/upload')}
+              onClick={() => setShowCsvUpload(true)}
               className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
             >
               <Upload className="h-4 w-4" />
@@ -276,12 +339,81 @@ export default function ContactManageHome() {
         </div>
       </div>
 
+      {/* CSV Upload Modal */}
+      {showCsvUpload && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-6 max-w-2xl mx-4 w-full">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-900">Upload Contacts CSV</h3>
+              <button
+                onClick={() => {
+                  setShowCsvUpload(false);
+                  setCsvFile(null);
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors mb-4">
+              <FileSpreadsheet className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600 mb-2">
+                {csvFile ? csvFile.name : 'Click to upload or drag and drop'}
+              </p>
+              <p className="text-xs text-gray-500 mb-4">CSV files only</p>
+              <label className="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer">
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                Select File
+              </label>
+            </div>
+
+            {csvFile && (
+              <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                <p className="text-sm font-medium text-gray-900">Selected: {csvFile.name}</p>
+                <p className="text-xs text-gray-600">Size: {(csvFile.size / 1024).toFixed(2)} KB</p>
+              </div>
+            )}
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <p className="text-xs text-blue-800">
+                <strong>CSV Format:</strong> Name, Email, Phone, Company, Title (at minimum)
+              </p>
+            </div>
+
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => {
+                  setShowCsvUpload(false);
+                  setCsvFile(null);
+                }}
+                className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCsvUpload}
+                disabled={!csvFile || uploading}
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {uploading ? 'Uploading...' : 'Upload Contacts'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Quick Actions */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
-            onClick={() => navigate('/contacts/upload')}
+            onClick={() => setShowCsvUpload(true)}
             className="flex items-center gap-3 px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition text-left"
           >
             <Upload className="h-5 w-5 text-blue-600" />
