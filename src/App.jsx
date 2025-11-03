@@ -117,6 +117,7 @@ function App() {
           <Route path="/outreach/campaign-creator" element={<CampaignCreator />} />
           <Route path="/outreach/campaign-dashboard" element={<EmailCampaigns />} />
           <Route path="/outreach/individual-email" element={<IndividualEmail />} />
+          <Route path="/outreach/personal-email" element={<IndividualEmail />} />
           <Route path="/outreach/templates" element={<Templates />} />
           <Route path="/outreach/templates/:templateId" element={<TemplateView />} />
           <Route path="/outreach/email-campaigns" element={<EmailCampaigns />} />
