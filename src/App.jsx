@@ -28,7 +28,7 @@ import AttractHub from './pages/attract/AttractHub';
 
 // Engage imports (formerly Relationship)
 import EngageDashboard from './pages/relationship/RelationshipDashboard';
-import Engage from './pages/relationship/Relationship';
+import Engage from './pages/relationship/Engage';
 import Ecosystem from './pages/relationship/Ecosystem';
 
 // Meetings imports
