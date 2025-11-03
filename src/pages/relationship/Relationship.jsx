@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Users, Mail, FileText, Lightbulb, TrendingUp, Send, BarChart3 } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -7,6 +8,11 @@ import PageHeader from '../../components/PageHeader';
 export default function Relationship() {
   const navigate = useNavigate();
   const [contacts] = useLocalStorage('contacts', []);
+
+  // Set page title
+  useEffect(() => {
+    document.title = 'Engage - BusinessPoint Law';
+  }, []);
 
   // Mock engagement metrics
   const engagementMetrics = {
