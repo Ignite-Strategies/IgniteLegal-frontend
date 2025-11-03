@@ -54,6 +54,8 @@ import CampaignSuccess from './pages/outreach/CampaignSuccess';
 import Ads from './pages/attract/Ads';
 import Content from './pages/attract/Content';
 import Seo from './pages/attract/Seo';
+import Events from './pages/attract/Events';
+import AdsSeo from './pages/attract/AdsSeo';
 
 // Contacts imports
 import ContactsHub from './pages/contacts/ContactsHub';
@@ -62,6 +64,7 @@ import ContactUpload from './pages/contacts/ContactUpload';
 import DemoContactList from './pages/contacts/DemoContactList';
 import Companies from './pages/contacts/Companies';
 import Pipeline from './pages/contacts/Pipeline';
+import DealPipelines from './pages/contacts/DealPipelines';
 // Contact Lists imports
 import ContactListManager from './pages/contacts/ContactListManager';
 import ContactListBuilder from './pages/contacts/ContactListBuilder';
@@ -75,6 +78,9 @@ import PersonaCreate from './pages/personas/PersonaCreate';
 // Analytics imports
 import AnalyticsHub from './pages/analytics/AnalyticsHub';
 import GrowthInsights from './pages/analytics/GrowthInsights';
+
+// BD Pipeline Roadmap
+import BDPipelineRoadmap from './pages/BDPipelineRoadmap';
 
 function App() {
   return (
@@ -143,9 +149,11 @@ function App() {
           <Route path="/outreach/campaign-success" element={<CampaignSuccess />} />
           
           {/* Attract Routes */}
-          <Route path="/attract/ads" element={<Ads />} />
+          <Route path="/attract/events" element={<Events />} />
+          <Route path="/attract/ads-seo" element={<AdsSeo />} />
+          <Route path="/attract/ads" element={<Ads />} /> {/* Legacy route */}
           <Route path="/attract/content" element={<Content />} />
-          <Route path="/attract/seo" element={<Seo />} />
+          <Route path="/attract/seo" element={<Seo />} /> {/* Legacy route */}
           
           {/* Legacy business-development routes - redirect to attract */}
           <Route path="/business-development/ads" element={<Ads />} />
@@ -160,6 +168,7 @@ function App() {
           <Route path="/contacts/demo-list/:listId" element={<DemoContactList />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/pipeline" element={<Pipeline />} />
+          <Route path="/deal-pipelines" element={<DealPipelines />} />
           
           {/* Contact Lists Routes */}
           <Route path="/contact-list-manager" element={<ContactListManager />} />
@@ -175,6 +184,9 @@ function App() {
           <Route path="/analytics" element={<CampaignAnalytics />} />
           <Route path="/bd-central" element={<AnalyticsHub />} />
           <Route path="/bd-insights" element={<GrowthInsights />} />
+          
+          {/* BD Pipeline Roadmap */}
+          <Route path="/bd-pipeline-roadmap" element={<BDPipelineRoadmap />} />
           
           {/* Settings & 404 */}
           <Route path="/settings" element={<Settings />} />
