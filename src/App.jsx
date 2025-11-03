@@ -36,6 +36,7 @@ import MeetingDashboard from './pages/meetings/MeetingDashboard';
 import MeetingPrep from './pages/meetings/MeetingPrep';
 import MeetingAnalytics from './pages/meetings/MeetingAnalytics';
 import MeetingFeedbackForm from './pages/meetings/MeetingFeedbackForm';
+import MeetingScheduler from './pages/meetings/MeetingScheduler';
 
 // Outreach imports
 import OutreachHome from './pages/outreach/OutreachHome';
@@ -121,6 +122,7 @@ function App() {
           <Route path="/meetings/analytics/company-type/:type" element={<MeetingAnalytics />} />
           <Route path="/meetings/feedback/:id" element={<MeetingFeedbackForm />} />
           <Route path="/meeting-feedback/:id" element={<MeetingFeedbackForm />} /> {/* Legacy route */}
+          <Route path="/meetings/schedule" element={<MeetingScheduler />} />
           <Route path="/ecosystem" element={<Ecosystem />} />
           
           {/* Outreach Routes */}
