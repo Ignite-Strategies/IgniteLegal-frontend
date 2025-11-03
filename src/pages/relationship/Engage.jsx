@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Mail, FileText, Lightbulb, TrendingUp, Send, BarChart3 } from 'lucide-react';
+import { Users, Mail, FileText, Lightbulb, TrendingUp, Send, BarChart3, UserCircle, Plus } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { mockContacts } from '../../data/mockData';
+import { mockContacts, mockPersonTypes } from '../../data/mockData';
 import PageHeader from '../../components/PageHeader';
 
 export default function Engage() {
@@ -110,27 +110,56 @@ export default function Engage() {
         </div>
       </div>
 
-      {/* Contact Segments */}
+      {/* Persona Builder */}
       <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2 className="text-2xl font-bold mb-4">Contact Segments</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
-            <h3 className="text-sm font-medium text-blue-900 mb-1">Aware</h3>
-            <p className="text-2xl font-bold text-blue-900">{mockContacts.segments.Aware}</p>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <UserCircle className="h-6 w-6 text-blue-600" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Personas</h2>
+              <p className="text-sm text-gray-600">Your target client profiles</p>
+            </div>
           </div>
-          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg p-4 border border-yellow-200">
-            <h3 className="text-sm font-medium text-yellow-900 mb-1">Warm</h3>
-            <p className="text-2xl font-bold text-yellow-900">{mockContacts.segments.Warm}</p>
-          </div>
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
-            <h3 className="text-sm font-medium text-green-900 mb-1">Closed</h3>
-            <p className="text-2xl font-bold text-green-900">{mockContacts.segments.Closed}</p>
-          </div>
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
-            <h3 className="text-sm font-medium text-gray-900 mb-1">Lost</h3>
-            <p className="text-2xl font-bold text-gray-900">{mockContacts.segments.Lost}</p>
-          </div>
+          <button
+            onClick={() => navigate('/personas/create')}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Create Persona
+          </button>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {mockPersonTypes.map((persona, idx) => {
+            const colors = [
+              'from-red-50 to-red-100 border-red-200 text-red-900',
+              'from-orange-50 to-orange-100 border-orange-200 text-orange-900',
+              'from-purple-50 to-purple-100 border-purple-200 text-purple-900',
+              'from-blue-50 to-blue-100 border-blue-200 text-blue-900',
+            ];
+            const colorClass = colors[idx % colors.length];
+            
+            return (
+              <div
+                key={persona.type}
+                className={`bg-gradient-to-br ${colorClass.split(' ')[0]} ${colorClass.split(' ')[1]} rounded-lg p-4 border ${colorClass.split(' ')[2]} cursor-pointer hover:shadow-md transition-shadow`}
+                onClick={() => navigate('/personas')}
+              >
+                <h3 className="text-lg font-bold mb-1">{persona.type}</h3>
+                <p className="text-2xl font-bold">{persona.count}</p>
+                <p className="text-xs mt-2 opacity-75">contacts</p>
+              </div>
+            );
+          })}
+        </div>
+        <button
+          onClick={() => navigate('/personas')}
+          className="w-full mt-4 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium flex items-center justify-center gap-2"
+        >
+          View All Personas →
+        </button>
       </div>
 
       {/* Ecosystem Summary */}
