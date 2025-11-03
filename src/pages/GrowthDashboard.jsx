@@ -3,7 +3,7 @@ import { Users, Calendar, FileText, MessageSquare, TrendingUp, Map } from 'lucid
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 // Header Summary Component
-function HeaderSummary({ targetRevenue, currentRevenue, timeHorizon }) {
+function HeaderSummary({ targetRevenue, currentRevenue, timeHorizon, onRoadmapClick }) {
   const progressPercent = targetRevenue > 0 ? (currentRevenue / targetRevenue) * 100 : 0;
   const remaining = Math.max(0, targetRevenue - currentRevenue);
   
@@ -14,13 +14,24 @@ function HeaderSummary({ targetRevenue, currentRevenue, timeHorizon }) {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Growth Dashboard</h1>
           <p className="text-gray-600">Your command center for business development</p>
         </div>
-        <div className="text-right">
-          <div className="text-2xl font-bold text-gray-900">
-            {progressPercent.toFixed(1)}% to goal
+        <div className="flex items-center gap-4">
+          <div className="text-right">
+            <div className="text-2xl font-bold text-gray-900">
+              {progressPercent.toFixed(1)}% to goal
+            </div>
+            <div className="text-sm text-gray-500">
+              ${remaining.toLocaleString()} remaining
+            </div>
           </div>
-          <div className="text-sm text-gray-500">
-            ${remaining.toLocaleString()} remaining
-          </div>
+          {onRoadmapClick && (
+            <button
+              onClick={onRoadmapClick}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center gap-2 shadow-md whitespace-nowrap"
+            >
+              <Map className="h-4 w-4" />
+              BD Roadmap
+            </button>
+          )}
         </div>
       </div>
       
@@ -173,21 +184,12 @@ export default function GrowthDashboard() {
       </Link>
 
       {/* Header Summary */}
-      <div className="relative">
-        <HeaderSummary 
-          targetRevenue={dashboardData.targetRevenue}
-          currentRevenue={dashboardData.currentRevenue}
-          timeHorizon={dashboardData.timeHorizon}
-        />
-        {/* BD Roadmap Button */}
-        <button
-          onClick={() => navigate('/bd-pipeline-roadmap')}
-          className="absolute top-8 right-8 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center gap-2 shadow-md"
-        >
-          <Map className="h-4 w-4" />
-          BD Roadmap
-        </button>
-      </div>
+      <HeaderSummary 
+        targetRevenue={dashboardData.targetRevenue}
+        currentRevenue={dashboardData.currentRevenue}
+        timeHorizon={dashboardData.timeHorizon}
+        onRoadmapClick={() => navigate('/bd-pipeline-roadmap')}
+      />
 
       {/* Growth Drivers Banner */}
       <div className="flex flex-col items-center mb-6">
