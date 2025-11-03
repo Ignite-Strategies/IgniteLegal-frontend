@@ -29,12 +29,14 @@ import AttractHub from './pages/attract/AttractHub';
 // Engage imports (formerly Relationship)
 import EngageDashboard from './pages/relationship/RelationshipDashboard';
 import Engage from './pages/relationship/Relationship';
-import MeetingDashboard from './pages/relationship/MeetingDashboard';
-import MeetingPrep from './pages/relationship/MeetingPrep';
-import MeetingAnalytics from './pages/relationship/MeetingAnalytics';
-import MeetingFeedback from './pages/relationship/MeetingFeedback';
-import MeetingFeedbackForm from './pages/relationship/MeetingFeedbackForm';
 import Ecosystem from './pages/relationship/Ecosystem';
+
+// Meetings imports
+import MeetingDashboard from './pages/meetings/MeetingDashboard';
+import MeetingPrep from './pages/meetings/MeetingPrep';
+import MeetingAnalytics from './pages/meetings/MeetingAnalytics';
+import MeetingFeedback from './pages/meetings/MeetingFeedback';
+import MeetingFeedbackForm from './pages/meetings/MeetingFeedbackForm';
 
 // Outreach imports
 import OutreachHome from './pages/outreach/OutreachHome';
