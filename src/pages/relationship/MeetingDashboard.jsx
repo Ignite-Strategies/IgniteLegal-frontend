@@ -1,11 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Calendar, TrendingUp, Users, Building2, Tag, BarChart3, MessageSquare } from 'lucide-react';
+import { Calendar, TrendingUp, Users, Building2, Tag, BarChart3, MessageSquare, CheckCircle } from 'lucide-react';
 import { mockMeetings, mockMeetingMetrics, mockPersonTypes, mockCompanyTypes, mockFeedbackThemes } from '../../data/mockData';
 
 export default function MeetingDashboard() {
   const navigate = useNavigate();
   const upcomingMeetings = mockMeetings.filter(m => m.status === 'Scheduled');
   const pastMeetings = mockMeetings.filter(m => m.status === 'Completed');
+  const recentlyCompleted = pastMeetings.slice(0, 3); // Show 3 most recent
   const progressPercent = (mockMeetingMetrics.completed / mockMeetingMetrics.weeklyGoal) * 100;
 
   // Calculate max count for bar chart scaling
