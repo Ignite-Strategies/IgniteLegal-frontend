@@ -88,14 +88,14 @@ export default function MeetingPrep() {
   const handleMarkComplete = () => {
     setIsComplete(true);
     setTimeout(() => {
-      navigate('/meeting-dashboard');
+      navigate('/meetings');
     }, 1500);
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
-        to="/meeting-dashboard"
+        to="/meetings"
         className="text-sm text-gray-600 hover:text-gray-900 mb-6 inline-block"
       >
         ← Back to Meeting Dashboard
@@ -215,7 +215,7 @@ export default function MeetingPrep() {
       {/* Action Buttons */}
       <div className="flex gap-4">
         <button
-          onClick={() => navigate('/meeting-dashboard')}
+          onClick={() => navigate('/meetings')}
           className="flex-1 px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors"
         >
           Save & Return

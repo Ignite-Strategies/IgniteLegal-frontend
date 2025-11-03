@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, CreditCard, Link2, Building2, Mail, CheckCircle, RefreshCw } from 'lucide-react';
+import { User, CreditCard, Link2, Building2, Mail, CheckCircle, RefreshCw, Calendar } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const Settings = () => {
   const [microsoftConnected, setMicrosoftConnected] = useLocalStorage('microsoft365Connected', true);
   const [dynamicsSync, setDynamicsSync] = useLocalStorage('dynamicsSyncEnabled', true);
+  const [calendlyConnected, setCalendlyConnected] = useLocalStorage('calendlyConnected', false);
+  const [calendlyApiKey, setCalendlyApiKey] = useLocalStorage('calendlyApiKey', '');
   const [lastSync] = useLocalStorage('lastSync', new Date().toISOString());
   const [showOAuthModal, setShowOAuthModal] = useState(false);
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false);
   const [oauthStep, setOAuthStep] = useState('connect');
 
   const handleMicrosoftConnect = () => {
@@ -209,16 +212,43 @@ const Settings = () => {
             <div className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Calendar className="h-5 w-5 text-blue-600" />
                   <div>
-                    <p className="font-medium text-gray-900">Email Integration</p>
-                    <p className="text-sm text-gray-500">Sync calendar and email for client communications</p>
+                    <p className="font-medium text-gray-900">Calendly Integration</p>
+                    <p className="text-sm text-gray-500">Connect your Calendly account to sync scheduled meetings</p>
                   </div>
                 </div>
-                <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium">
-                  Connect
-                </button>
+                {calendlyConnected ? (
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <span className="text-sm text-green-600 font-medium">Connected</span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setShowCalendlyModal(true)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Connect
+                  </button>
+                )}
               </div>
+              {calendlyConnected && (
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="text-xs text-gray-500 space-y-1">
+                    <p>API Key: {calendlyApiKey ? calendlyApiKey.slice(0, 12) + '...' : 'Not set'}</p>
+                    <p>Connected to Calendly account</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setCalendlyConnected(false);
+                      setCalendlyApiKey('');
+                    }}
+                    className="mt-2 text-xs text-red-600 hover:text-red-700"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -265,6 +295,68 @@ const Settings = () => {
                 <p className="text-gray-600">Microsoft 365 has been successfully connected.</p>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Calendly Connection Modal */}
+      {showCalendlyModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+            <h2 className="text-2xl font-bold mb-4">Connect Calendly</h2>
+            <p className="text-gray-600 mb-6">
+              Connect your Calendly account to automatically sync scheduled meetings into your meeting dashboard.
+            </p>
+            
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <p className="text-sm font-medium text-gray-900 mb-2">How to get your API key:</p>
+              <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
+                <li>Go to your Calendly account settings</li>
+                <li>Navigate to Integrations → API</li>
+                <li>Generate a Personal Access Token</li>
+                <li>Paste it below</li>
+              </ol>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Calendly Personal Access Token
+              </label>
+              <input
+                type="password"
+                value={calendlyApiKey}
+                onChange={(e) => setCalendlyApiKey(e.target.value)}
+                placeholder="cal_xxxxxxxxxxxxxxxx"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Your API key is stored securely and used only to sync meetings
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowCalendlyModal(false);
+                  setCalendlyApiKey('');
+                }}
+                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (calendlyApiKey.trim()) {
+                    setCalendlyConnected(true);
+                    setShowCalendlyModal(false);
+                  }
+                }}
+                disabled={!calendlyApiKey.trim()}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Connect
+              </button>
+            </div>
           </div>
         </div>
       )}

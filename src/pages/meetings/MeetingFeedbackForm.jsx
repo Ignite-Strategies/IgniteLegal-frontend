@@ -39,7 +39,7 @@ export default function MeetingFeedbackForm() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <p className="text-gray-600 mb-4">Meeting not found.</p>
         <button
-          onClick={() => navigate('/meeting-dashboard')}
+          onClick={() => navigate('/meetings')}
           className="text-sm text-blue-600 hover:text-blue-700"
         >
           ← Back to Meeting Dashboard
@@ -55,7 +55,7 @@ export default function MeetingFeedbackForm() {
     // Simulate save
     setTimeout(() => {
       setSaving(false);
-      navigate('/meeting-dashboard', { 
+      navigate('/meetings', { 
         state: { feedbackSaved: true, meetingName: meeting.name }
       });
     }, 1000);
@@ -74,7 +74,7 @@ export default function MeetingFeedbackForm() {
       <PageHeader
         title="Post-Meeting Feedback"
         subtitle={`Capture insights from your meeting with ${meeting.name}`}
-        backTo="/meeting-dashboard"
+        backTo="/meetings"
         backLabel="← Back to Meeting Dashboard"
       />
 
@@ -252,7 +252,7 @@ export default function MeetingFeedbackForm() {
         <div className="flex gap-4">
           <button
             type="button"
-            onClick={() => navigate('/meeting-dashboard')}
+            onClick={() => navigate('/meetings')}
             className="flex-1 px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors"
           >
             Cancel

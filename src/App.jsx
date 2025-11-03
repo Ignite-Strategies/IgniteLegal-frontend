@@ -35,7 +35,6 @@ import Ecosystem from './pages/relationship/Ecosystem';
 import MeetingDashboard from './pages/meetings/MeetingDashboard';
 import MeetingPrep from './pages/meetings/MeetingPrep';
 import MeetingAnalytics from './pages/meetings/MeetingAnalytics';
-import MeetingFeedback from './pages/meetings/MeetingFeedback';
 import MeetingFeedbackForm from './pages/meetings/MeetingFeedbackForm';
 
 // Outreach imports
@@ -111,14 +110,17 @@ function App() {
           {/* Engage Routes (formerly Relationship) */}
           <Route path="/engage" element={<Engage />} />
           <Route path="/engage-dashboard" element={<EngageDashboard />} />
+          {/* Meetings Routes */}
           <Route path="/meeting-dashboard" element={<MeetingDashboard />} />
-          <Route path="/meeting-prep/:id" element={<MeetingPrep />} />
-          <Route path="/meeting-analytics" element={<MeetingAnalytics />} />
-          <Route path="/meeting-analytics/person-type/:type" element={<MeetingAnalytics />} />
-          <Route path="/meeting-analytics/company-type/:type" element={<MeetingAnalytics />} />
-          <Route path="/meeting-feedback" element={<MeetingFeedback />} />
-          <Route path="/meeting-feedback/theme/:theme" element={<MeetingFeedback />} />
-          <Route path="/meeting-feedback/:id" element={<MeetingFeedbackForm />} />
+          <Route path="/meetings" element={<MeetingDashboard />} />
+          <Route path="/meetings/prep/:id" element={<MeetingPrep />} />
+          <Route path="/meeting-prep/:id" element={<MeetingPrep />} /> {/* Legacy route */}
+          <Route path="/meetings/analytics" element={<MeetingAnalytics />} />
+          <Route path="/meeting-analytics" element={<MeetingAnalytics />} /> {/* Legacy route */}
+          <Route path="/meetings/analytics/person-type/:type" element={<MeetingAnalytics />} />
+          <Route path="/meetings/analytics/company-type/:type" element={<MeetingAnalytics />} />
+          <Route path="/meetings/feedback/:id" element={<MeetingFeedbackForm />} />
+          <Route path="/meeting-feedback/:id" element={<MeetingFeedbackForm />} /> {/* Legacy route */}
           <Route path="/ecosystem" element={<Ecosystem />} />
           
           {/* Outreach Routes */}

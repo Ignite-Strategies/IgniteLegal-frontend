@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Calendar, TrendingUp, Users, Building2, Tag, BarChart3, MessageSquare, CheckCircle } from 'lucide-react';
-import { mockMeetings, mockMeetingMetrics, mockPersonTypes, mockCompanyTypes, mockFeedbackThemes } from '../../data/mockData';
+import { Calendar, TrendingUp, Users, Building2, BarChart3, MessageSquare, CheckCircle, Plus, Clock, CalendarDays, Video } from 'lucide-react';
+import { mockMeetings, mockMeetingMetrics, mockPersonTypes, mockCompanyTypes } from '../../data/mockData';
 
 export default function MeetingDashboard() {
   const navigate = useNavigate();
@@ -23,9 +23,50 @@ export default function MeetingDashboard() {
       </Link>
 
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Meeting Dashboard</h1>
-        <p className="text-gray-600 text-lg">Review and learn from your conversations</p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold mb-2">Meeting Dashboard</h1>
+          <p className="text-gray-600 text-lg">Schedule, prep, and manage your meetings</p>
+        </div>
+        <button
+          onClick={() => navigate('/meetings/schedule')}
+          className="px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-lg font-semibold flex items-center gap-2 transition-all shadow-lg"
+        >
+          <Plus className="h-5 w-5" />
+          Schedule Meeting
+        </button>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+          <div className="flex items-center justify-between mb-2">
+            <Calendar className="h-8 w-8 text-blue-600" />
+          </div>
+          <p className="text-sm font-medium text-blue-900 mb-1">Upcoming</p>
+          <p className="text-3xl font-bold text-blue-900">{upcomingMeetings.length}</p>
+        </div>
+        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+          <div className="flex items-center justify-between mb-2">
+            <CheckCircle className="h-8 w-8 text-green-600" />
+          </div>
+          <p className="text-sm font-medium text-green-900 mb-1">Completed Today</p>
+          <p className="text-3xl font-bold text-green-900">{mockMeetingMetrics.completed}</p>
+        </div>
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200">
+          <div className="flex items-center justify-between mb-2">
+            <Clock className="h-8 w-8 text-orange-600" />
+          </div>
+          <p className="text-sm font-medium text-orange-900 mb-1">This Week</p>
+          <p className="text-3xl font-bold text-orange-900">{mockMeetingMetrics.past30Days}</p>
+        </div>
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+          <div className="flex items-center justify-between mb-2">
+            <TrendingUp className="h-8 w-8 text-purple-600" />
+          </div>
+          <p className="text-sm font-medium text-purple-900 mb-1">Goal Progress</p>
+          <p className="text-3xl font-bold text-purple-900">{progressPercent.toFixed(0)}%</p>
+        </div>
       </div>
 
       {/* Upcoming Meetings */}
@@ -45,15 +86,32 @@ export default function MeetingDashboard() {
                   <div>
                     <h3 className="font-semibold text-gray-900">{meeting.name}</h3>
                     <p className="text-sm text-gray-600">{meeting.company}</p>
-                    <p className="text-xs text-gray-500 mt-1">{meeting.datetime}</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <p className="text-xs text-gray-500">{meeting.datetime}</p>
+                      {meeting.type && (
+                        <span className="text-xs px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">
+                          {meeting.type}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
-                <button
-                  onClick={() => navigate(`/meeting-prep/${meeting.id}`)}
-                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
-                >
-                  Prep
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => navigate(`/meetings/prep/${meeting.id}`)}
+                    className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                  >
+                    <CalendarDays className="h-4 w-4" />
+                    Prep
+                  </button>
+                  <button
+                    onClick={() => window.open('https://calendly.com', '_blank')}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                  >
+                    <Video className="h-4 w-4" />
+                    Join
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -153,43 +211,27 @@ export default function MeetingDashboard() {
         </div>
       </div>
 
-      {/* Feedback Themes */}
-      <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <div className="flex items-center gap-3 mb-6">
-          <Tag className="h-6 w-6 text-red-600" />
-          <h2 className="text-2xl font-bold">Feedback Themes</h2>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          {mockFeedbackThemes.map((theme) => (
-            <button
-              key={theme.theme}
-              onClick={() => navigate(`/meeting-feedback/theme/${encodeURIComponent(theme.theme)}`)}
-              className={`${theme.color} px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity`}
-            >
-              <span>{theme.theme}</span>
-              <span className="bg-white bg-opacity-30 px-2 py-0.5 rounded-full text-xs font-bold">
-                {theme.count}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* CTA Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Action Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <button
-          onClick={() => navigate('/meeting-analytics')}
-          className="p-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3"
+          onClick={() => navigate('/meetings/analytics')}
+          className="p-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 text-left"
         >
-          <BarChart3 className="h-6 w-6" />
-          <span className="text-lg font-semibold">Open Analytics</span>
+          <BarChart3 className="h-8 w-8 flex-shrink-0" />
+          <div>
+            <p className="text-lg font-semibold">Analytics</p>
+            <p className="text-sm text-orange-100">Review meeting insights</p>
+          </div>
         </button>
         <button
-          onClick={() => navigate('/meeting-feedback')}
-          className="p-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3"
+          onClick={() => navigate('/meetings/calendar')}
+          className="p-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 text-left"
         >
-          <MessageSquare className="h-6 w-6" />
-          <span className="text-lg font-semibold">View Feedback</span>
+          <Calendar className="h-8 w-8 flex-shrink-0" />
+          <div>
+            <p className="text-lg font-semibold">Calendar View</p>
+            <p className="text-sm text-blue-100">See your schedule</p>
+          </div>
         </button>
       </div>
     </div>

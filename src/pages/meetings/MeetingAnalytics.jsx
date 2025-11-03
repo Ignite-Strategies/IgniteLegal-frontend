@@ -12,7 +12,7 @@ export default function MeetingAnalytics() {
       <PageHeader
         title="Meeting Analytics"
         subtitle="Detailed insights into your meeting data"
-        backTo="/meeting-dashboard"
+        backTo="/meetings"
         backLabel="← Back to Meeting Dashboard"
       />
 
