@@ -109,21 +109,7 @@ export default function Relationship() {
           </div>
         </div>
 
-        {/* Ecosystem */}
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
-          <h3 className="text-sm font-medium text-orange-900 mb-2">Ecosystem</h3>
-          <div className="space-y-1 text-xs">
-            <div>
-              <span className="text-orange-700 font-semibold">Collaborator:</span> {mockContacts.ecosystem.Collaborator}
-            </div>
-            <div>
-              <span className="text-orange-700 font-semibold">Vendor:</span> {mockContacts.ecosystem.Vendor}
-            </div>
-            <div>
-              <span className="text-orange-700 font-semibold">Partner:</span> {mockContacts.ecosystem.Partner}
-            </div>
-          </div>
-        </div>
+        {/* Ecosystem - Expand to full row below */}
 
         {/* Meeting Goal */}
         <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
@@ -184,6 +170,61 @@ export default function Relationship() {
             <p>No upcoming meetings scheduled</p>
           </div>
         )}
+      </div>
+
+      {/* Ecosystem Summary */}
+      <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+            <Users className="h-6 w-6 text-orange-600" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Ecosystem</h2>
+            <p className="text-sm text-gray-600">Your business relationships</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {/* Collaborators */}
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-orange-900">Collaborators</h3>
+                <p className="text-xs text-orange-700">Strategic partnerships</p>
+              </div>
+              <p className="text-2xl font-bold text-orange-900">{mockContacts.ecosystem.Collaborator}</p>
+            </div>
+          </div>
+
+          {/* Vendors */}
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-blue-900">Vendors</h3>
+                <p className="text-xs text-blue-700">Service providers</p>
+              </div>
+              <p className="text-2xl font-bold text-blue-900">{mockContacts.ecosystem.Vendor}</p>
+            </div>
+          </div>
+
+          {/* Partners */}
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-purple-900">Partners</h3>
+                <p className="text-xs text-purple-700">Key relationships</p>
+              </div>
+              <p className="text-2xl font-bold text-purple-900">{mockContacts.ecosystem.Partner}</p>
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={() => navigate('/ecosystem')}
+          className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium flex items-center justify-center gap-2"
+        >
+          View Full Ecosystem →
+        </button>
       </div>
 
       {/* 4-Card Action Row */}
