@@ -43,15 +43,6 @@ export default function Engage() {
       route: '/outreach/email-campaigns',
     },
     {
-      id: 'analytics',
-      title: 'Analytics',
-      description: 'Track engagement metrics',
-      icon: <BarChart3 className="h-6 w-6" />,
-      cta: 'View Analytics',
-      color: 'bg-purple-500',
-      route: '/outreach/analytics',
-    },
-    {
       id: 'insights',
       title: 'Insights',
       description: 'What people actually said',

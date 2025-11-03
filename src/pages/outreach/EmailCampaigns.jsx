@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Plus, Send, Users, FileText, Trash2, Edit2, Eye } from 'lucide-react';
+import { Mail, Plus, Send, Users, FileText, Trash2, Edit2, Eye, BarChart3 } from 'lucide-react';
 import PageHeader from '../../components/PageHeader';
+import CampaignAnalytics from './CampaignAnalytics';
 
 export default function EmailCampaigns() {
   const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
   const [filter, setFilter] = useState('all'); // 'all', 'draft', 'sent'
+  const [activeTab, setActiveTab] = useState('campaigns'); // 'campaigns' or 'analytics'
 
   // Mock campaigns data
   useEffect(() => {
@@ -90,6 +92,40 @@ export default function EmailCampaigns() {
         }
       />
 
+      {/* Tabs */}
+      <div className="flex gap-2 mb-6 border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab('campaigns')}
+          className={`px-6 py-3 font-medium text-sm transition-colors border-b-2 ${
+            activeTab === 'campaigns'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Mail className="h-4 w-4 inline mr-2" />
+          Campaigns
+        </button>
+        <button
+          onClick={() => setActiveTab('analytics')}
+          className={`px-6 py-3 font-medium text-sm transition-colors border-b-2 ${
+            activeTab === 'analytics'
+              ? 'border-indigo-600 text-indigo-600'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <BarChart3 className="h-4 w-4 inline mr-2" />
+          Campaign Analytics
+        </button>
+      </div>
+
+      {/* Analytics Tab Content */}
+      {activeTab === 'analytics' && (
+        <CampaignAnalytics />
+      )}
+
+      {/* Campaigns Tab Content */}
+      {activeTab === 'campaigns' && (
+        <>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
@@ -280,6 +316,8 @@ export default function EmailCampaigns() {
           </div>
         )}
       </div>
+        </>
+      )}
     </div>
   );
 }
