@@ -37,9 +37,9 @@ export default function CampaignCreator() {
     if (incomingCampaignId) {
       setCampaignId(incomingCampaignId);
       // In real app, load campaign data from API
-      setCampaignName('Portfolio Manager Newsletter');
-      setSubject('Monthly Legal Insights for Portfolio Managers');
-      setMessage('Hi {{firstName}},\n\nHope this message finds you well...');
+      setCampaignName('Q1 Partner Outreach');
+      setSubject('Doing amazing things at BusinessPoint Law');
+      setMessage('Hi {{firstName}},\n\nHow are you? We\'re doing amazing things at BusinessPoint Law and I\'d love to tell you more.\n\n{{bookMeetingLink}}\n\nBest,\n{{yourName}}');
     }
   }, [incomingCampaignId]);
 
@@ -167,9 +167,9 @@ export default function CampaignCreator() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
         <PageHeader
-          title="Create Campaign"
-          subtitle="Build and send your email campaign"
-          backTo="/outreach/outreach-home"
+          title="Set Up Your Engagement"
+          subtitle="Create personalized outreach campaigns to connect and engage"
+          backTo="/outreach"
           backLabel="← Back to Outreach"
         />
 
@@ -199,14 +199,14 @@ export default function CampaignCreator() {
             <div className="space-y-3">
               <input
                 type="text"
-                placeholder="Enter campaign name"
+                placeholder="e.g., Q1 Partner Outreach"
                 value={campaignName}
                 onChange={(e) => setCampaignName(e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="text"
-                placeholder="Description (optional)"
+                placeholder="Description (optional) - e.g., Reaching out to capital partners"
                 value={campaignDescription}
                 onChange={(e) => setCampaignDescription(e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg"
@@ -268,12 +268,15 @@ export default function CampaignCreator() {
               <label className="block text-sm font-medium text-gray-700 mb-1">Subject Line</label>
               <input
                 type="text"
-                placeholder="Enter email subject"
+                placeholder="e.g., Doing amazing things at BusinessPoint Law"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg"
                 disabled={!campaignId}
               />
+              <p className="mt-1 text-xs text-gray-500">
+                Keep it conversational and engaging
+              </p>
             </div>
 
             <div>
@@ -287,13 +290,6 @@ export default function CampaignCreator() {
                   + First Name
                 </button>
                 <button
-                  onClick={() => insertToken('lastName')}
-                  className="px-3 py-1 text-sm bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
-                  disabled={!campaignId}
-                >
-                  + Last Name
-                </button>
-                <button
                   onClick={() => insertToken('company')}
                   className="px-3 py-1 text-sm bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
                   disabled={!campaignId}
@@ -301,21 +297,32 @@ export default function CampaignCreator() {
                   + Company
                 </button>
                 <button
-                  onClick={() => insertToken('email')}
+                  onClick={() => insertToken('bookMeetingLink')}
+                  className="px-3 py-1 text-sm bg-green-100 text-green-700 rounded hover:bg-green-200"
+                  disabled={!campaignId}
+                  title="Meeting booking link"
+                >
+                  + Book Meeting
+                </button>
+                <button
+                  onClick={() => insertToken('yourName')}
                   className="px-3 py-1 text-sm bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
                   disabled={!campaignId}
                 >
-                  + Email
+                  + Your Name
                 </button>
               </div>
               <textarea
-                placeholder="Hi {{firstName}},\n\nThis is your personalized message..."
+                placeholder="Hi {{firstName}},\n\nHow are you? We're doing amazing things at BusinessPoint Law and I'd love to tell you more.\n\n{{bookMeetingLink}}\n\nBest,\n{{yourName}}"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 rows={10}
                 className="w-full px-4 py-2 border rounded-lg font-mono text-sm"
                 disabled={!campaignId}
               />
+              <p className="mt-2 text-xs text-gray-500">
+                💡 Tip: Keep it personal and focused on engagement. Invite them to book a meeting.
+              </p>
             </div>
           </div>
         </div>
