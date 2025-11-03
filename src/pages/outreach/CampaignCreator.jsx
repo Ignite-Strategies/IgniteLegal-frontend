@@ -11,25 +11,31 @@ export default function CampaignCreator() {
   const incomingCampaignId = location.state?.campaignId;
 
   const [campaignId, setCampaignId] = useState(null);
-  const [campaignName, setCampaignName] = useState('');
-  const [campaignDescription, setCampaignDescription] = useState('');
+  const [campaignName, setCampaignName] = useState('Q1 Partner Outreach');
+  const [campaignDescription, setCampaignDescription] = useState('Reaching out to capital partners and portfolio managers');
   const [contactList, setContactList] = useState(null);
   const [contacts, setContacts] = useState([]);
   const [availableLists, setAvailableLists] = useState([]);
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
+  const [subject, setSubject] = useState('Doing amazing things at BusinessPoint Law');
+  const [message, setMessage] = useState('Hi {{firstName}},\n\nHow are you? We\'re doing amazing things at BusinessPoint Law and I\'d love to tell you more.\n\nBook a meeting here: {{bookMeetingLink}}\n\nBest,\n{{yourName}}');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [attachments, setAttachments] = useState([]);
   const [uploadingFile, setUploadingFile] = useState(false);
 
-  // Mock contact lists
+  // Mock contact lists - pre-populated
   useEffect(() => {
     setAvailableLists([
       { id: 1, name: 'Capital Partners', contactCount: 12, description: 'Debt financing and capital partners' },
       { id: 2, name: 'Portfolio Managers', contactCount: 8, description: 'Active portfolio managers' },
       { id: 3, name: 'Investment Directors', contactCount: 15, description: 'Investment directors and decision makers' },
+      { id: 4, name: 'Tech Partners', contactCount: 22, description: 'Technology and vendor partnerships' },
     ]);
+    
+    // Auto-select first list for demo
+    if (availableLists.length > 0 && !contactList) {
+      handleSelectList(availableLists[0]);
+    }
   }, []);
 
   // Load campaign if ID provided
@@ -65,11 +71,7 @@ export default function CampaignCreator() {
   };
 
   const handleSelectList = async (list) => {
-    if (!campaignId) {
-      setError('Please create your campaign first (Step 1)');
-      return;
-    }
-
+    // Allow selecting list even before campaign is created for demo
     setContactList(list);
     // In real app, load contacts from API
     setContacts(Array(list.contactCount).fill(null).map((_, i) => ({
@@ -241,22 +243,27 @@ export default function CampaignCreator() {
                 Change List
               </button>
             </div>
-          ) : campaignId ? (
+          ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {availableLists.map((list) => (
                 <button
                   key={list.id}
                   onClick={() => handleSelectList(list)}
-                  className="p-4 text-left border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                  className={`p-4 text-left border-2 rounded-lg transition-colors ${
+                    contactList?.id === list.id
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                  }`}
                 >
                   <h5 className="font-medium text-gray-900">{list.name}</h5>
                   <p className="text-sm text-gray-600">{list.contactCount} contacts</p>
                   <p className="text-xs text-gray-500">{list.description}</p>
+                  {contactList?.id === list.id && (
+                    <p className="text-xs text-blue-600 mt-1">✓ Selected</p>
+                  )}
                 </button>
               ))}
             </div>
-          ) : (
-            <p className="text-gray-500">Create a campaign first (Step 1)</p>
           )}
         </div>
 
