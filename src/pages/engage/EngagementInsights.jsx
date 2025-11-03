@@ -128,15 +128,6 @@ export default function EngagementInsights() {
         backLabel="← Back to Engage"
       />
 
-      {/* Opening Statement */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-8 border-l-4 border-blue-500">
-        <p className="text-lg text-gray-800 leading-relaxed">
-          <strong className="text-blue-900">Hey —</strong> You can be a regular NDA guy and not listen to me, 
-          but <strong className="text-blue-900">listen to those you've sat down with.</strong> Here's what 
-          they actually said in {meetingStats.totalMeetings} meetings.
-        </p>
-      </div>
-
       {/* Total Meetings / Closes */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
