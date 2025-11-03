@@ -67,7 +67,7 @@ import Personas from './pages/personas/Personas';
 import PersonaCreate from './pages/personas/PersonaCreate';
 
 // Analytics imports
-// import AnalyticsHub from './pages/analytics/AnalyticsHub'; // Deprecated - causing build errors
+import AnalyticsHub from './pages/analytics/AnalyticsHub';
 import GrowthInsights from './pages/analytics/GrowthInsights';
 
 function App() {
@@ -156,7 +156,7 @@ function App() {
           
           {/* Analytics Routes */}
           <Route path="/analytics" element={<CampaignAnalytics />} />
-          <Route path="/bd-central" element={<CampaignAnalytics />} /> {/* Redirect to main analytics */}
+          <Route path="/bd-central" element={<AnalyticsHub />} />
           <Route path="/bd-insights" element={<GrowthInsights />} />
           
           {/* Settings & 404 */}
