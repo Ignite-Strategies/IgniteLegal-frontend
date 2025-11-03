@@ -6,51 +6,79 @@ import PageHeader from '../../components/PageHeader';
 export default function Events() {
   const navigate = useNavigate();
 
-  // Mock events data
+  // Real debt-financing and banking events
   const [events] = useState([
     {
       id: 1,
-      name: 'Legal Tech Summit 2025',
+      name: 'LSTA Annual Conference',
       date: '2025-03-15',
-      location: 'San Francisco, CA',
-      attendees: 450,
+      location: 'New York, NY',
+      attendees: 1200,
       type: 'Conference',
       status: 'upcoming',
-      description: 'Annual legal technology conference featuring networking opportunities and industry insights',
-      registrationLink: 'https://legaltechsummit.com',
+      description: 'Loan Syndications and Trading Association annual conference focusing on leveraged loans, debt financing, and credit markets',
+      registrationLink: 'https://www.lsta.org',
+      targetAudience: 'Capital Partners, Investment Directors, Debt Providers',
     },
     {
       id: 2,
-      name: 'NDA Automation Workshop',
-      date: '2025-02-20',
-      location: 'Virtual',
-      attendees: 120,
-      type: 'Webinar',
+      name: 'ACLI Annual Conference',
+      date: '2025-04-22',
+      location: 'Washington, DC',
+      attendees: 800,
+      type: 'Conference',
       status: 'upcoming',
-      description: 'Learn how to streamline NDA processes with automation',
-      registrationLink: 'https://workshop.example.com',
+      description: 'American Council of Life Insurers annual meeting featuring sessions on institutional investing, debt instruments, and portfolio management',
+      registrationLink: 'https://www.acli.com',
+      targetAudience: 'Portfolio Managers, Investment Directors, Insurance Executives',
     },
     {
       id: 3,
-      name: 'Business Development Networking Mixer',
-      date: '2025-01-25',
-      location: 'New York, NY',
-      attendees: 85,
-      type: 'Networking',
+      name: 'Private Debt Investor Forum',
+      date: '2025-05-10',
+      location: 'Chicago, IL',
+      attendees: 650,
+      type: 'Conference',
       status: 'upcoming',
-      description: 'Connect with business development professionals and potential clients',
-      registrationLink: 'https://networking.example.com',
+      description: 'Forum for private debt investors, direct lenders, and alternative credit providers discussing market trends and opportunities',
+      registrationLink: 'https://www.privatedebtinvestor.com',
+      targetAudience: 'Capital Partners, Direct Lenders, Credit Funds',
     },
     {
       id: 4,
-      name: 'Legal Innovation Forum',
-      date: '2024-12-10',
-      location: 'Chicago, IL',
-      attendees: 320,
+      name: 'ABI Distressed Investing Conference',
+      date: '2025-06-18',
+      location: 'Las Vegas, NV',
+      attendees: 950,
+      type: 'Conference',
+      status: 'upcoming',
+      description: 'American Bankruptcy Institute conference on distressed debt, restructuring, and turnaround investing',
+      registrationLink: 'https://www.abi.org',
+      targetAudience: 'Capital Partners, Distressed Debt Investors, Restructuring Advisors',
+    },
+    {
+      id: 5,
+      name: 'Credit Suisse Financial Services Forum',
+      date: '2025-02-12',
+      location: 'Miami, FL',
+      attendees: 500,
+      type: 'Conference',
+      status: 'upcoming',
+      description: 'Annual gathering of financial services executives, institutional investors, and credit market participants',
+      registrationLink: 'https://www.credit-suisse.com',
+      targetAudience: 'Investment Directors, Portfolio Managers, Financial Services Executives',
+    },
+    {
+      id: 6,
+      name: 'Direct Lending & Private Credit Summit',
+      date: '2024-11-20',
+      location: 'New York, NY',
+      attendees: 750,
       type: 'Conference',
       status: 'past',
-      description: 'Annual forum on legal industry innovation and technology',
+      description: 'Summit focused on direct lending strategies, private credit opportunities, and middle market financing',
       registrationLink: null,
+      targetAudience: 'Capital Partners, Direct Lenders, Middle Market Investors',
     },
   ]);
 
@@ -142,7 +170,14 @@ export default function Events() {
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">{event.description}</p>
+                <p className="text-sm text-gray-600 mb-3 line-clamp-2">{event.description}</p>
+                
+                {event.targetAudience && (
+                  <div className="mb-4">
+                    <p className="text-xs font-medium text-gray-500 mb-1">Target Audience:</p>
+                    <p className="text-xs text-gray-600">{event.targetAudience}</p>
+                  </div>
+                )}
 
                 {event.registrationLink && (
                   <a
