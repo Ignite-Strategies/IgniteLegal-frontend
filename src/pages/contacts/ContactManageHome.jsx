@@ -281,13 +281,13 @@ export default function ContactManageHome() {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
-            onClick={() => navigate('/contact-list-builder')}
-            className="flex items-center gap-3 px-4 py-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-200 transition text-left"
+            onClick={() => navigate('/contacts/upload')}
+            className="flex items-center gap-3 px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition text-left"
           >
-            <Upload className="h-5 w-5 text-indigo-600" />
+            <Upload className="h-5 w-5 text-blue-600" />
             <div>
-              <p className="font-medium text-gray-900">Build Campaign List</p>
-              <p className="text-sm text-gray-600">Create segment for campaigns</p>
+              <p className="font-medium text-gray-900">Add Contacts</p>
+              <p className="text-sm text-gray-600">Upload CSV or manual entry</p>
             </div>
           </button>
           <button
@@ -301,13 +301,13 @@ export default function ContactManageHome() {
             </div>
           </button>
           <button
-            onClick={() => navigate('/outreach')}
-            className="flex items-center gap-3 px-4 py-3 bg-green-50 hover:bg-green-100 rounded-lg border border-green-200 transition text-left"
+            onClick={() => navigate('/contact-list-builder')}
+            className="flex items-center gap-3 px-4 py-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-200 transition text-left"
           >
-            <Calendar className="h-5 w-5 text-green-600" />
+            <Users className="h-5 w-5 text-indigo-600" />
             <div>
-              <p className="font-medium text-gray-900">Launch Campaign</p>
-              <p className="text-sm text-gray-600">Start outreach</p>
+              <p className="font-medium text-gray-900">Build Campaign List</p>
+              <p className="text-sm text-gray-600">Create list for campaigns</p>
             </div>
           </button>
         </div>
