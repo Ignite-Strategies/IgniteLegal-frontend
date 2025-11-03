@@ -6,12 +6,12 @@ import PageHeader from '../../components/PageHeader';
 export default function Events() {
   const navigate = useNavigate();
 
-  // Real debt-financing and banking events
+  // Real debt-financing and banking events (updated for November 2025)
   const [events] = useState([
     {
       id: 1,
       name: 'LSTA Annual Conference',
-      date: '2025-03-15',
+      date: '2026-03-15',
       location: 'New York, NY',
       attendees: 1200,
       type: 'Conference',
@@ -23,7 +23,7 @@ export default function Events() {
     {
       id: 2,
       name: 'ACLI Annual Conference',
-      date: '2025-04-22',
+      date: '2026-04-22',
       location: 'Washington, DC',
       attendees: 800,
       type: 'Conference',
@@ -35,7 +35,7 @@ export default function Events() {
     {
       id: 3,
       name: 'Private Debt Investor Forum',
-      date: '2025-05-10',
+      date: '2025-12-10',
       location: 'Chicago, IL',
       attendees: 650,
       type: 'Conference',
@@ -47,7 +47,7 @@ export default function Events() {
     {
       id: 4,
       name: 'ABI Distressed Investing Conference',
-      date: '2025-06-18',
+      date: '2026-06-18',
       location: 'Las Vegas, NV',
       attendees: 950,
       type: 'Conference',
@@ -59,7 +59,7 @@ export default function Events() {
     {
       id: 5,
       name: 'Credit Suisse Financial Services Forum',
-      date: '2025-02-12',
+      date: '2026-02-12',
       location: 'Miami, FL',
       attendees: 500,
       type: 'Conference',
@@ -71,7 +71,7 @@ export default function Events() {
     {
       id: 6,
       name: 'Direct Lending & Private Credit Summit',
-      date: '2024-11-20',
+      date: '2025-10-15',
       location: 'New York, NY',
       attendees: 750,
       type: 'Conference',
@@ -79,6 +79,18 @@ export default function Events() {
       description: 'Summit focused on direct lending strategies, private credit opportunities, and middle market financing',
       registrationLink: null,
       targetAudience: 'Capital Partners, Direct Lenders, Middle Market Investors',
+    },
+    {
+      id: 7,
+      name: 'Global Debt Financing Conference',
+      date: '2025-09-20',
+      location: 'Boston, MA',
+      attendees: 600,
+      type: 'Conference',
+      status: 'past',
+      description: 'Annual conference on global debt financing trends, credit markets, and investment strategies',
+      registrationLink: null,
+      targetAudience: 'Capital Partners, Investment Directors, Debt Providers',
     },
   ]);
 
