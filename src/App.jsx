@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 import CompanyCentral from './pages/CompanyCentral';
 import GrowthDashboard from './pages/GrowthDashboard';
 import Settings from './pages/Settings';
@@ -54,7 +54,9 @@ import CampaignSuccess from './pages/outreach/CampaignSuccess';
 import Ads from './pages/attract/Ads';
 import Content from './pages/attract/Content';
 import Seo from './pages/attract/Seo';
-import Events from './pages/attract/Events';
+import EventsList from './pages/attract/events/EventsList';
+import CreateEvent from './pages/attract/events/CreateEvent';
+import EventDetail from './pages/attract/events/EventDetail';
 import AdsSeo from './pages/attract/AdsSeo';
 
 // Contacts imports
@@ -85,9 +87,10 @@ import BDPipelineRoadmap from './pages/BDPipelineRoadmap';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <Routes>
+      <div className="min-h-screen bg-gray-50 flex">
+        <Sidebar />
+        <div className="flex-1 ml-64">
+          <Routes>
           <Route path="/" element={<CompanyCentral />} />
           
           {/* NDA Routes */}
@@ -149,7 +152,9 @@ function App() {
           <Route path="/outreach/campaign-success" element={<CampaignSuccess />} />
           
           {/* Attract Routes */}
-          <Route path="/attract/events" element={<Events />} />
+          <Route path="/attract/events" element={<EventsList />} />
+          <Route path="/attract/events/create" element={<CreateEvent />} />
+          <Route path="/attract/events/:eventId" element={<EventDetail />} />
           <Route path="/attract/ads-seo" element={<AdsSeo />} />
           <Route path="/attract/ads" element={<Ads />} /> {/* Legacy route */}
           <Route path="/attract/content" element={<Content />} />
@@ -191,7 +196,8 @@ function App() {
           {/* Settings & 404 */}
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
-        </Routes>
+          </Routes>
+        </div>
       </div>
     </Router>
   );
