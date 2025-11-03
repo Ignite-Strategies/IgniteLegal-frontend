@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { User, Building2, Inbox } from 'lucide-react';
@@ -15,9 +15,24 @@ const stages = [
 // Contact types
 const contactTypes = [
   { key: 'all', label: 'All', color: 'bg-gray-100 text-gray-700' },
-  { key: 'customers', label: 'Customers', color: 'bg-blue-100 text-blue-700' },
+  { key: 'prospects', label: 'Prospects', color: 'bg-blue-100 text-blue-700' },
   { key: 'collaborators', label: 'Collaborators', color: 'bg-green-100 text-green-700' },
   { key: 'tech-partners', label: 'Tech Partners', color: 'bg-purple-100 text-purple-700' }
+];
+
+// Demo contacts to hydrate the pipeline
+const demoContacts = [
+  { id: '1', name: 'David Chen', company: 'Ares Capital', title: 'Capital Partner', stage: 'Interested', type: 'prospects', value: 45000, source: 'LinkedIn' },
+  { id: '2', name: 'Sarah Martinez', company: 'Orion Holdings', title: 'Portfolio Manager', stage: 'Interested', type: 'prospects', value: 32000, source: 'Event' },
+  { id: '3', name: 'Michael Thompson', company: 'Meridian Partners', title: 'Investment Director', stage: 'Had Meeting', type: 'prospects', value: 65000, source: 'Referral' },
+  { id: '4', name: 'Jennifer Wilson', company: 'Global Capital Group', title: 'Capital Partner', stage: 'Had Meeting', type: 'prospects', value: 55000, source: 'LinkedIn' },
+  { id: '5', name: 'Robert Lee', company: 'Acme Ventures', title: 'Portfolio Manager', stage: 'Contract Negotiations', type: 'prospects', value: 75000, source: 'Event' },
+  { id: '6', name: 'Amanda Brown', company: 'Strategic Investments LLC', title: 'Investment Director', stage: 'Contract Negotiations', type: 'prospects', value: 85000, source: 'Referral' },
+  { id: '7', name: 'James Davis', company: 'Premier Capital', title: 'Capital Partner', stage: 'Contract Signed', type: 'prospects', value: 95000, source: 'LinkedIn' },
+  { id: '8', name: 'Lisa Anderson', company: 'Summit Holdings', title: 'Portfolio Manager', stage: 'Contract Signed', type: 'prospects', value: 68000, source: 'Event' },
+  { id: '9', name: 'Tech Solutions Inc', company: 'Tech Solutions Inc', title: 'CTO', stage: 'Interested', type: 'tech-partners', value: 0, source: 'Partnership' },
+  { id: '10', name: 'Data Analytics Co', company: 'Data Analytics Co', title: 'CEO', stage: 'Had Meeting', type: 'tech-partners', value: 0, source: 'Partnership' },
+  { id: '11', name: 'Legal Services Corp', company: 'Legal Services Corp', title: 'Founder', stage: 'Interested', type: 'collaborators', value: 0, source: 'Referral' },
 ];
 
 export default function Pipeline() {
@@ -25,6 +40,13 @@ export default function Pipeline() {
   const [contacts, setContacts] = useLocalStorage('contacts', []);
   const [selectedStage, setSelectedStage] = useState(null);
   const [contactType, setContactType] = useState('all');
+
+  // Hydrate with demo data if contacts are empty
+  useEffect(() => {
+    if (contacts.length === 0) {
+      setContacts(demoContacts);
+    }
+  }, []);
 
   // Group contacts by stage with normalized stage names
   const contactsByStage = useMemo(() => {
@@ -53,13 +75,13 @@ export default function Pipeline() {
   const getStageCount = (stageId) => {
     const deals = contactsByStage[stageId] || [];
     if (contactType === 'all') return deals.length;
-    return deals.filter(deal => (deal.type || 'customers') === contactType).length;
+    return deals.filter(deal => (deal.type || 'prospects') === contactType).length;
   };
 
   const getFilteredContacts = (stageId) => {
     const deals = contactsByStage[stageId] || [];
     if (contactType === 'all') return deals;
-    return deals.filter(deal => (deal.type || 'customers') === contactType);
+    return deals.filter(deal => (deal.type || 'prospects') === contactType);
   };
 
   const formatCurrency = (amount) => {
@@ -79,7 +101,7 @@ export default function Pipeline() {
 
   const getContactTypeColor = (type) => {
     const contactTypeMap = {
-      'customers': 'bg-blue-100 text-blue-700',
+      'prospects': 'bg-blue-100 text-blue-700',
       'collaborators': 'bg-green-100 text-green-700',
       'tech-partners': 'bg-purple-100 text-purple-700',
     };
@@ -88,7 +110,8 @@ export default function Pipeline() {
 
   const getContactTypeLabel = (type) => {
     if (type === 'tech-partners') return 'Tech Partner';
-    return type ? type.charAt(0).toUpperCase() + type.slice(1) : 'Customer';
+    if (type === 'prospects') return 'Prospect';
+    return type ? type.charAt(0).toUpperCase() + type.slice(1) : 'Prospect';
   };
 
   return (
@@ -170,7 +193,7 @@ export default function Pipeline() {
           ) : (
             <div className="space-y-4">
               {getFilteredContacts(selectedStage).map((contact) => {
-                const contactTypeValue = contact.type || 'customers';
+                const contactTypeValue = contact.type || 'prospects';
                 const stageInfo = stages.find(s => s.id === selectedStage) || stages[0];
                 
                 return (
