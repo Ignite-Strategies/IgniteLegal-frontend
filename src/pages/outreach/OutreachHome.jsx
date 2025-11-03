@@ -163,7 +163,7 @@ export default function OutreachHome() {
 
           {/* Analytics */}
           <button
-            onClick={() => navigate('/analytics')}
+            onClick={() => navigate('/outreach/analytics')}
             className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-lg border-2 border-orange-200 hover:border-orange-400 transition text-left"
           >
             <div className="flex items-center mb-4">

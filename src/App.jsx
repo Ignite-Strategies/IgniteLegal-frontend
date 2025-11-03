@@ -40,6 +40,7 @@ import IndividualEmail from './pages/outreach/IndividualEmail';
 import EmailCampaigns from './pages/outreach/EmailCampaigns';
 import Templates from './pages/outreach/Templates';
 import TemplateView from './pages/outreach/TemplateView';
+import CampaignAnalytics from './pages/outreach/CampaignAnalytics';
 
 // Attract imports
 import Ads from './pages/attract/Ads';
@@ -116,6 +117,7 @@ function App() {
           <Route path="/outreach/templates" element={<Templates />} />
           <Route path="/outreach/templates/:templateId" element={<TemplateView />} />
           <Route path="/outreach/email-campaigns" element={<EmailCampaigns />} />
+          <Route path="/outreach/analytics" element={<CampaignAnalytics />} />
           
           {/* Attract Routes */}
           <Route path="/attract/ads" element={<Ads />} />
