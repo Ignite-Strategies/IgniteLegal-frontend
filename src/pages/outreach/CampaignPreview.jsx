@@ -27,7 +27,12 @@ export default function CampaignPreview() {
   }
 
   const handleSend = async () => {
-    if (!window.confirm(`Send this campaign to ${contactList?.contactCount || 0} contacts?`)) {
+    // Confirm sending (in real app, use a proper modal)
+    const confirmed = typeof window !== 'undefined' 
+      ? window.confirm(`Send this campaign to ${contactList?.contactCount || 0} contacts?`)
+      : true;
+    
+    if (!confirmed) {
       return;
     }
 
