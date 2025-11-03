@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { TrendingUp, TrendingDown, Activity, Building2, DollarSign, BarChart3 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, BarChart3 } from 'lucide-react';
 
 // Market indicators (would come from external APIs in real app)
 const marketIndicators = {
@@ -76,9 +76,6 @@ const forecasts = [
 ];
 
 const Forecasting = () => {
-  const q1Forecast = forecasts.find(f => f.period === 'Q1 2025');
-  const q2Forecast = forecasts.find(f => f.period === 'Q2 2025');
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
