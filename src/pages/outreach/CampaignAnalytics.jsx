@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { TrendingUp, Users, Mail, MousePointerClick, MessageSquare, BarChart3 } from 'lucide-react';
 import PageHeader from '../../components/PageHeader';
 
 export default function CampaignAnalytics() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Mock data - campaigns broken down by persona
   const personaAnalytics = [
@@ -68,7 +69,7 @@ export default function CampaignAnalytics() {
       />
 
       {/* Show different header if accessed from /analytics */}
-      {window.location.pathname === '/analytics' && (
+      {location.pathname === '/analytics' && (
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Email Outreach Analytics</h1>
           <p className="text-gray-600">Track your campaign performance and engagement metrics</p>
