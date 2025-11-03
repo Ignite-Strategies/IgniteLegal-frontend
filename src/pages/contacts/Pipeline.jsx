@@ -1,18 +1,21 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { User, Building2 } from 'lucide-react';
+import { User, Building2, Plus, Inbox } from 'lucide-react';
+import PageHeader from '../../components/PageHeader';
 
 const stages = [
-  { id: 'prospect', name: 'Prospect', color: 'bg-gray-100' },
-  { id: 'warm', name: 'Warm', color: 'bg-orange-100' },
-  { id: 'engaged', name: 'Engaged', color: 'bg-blue-100' },
-  { id: 'client', name: 'Client', color: 'bg-green-100' }
+  { id: 'prospect', name: 'Prospect', color: 'bg-gray-100', borderColor: 'border-gray-300', textColor: 'text-gray-700' },
+  { id: 'warm', name: 'Warm', color: 'bg-orange-100', borderColor: 'border-orange-300', textColor: 'text-orange-700' },
+  { id: 'engaged', name: 'Engaged', color: 'bg-blue-100', borderColor: 'border-blue-300', textColor: 'text-blue-700' },
+  { id: 'client', name: 'Client', color: 'bg-green-100', borderColor: 'border-green-300', textColor: 'text-green-700' }
 ];
 
 export default function Pipeline() {
+  const navigate = useNavigate();
   const [contacts, setContacts] = useLocalStorage('contacts', []);
   const [draggedContact, setDraggedContact] = useState(null);
+  const [draggedOverStage, setDraggedOverStage] = useState(null);
 
   // Group contacts by stage
   const contactsByStage = {
@@ -26,12 +29,18 @@ export default function Pipeline() {
     setDraggedContact(contact);
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e, stageId) => {
     e.preventDefault();
+    setDraggedOverStage(stageId);
+  };
+
+  const handleDragLeave = () => {
+    setDraggedOverStage(null);
   };
 
   const handleDrop = (e, targetStage) => {
     e.preventDefault();
+    setDraggedOverStage(null);
     if (!draggedContact) return;
 
     // Update contact stage
@@ -63,6 +72,11 @@ export default function Pipeline() {
     setDraggedContact(null);
   };
 
+  const handleDragEnd = () => {
+    setDraggedContact(null);
+    setDraggedOverStage(null);
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       Cold: 'bg-gray-100 text-gray-800',
@@ -73,75 +87,143 @@ export default function Pipeline() {
     return colors[status] || 'bg-gray-100 text-gray-800';
   };
 
+  // Filter by stage
+  const [selectedStage, setSelectedStage] = useState('all');
+
+  const filteredContacts = selectedStage === 'all' 
+    ? contacts 
+    : contacts.filter(c => (c.stage || 'Prospect').toLowerCase() === selectedStage);
+
+  const totalByStage = stages.reduce((acc, stage) => {
+    acc[stage.id] = contactsByStage[stage.id]?.length || 0;
+    return acc;
+  }, {});
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        to="/bd-central"
-        className="text-sm text-gray-600 hover:text-gray-900 mb-6 inline-block"
-      >
-        ← Back to Business Development
-      </Link>
+      <PageHeader
+        title="Pipeline"
+        subtitle="Manage contacts across pipeline stages"
+        backTo="/contacts"
+        backLabel="← Back to Contacts"
+      />
 
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Pipeline</h1>
-        <p className="text-gray-600">Drag and drop contacts between stages</p>
+      {/* Stage Filters */}
+      <div className="bg-white rounded-xl shadow-lg p-4 mb-6">
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedStage('all')}
+            className={`px-4 py-2 rounded-lg font-medium transition ${
+              selectedStage === 'all'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            All ({contacts.length})
+          </button>
+          {stages.map((stage) => (
+            <button
+              key={stage.id}
+              onClick={() => setSelectedStage(stage.id)}
+              className={`px-4 py-2 rounded-lg font-medium transition ${
+                selectedStage === stage.id
+                  ? `${stage.color} ${stage.textColor} border-2 ${stage.borderColor}`
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {stage.name} ({totalByStage[stage.id] || 0})
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Kanban Board */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stages.map((stage) => {
-          const stageContacts = contactsByStage[stage.id] || [];
-          
-          return (
-            <div
-              key={stage.id}
-              className="bg-gray-50 rounded-lg p-4 min-h-[500px]"
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, stage.id)}
+      {/* Contacts List */}
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        {filteredContacts.length === 0 ? (
+          <div className="text-center py-12">
+            <Inbox className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 mb-2">No contacts in this stage</p>
+            <button
+              onClick={() => navigate('/contacts')}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
             >
-              <div className={`${stage.color} rounded-lg p-3 mb-4`}>
-                <h3 className="font-semibold text-gray-900">{stage.name}</h3>
-                <p className="text-sm text-gray-600">{stageContacts.length} contacts</p>
-              </div>
-
-              <div className="space-y-3">
-                {stageContacts.map((contact) => (
-                  <div
-                    key={contact.id}
-                    draggable
-                    onDragStart={() => handleDragStart(contact)}
-                    className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-move hover:shadow-md transition"
-                  >
-                    <div className="flex items-start gap-3 mb-2">
+              Add Contacts
+            </button>
+          </div>
+        ) : (
+          <div className="divide-y divide-gray-200">
+            {filteredContacts.map((contact) => {
+              const contactStage = (contact.stage || 'Prospect').toLowerCase();
+              const stageInfo = stages.find(s => s.id === contactStage) || stages[0];
+              
+              return (
+                <div
+                  key={contact.id}
+                  className="p-4 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 flex-1">
                       {contact.photoUrl ? (
-                        <img src={contact.photoUrl} alt={contact.name} className="h-8 w-8 rounded-full" />
+                        <img src={contact.photoUrl} alt={contact.name} className="h-10 w-10 rounded-full" />
                       ) : (
-                        <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                          <User className="h-4 w-4 text-blue-600" />
+                        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                          <User className="h-5 w-5 text-blue-600" />
                         </div>
                       )}
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">{contact.name}</p>
-                        <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
-                          <Building2 className="h-3 w-3" />
-                          <span>{contact.company || '-'}</span>
+                        <div className="flex items-center gap-3">
+                          <p className="font-semibold text-gray-900">{contact.name}</p>
+                          <span className={`inline-flex px-2 py-1 text-xs rounded-full font-medium ${stageInfo.color} ${stageInfo.textColor}`}>
+                            {stageInfo.name}
+                          </span>
+                          {contact.status && (
+                            <span className={`inline-flex px-2 py-1 text-xs rounded-full ${getStatusColor(contact.status)}`}>
+                              {contact.status}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
+                          {contact.company && (
+                            <div className="flex items-center gap-1">
+                              <Building2 className="h-4 w-4" />
+                              <span>{contact.company}</span>
+                            </div>
+                          )}
+                          {contact.email && (
+                            <span>{contact.email}</span>
+                          )}
+                          {contact.nextTouch && (
+                            <span className="text-orange-600">Next: {contact.nextTouch}</span>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <span className={`inline-flex px-2 py-1 text-xs rounded-full ${getStatusColor(contact.status)}`}>
-                      {contact.status}
-                    </span>
-                    {contact.nextTouch && (
-                      <p className="text-xs text-orange-600 mt-2">
-                        Next: {contact.nextTouch}
-                      </p>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <select
+                        value={contactStage}
+                        onChange={(e) => {
+                          const updated = contacts.map(c => 
+                            c.id === contact.id 
+                              ? { ...c, stage: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1) }
+                              : c
+                          );
+                          setContacts(updated);
+                        }}
+                        className={`px-3 py-1 rounded-lg text-sm font-medium border-2 ${stageInfo.borderColor} ${stageInfo.color} ${stageInfo.textColor} focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                      >
+                        {stages.map(stage => (
+                          <option key={stage.id} value={stage.id}>
+                            {stage.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
